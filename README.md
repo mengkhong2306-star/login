@@ -13,6 +13,7 @@ is no Flask server to run.
 - Admin-only account invitations, removal, and sign-in activity
 - Safe, fictional defensive-security exercises
 - Searchable starter library of Kali tools with safe local/offline examples
+- Original Nmap reference guide with English and Khmer language options
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
 

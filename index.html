@@ -156,12 +156,30 @@
         .tool-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 4px; }
         .tool-actions a { font-size: .9rem; }
         .tool-empty { grid-column: 1 / -1; margin: 0; padding: 18px; border: 1px dashed var(--border); border-radius: 14px; text-align: center; }
+        .tool-library-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
+        .tool-language label { color: var(--muted); font-size: .9rem; }
+        .tool-language select { padding: 9px 12px; }
+        .tool-library [lang="km"], .tool-library:lang(km) { font-family: "Noto Sans Khmer", "Khmer OS System", "Segoe UI", Arial, sans-serif; }
+        .tool-detail { display: grid; gap: 18px; }
+        .tool-detail-top { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: center; gap: 22px; }
+        .tool-original-mark { display: grid; width: 142px; aspect-ratio: 1; place-items: center; border: 1px solid var(--border); border-radius: 24px; background: radial-gradient(circle, color-mix(in srgb, var(--primary) 20%, var(--surface)), var(--input)); color: var(--primary); font-size: 4rem; font-weight: 850; }
+        .tool-detail h3 { margin: 0 0 10px; font-size: 1.2rem; }
+        .tool-detail p { margin: 0; }
+        .tool-detail-block { display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .tool-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .tool-command-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+        .tool-related-list { display: grid; gap: 8px; margin: 0; padding-left: 20px; color: var(--muted); }
+        [lang="km"] { line-height: 1.8; }
         @media (max-width: 520px) {
             body { padding: 12px; }
             header { margin-bottom: 12px; }
             .card { border-radius: 20px; }
             .dashboard-head { align-items: flex-start; }
             .tool-filters { grid-template-columns: 1fr; }
+            .tool-detail-top { grid-template-columns: 1fr; }
+            .tool-original-mark { width: 110px; font-size: 3rem; }
+            .tool-command-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -306,23 +324,35 @@
                     </div>
                 </section>
 
-                <section class="note" style="margin-top:24px" aria-labelledby="tool-library-title">
-                    <h2 id="tool-library-title">Kali tool library</h2>
-                    <p class="intro">A starter directory with original summaries, install commands, safe local or offline examples, and links to official Kali documentation. Commands are examples only; this website does not run Kali tools.</p>
-                    <div class="tool-filters">
-                        <div class="field">
-                            <label for="tool-search">Search tools</label>
-                            <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
+                <section id="tool-library" class="note tool-library" style="margin-top:24px" aria-labelledby="tool-library-title">
+                    <div id="tool-library-home">
+                        <div class="tool-library-heading">
+                            <h2 id="tool-library-title">Kali tool library</h2>
+                            <div class="tool-language">
+                                <label id="tool-language-label" for="tool-language">Language</label>
+                                <select id="tool-language" aria-label="Tool library language">
+                                    <option value="en">English</option>
+                                    <option value="km">ខ្មែរ</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="field">
-                            <label for="tool-category">Filter by category</label>
-                            <select id="tool-category">
-                                <option value="">All categories</option>
-                            </select>
+                        <p id="tool-library-description" class="intro">A starter directory with original summaries, install commands, safe local or offline examples, and links to official Kali documentation. Commands are examples only; this website does not run Kali tools.</p>
+                        <div class="tool-filters">
+                            <div class="field">
+                                <label id="tool-search-label" for="tool-search">Search tools</label>
+                                <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
+                            </div>
+                            <div class="field">
+                                <label id="tool-category-label" for="tool-category">Filter by category</label>
+                                <select id="tool-category">
+                                    <option value="">All categories</option>
+                                </select>
+                            </div>
                         </div>
+                        <p id="tool-count" aria-live="polite"></p>
+                        <div id="tool-cards" class="tool-grid"></div>
                     </div>
-                    <p id="tool-count" aria-live="polite"></p>
-                    <div id="tool-cards" class="tool-grid"></div>
+                    <div id="tool-detail" class="tool-detail" hidden></div>
                 </section>
 
                 <section class="note" style="margin-top:24px">

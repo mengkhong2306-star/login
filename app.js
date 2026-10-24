@@ -345,30 +345,156 @@ const toolSearch = document.querySelector("#tool-search");
 const toolCategory = document.querySelector("#tool-category");
 const toolCards = document.querySelector("#tool-cards");
 const toolCount = document.querySelector("#tool-count");
+const toolLanguage = document.querySelector("#tool-language");
+const toolLibraryHome = document.querySelector("#tool-library-home");
+const toolDetail = document.querySelector("#tool-detail");
+const toolCopyFeedback = {
+    en: (name) => `${name} example copied.`,
+    km: (name) => `បានចម្លងឧទាហរណ៍ ${name}។`,
+};
+const toolTranslations = {
+    en: {
+        title: "Kali tool library",
+        language: "Language",
+        description: "An original starter directory with tool summaries, install commands, safe local or offline examples, and official documentation links. Commands are examples only; this website does not run Kali tools.",
+        search: "Search tools",
+        searchPlaceholder: "Search by name, package, or topic",
+        category: "Filter by category",
+        allCategories: "All categories",
+        install: "Install on Kali Linux",
+        copyExample: "Copy example",
+        copiedFallback: "Could not copy the command. Select and copy it instead.",
+        official: "Kali documentation",
+        viewGuide: "View Nmap guide",
+        count: (number) => `${number} ${number === 1 ? "tool" : "tools"}`,
+        noResults: "No tools match your search. Try another name or category.",
+        back: "Back to tool library",
+        subtitle: "A network discovery and service inventory utility. This original guide focuses on basic, authorized checks against your own computer.",
+        safetyTitle: "Use responsibly",
+        safety: "Only scan devices and networks that you own or have explicit permission to test. The examples below use the localhost address 127.0.0.1. This page displays commands as text and never executes them.",
+        categoriesTitle: "Categories",
+        categories: "Network discovery · Service inventory · Authorized security auditing",
+        packagesTitle: "Package and utilities",
+        packageLabel: "Kali package",
+        utilities: "The package includes Nmap and companion utilities such as Ncat, Ndiff, and Nping. Each has a distinct purpose; consult the official manuals before use.",
+        commandsTitle: "Safe local examples",
+        commandLabels: [
+            "Basic localhost scan",
+            "Check localhost availability",
+            "Check selected ports on localhost",
+            "Identify services on localhost",
+        ],
+        commandNotes: [
+            "Lists commonly checked TCP ports on this same computer.",
+            "Checks whether the local computer responds to host discovery.",
+            "Checks only the listed ports on this same computer.",
+            "Attempts service identification only on this same computer.",
+        ],
+        installTitle: "Install",
+        versionNote: "The available package version can change with Kali updates. Check your installed release with nmap --version.",
+        officialTitle: "Official resources",
+        homepage: "Nmap project homepage",
+        packagePage: "Kali package page",
+        source: "Source code repository",
+        copy: "Copy",
+        copied: "Copied",
+    },
+    km: {
+        title: "បណ្ណាល័យឧបករណ៍ Kali",
+        language: "ភាសា",
+        description: "បញ្ជីឧបករណ៍ដើមដែលមានសេចក្ដីសង្ខេប ពាក្យបញ្ជាដំឡើង ឧទាហរណ៍សុវត្ថិភាពក្នុងម៉ាស៊ីនផ្ទាល់ខ្លួន ឬក្រៅបណ្ដាញ និងតំណទៅឯកសារផ្លូវការ។ ពាក្យបញ្ជាគ្រាន់តែជាឧទាហរណ៍ប៉ុណ្ណោះ គេហទំព័រនេះមិនដំណើរការឧបករណ៍ Kali ទេ។",
+        search: "ស្វែងរកឧបករណ៍",
+        searchPlaceholder: "ស្វែងរកតាមឈ្មោះ កញ្ចប់ ឬប្រធានបទ",
+        category: "ត្រងតាមប្រភេទ",
+        allCategories: "គ្រប់ប្រភេទ",
+        install: "ដំឡើងលើ Kali Linux",
+        copyExample: "ចម្លងឧទាហរណ៍",
+        copiedFallback: "មិនអាចចម្លងពាក្យបញ្ជាបានទេ។ សូមជ្រើសរើស ហើយចម្លងវាដោយដៃ។",
+        official: "ឯកសារ Kali",
+        viewGuide: "មើលមគ្គុទ្ទេសក៍ Nmap",
+        count: (number) => `ឧបករណ៍ ${number}`,
+        noResults: "រកមិនឃើញឧបករណ៍ដែលត្រូវនឹងការស្វែងរកទេ។ សូមសាកល្បងឈ្មោះ ឬប្រភេទផ្សេង។",
+        back: "ត្រឡប់ទៅបណ្ណាល័យឧបករណ៍",
+        subtitle: "ឧបករណ៍សម្រាប់ស្វែងរកបណ្ដាញ និងរៀបចំបញ្ជីសេវាកម្ម។ មគ្គុទ្ទេសក៍ដើមនេះផ្ដោតលើការត្រួតពិនិត្យមូលដ្ឋានដែលមានការអនុញ្ញាតលើកុំព្យូទ័រផ្ទាល់ខ្លួន។",
+        safetyTitle: "ប្រើប្រាស់ដោយទទួលខុសត្រូវ",
+        safety: "ស្កេនតែឧបករណ៍ និងបណ្ដាញដែលជាកម្មសិទ្ធិរបស់អ្នក ឬដែលអ្នកមានការអនុញ្ញាតច្បាស់លាស់ឱ្យសាកល្បងប៉ុណ្ណោះ។ ឧទាហរណ៍ខាងក្រោមប្រើអាសយដ្ឋានម៉ាស៊ីនផ្ទាល់ខ្លួន 127.0.0.1។ ទំព័រនេះបង្ហាញពាក្យបញ្ជាជាអត្ថបទ ហើយមិនដំណើរការពាក្យបញ្ជាទាំងនោះទេ។",
+        categoriesTitle: "ប្រភេទ",
+        categories: "ការស្វែងរកបណ្ដាញ · ការរៀបចំបញ្ជីសេវាកម្ម · សវនកម្មសុវត្ថិភាពដែលមានការអនុញ្ញាត",
+        packagesTitle: "កញ្ចប់ និងឧបករណ៍រង",
+        packageLabel: "កញ្ចប់ Kali",
+        utilities: "កញ្ចប់នេះរួមមាន Nmap និងឧបករណ៍ជំនួយដូចជា Ncat, Ndiff និង Nping។ ឧបករណ៍នីមួយៗមានតួនាទីខុសគ្នា សូមអានសៀវភៅណែនាំផ្លូវការមុនប្រើប្រាស់។",
+        commandsTitle: "ឧទាហរណ៍សុវត្ថិភាពក្នុងម៉ាស៊ីនផ្ទាល់ខ្លួន",
+        commandLabels: [
+            "ស្កេនម៉ាស៊ីនផ្ទាល់ខ្លួនជាមូលដ្ឋាន",
+            "ពិនិត្យការឆ្លើយតបរបស់ម៉ាស៊ីនផ្ទាល់ខ្លួន",
+            "ពិនិត្យច្រកដែលបានជ្រើសលើម៉ាស៊ីនផ្ទាល់ខ្លួន",
+            "កំណត់សេវាកម្មលើម៉ាស៊ីនផ្ទាល់ខ្លួន",
+        ],
+        commandNotes: [
+            "រាយបញ្ជីច្រក TCP ដែលត្រូវបានពិនិត្យជាទូទៅលើកុំព្យូទ័រនេះផ្ទាល់។",
+            "ពិនិត្យថាតើកុំព្យូទ័រផ្ទាល់ខ្លួនឆ្លើយតបចំពោះការស្វែងរកម៉ាស៊ីនឬទេ។",
+            "ពិនិត្យតែច្រកដែលបានរាយបញ្ជីលើកុំព្យូទ័រនេះផ្ទាល់។",
+            "ព្យាយាមកំណត់សេវាកម្មតែលើកុំព្យូទ័រនេះផ្ទាល់។",
+        ],
+        installTitle: "ការដំឡើង",
+        versionNote: "កំណែកញ្ចប់អាចផ្លាស់ប្ដូរតាមបច្ចុប្បន្នភាពរបស់ Kali។ ពិនិត្យកំណែដែលបានដំឡើងដោយប្រើ nmap --version។",
+        officialTitle: "ធនធានផ្លូវការ",
+        homepage: "គេហទំព័រគម្រោង Nmap",
+        packagePage: "ទំព័រកញ្ចប់ Kali",
+        source: "ឃ្លាំងកូដប្រភព",
+        copy: "ចម្លង",
+        copied: "បានចម្លង",
+    },
+};
+
+let toolPageLanguage = localStorage.getItem("mengkhong-tool-language") === "km" ? "km" : "en";
+toolLanguage.value = toolPageLanguage;
 
 for (const category of [...new Set(toolCatalog.map((tool) => tool.category))].sort()) {
     const option = document.createElement("option");
     option.value = category;
-    option.textContent = category;
     toolCategory.append(option);
 }
 
+function activeToolTranslation() {
+    return toolTranslations[toolPageLanguage];
+}
+
+function localizeToolLibrary() {
+    const text = activeToolTranslation();
+    document.querySelector("#tool-library").lang = toolPageLanguage;
+    document.querySelector("#tool-library-title").textContent = text.title;
+    document.querySelector("#tool-language-label").textContent = text.language;
+    document.querySelector("#tool-library-description").textContent = text.description;
+    document.querySelector("#tool-search-label").textContent = text.search;
+    toolSearch.placeholder = text.searchPlaceholder;
+    document.querySelector("#tool-category-label").textContent = text.category;
+    toolCategory.options[0].textContent = text.allCategories;
+    for (const option of [...toolCategory.options].slice(1)) {
+        const entry = toolCatalog.find((tool) => tool.category === option.value);
+        option.textContent = toolPageLanguage === "km" ? entry.categoryKm : entry.category;
+    }
+    renderToolCatalog();
+    if (!toolDetail.hidden) renderNmapGuide();
+}
+
 function renderToolCatalog() {
+    const text = activeToolTranslation();
     const query = toolSearch.value.trim().toLowerCase();
     const category = toolCategory.value;
     const filteredTools = toolCatalog.filter((tool) => {
         const matchesCategory = !category || tool.category === category;
-        const searchableText = `${tool.name} ${tool.category} ${tool.summary} ${tool.packageName}`.toLowerCase();
+        const searchableText = `${tool.name} ${tool.category} ${tool.categoryKm} ${tool.summary} ${tool.summaryKm} ${tool.packageName}`.toLowerCase();
         return matchesCategory && searchableText.includes(query);
     });
 
     toolCards.replaceChildren();
-    toolCount.textContent = `${filteredTools.length} ${filteredTools.length === 1 ? "tool" : "tools"}`;
+    toolCount.textContent = text.count(filteredTools.length);
 
     if (!filteredTools.length) {
         const empty = document.createElement("p");
         empty.className = "tool-empty";
-        empty.textContent = "No tools match your search. Try another name or category.";
+        empty.textContent = text.noResults;
         toolCards.append(empty);
         return;
     }
@@ -383,22 +509,22 @@ function renderToolCatalog() {
         title.textContent = tool.name;
         const categoryLabel = document.createElement("span");
         categoryLabel.className = "tool-category";
-        categoryLabel.textContent = tool.category;
+        categoryLabel.textContent = toolPageLanguage === "km" ? tool.categoryKm : tool.category;
         heading.append(title, categoryLabel);
 
         const summary = document.createElement("p");
-        summary.textContent = tool.summary;
+        summary.textContent = toolPageLanguage === "km" ? tool.summaryKm : tool.summary;
 
         const installLabel = document.createElement("span");
         installLabel.className = "tool-command-label";
-        installLabel.textContent = "Install on Kali Linux";
+        installLabel.textContent = text.install;
         const installCommand = document.createElement("code");
         installCommand.className = "tool-command";
         installCommand.textContent = `sudo apt install ${tool.packageName}`;
 
         const exampleLabel = document.createElement("span");
         exampleLabel.className = "tool-command-label";
-        exampleLabel.textContent = tool.commandLabel;
+        exampleLabel.textContent = toolPageLanguage === "km" ? tool.commandLabelKm : tool.commandLabel;
         const exampleCommand = document.createElement("code");
         exampleCommand.className = "tool-command";
         exampleCommand.textContent = tool.command;
@@ -408,22 +534,31 @@ function renderToolCatalog() {
         const copyButton = document.createElement("button");
         copyButton.type = "button";
         copyButton.className = "secondary small-button";
-        copyButton.textContent = "Copy example";
+        copyButton.textContent = text.copyExample;
         copyButton.addEventListener("click", async () => {
             try {
                 await navigator.clipboard.writeText(tool.command);
-                showStatus(`${tool.name} example copied.`);
+                showStatus(toolCopyFeedback[toolPageLanguage](tool.name));
             } catch (error) {
                 console.error("Could not copy tool example:", error);
-                showStatus("Could not copy the command. Select and copy it instead.", "error");
+                showStatus(text.copiedFallback, "error");
             }
         });
+
+        if (tool.name === "Nmap") {
+            const guideButton = document.createElement("button");
+            guideButton.type = "button";
+            guideButton.className = "secondary small-button";
+            guideButton.textContent = text.viewGuide;
+            guideButton.addEventListener("click", openNmapGuide);
+            actions.append(guideButton);
+        }
 
         const officialLink = document.createElement("a");
         officialLink.href = tool.kaliUrl;
         officialLink.target = "_blank";
         officialLink.rel = "noopener noreferrer";
-        officialLink.textContent = "Kali documentation";
+        officialLink.textContent = text.official;
         actions.append(copyButton, officialLink);
         article.append(
             heading,
@@ -438,9 +573,187 @@ function renderToolCatalog() {
     }
 }
 
+function appendDetailBlock(parent, title, content) {
+    const block = document.createElement("section");
+    block.className = "tool-detail-block";
+    const heading = document.createElement("h3");
+    heading.textContent = title;
+    block.append(heading);
+    if (content instanceof Node) block.append(content);
+    else {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = content;
+        block.append(paragraph);
+    }
+    parent.append(block);
+}
+
+function addCopyableCommand(parent, command, label, note) {
+    const row = document.createElement("div");
+    row.className = "tool-command-row";
+    const content = document.createElement("div");
+    const commandLabel = document.createElement("span");
+    commandLabel.className = "tool-command-label";
+    commandLabel.textContent = label;
+    const code = document.createElement("code");
+    code.className = "tool-command";
+    code.textContent = command;
+    content.append(commandLabel, code);
+    if (note) {
+        const explanation = document.createElement("p");
+        explanation.textContent = note;
+        content.append(explanation);
+    }
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "secondary small-button";
+    button.textContent = activeToolTranslation().copy;
+    button.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(command);
+            showStatus(toolCopyFeedback[toolPageLanguage]("Nmap"));
+        } catch (error) {
+            console.error("Could not copy Nmap example:", error);
+            showStatus(activeToolTranslation().copiedFallback, "error");
+        }
+    });
+    row.append(content, button);
+    parent.append(row);
+}
+
+function renderNmapGuide() {
+    const text = activeToolTranslation();
+    toolDetail.replaceChildren();
+
+    const back = document.createElement("button");
+    back.type = "button";
+    back.className = "secondary small-button";
+    back.textContent = text.back;
+    back.addEventListener("click", () => {
+        toolDetail.hidden = true;
+        toolLibraryHome.hidden = false;
+    });
+    toolDetail.append(back);
+
+    const top = document.createElement("div");
+    top.className = "tool-detail-top";
+    const mark = document.createElement("div");
+    mark.className = "tool-original-mark";
+    mark.setAttribute("role", "img");
+    mark.setAttribute("aria-label", "Original MengKhong Nmap guide mark");
+    mark.textContent = "N";
+    const headingGroup = document.createElement("div");
+    const heading = document.createElement("h2");
+    heading.textContent = "Nmap";
+    const subtitle = document.createElement("p");
+    subtitle.textContent = text.subtitle;
+    const meta = document.createElement("div");
+    meta.className = "tool-meta";
+    for (const label of ["Network discovery", "Service inventory", "Kali package: nmap"]) {
+        const badge = document.createElement("span");
+        badge.className = "tool-category";
+        badge.textContent = toolPageLanguage === "km"
+            ? ({
+                "Network discovery": "ការស្វែងរកបណ្ដាញ",
+                "Service inventory": "ការរៀបចំបញ្ជីសេវាកម្ម",
+                "Kali package: nmap": "កញ្ចប់ Kali៖ nmap",
+            }[label])
+            : label;
+        meta.append(badge);
+    }
+    headingGroup.append(heading, subtitle, meta);
+    top.append(mark, headingGroup);
+    toolDetail.append(top);
+
+    const caution = document.createElement("p");
+    caution.className = "status";
+    const cautionTitle = document.createElement("strong");
+    cautionTitle.textContent = `${text.safetyTitle}: `;
+    caution.append(cautionTitle, document.createTextNode(text.safety));
+    toolDetail.append(caution);
+
+    appendDetailBlock(toolDetail, text.categoriesTitle, text.categories);
+
+    const packageInfo = document.createElement("div");
+    const packageLine = document.createElement("p");
+    const packageLabel = document.createElement("strong");
+    packageLabel.textContent = `${text.packageLabel}: `;
+    packageLine.append(packageLabel, document.createTextNode("nmap"));
+    const utilityList = document.createElement("p");
+    utilityList.textContent = text.utilities;
+    const versionNote = document.createElement("p");
+    versionNote.textContent = text.versionNote;
+    packageInfo.append(packageLine, utilityList, versionNote);
+    appendDetailBlock(toolDetail, text.packagesTitle, packageInfo);
+
+    const commands = document.createElement("div");
+    addCopyableCommand(
+        commands,
+        "nmap 127.0.0.1",
+        text.commandLabels[0],
+        text.commandNotes[0],
+    );
+    addCopyableCommand(
+        commands,
+        "nmap -sn 127.0.0.1",
+        text.commandLabels[1],
+        text.commandNotes[1],
+    );
+    addCopyableCommand(
+        commands,
+        "nmap -p 22,80,443 127.0.0.1",
+        text.commandLabels[2],
+        text.commandNotes[2],
+    );
+    addCopyableCommand(
+        commands,
+        "nmap -sV 127.0.0.1",
+        text.commandLabels[3],
+        text.commandNotes[3],
+    );
+    appendDetailBlock(toolDetail, text.commandsTitle, commands);
+
+    const install = document.createElement("div");
+    const installCommand = document.createElement("code");
+    installCommand.className = "tool-command";
+    installCommand.textContent = "sudo apt install nmap";
+    install.append(installCommand);
+    appendDetailBlock(toolDetail, text.installTitle, install);
+
+    const links = document.createElement("div");
+    for (const [label, href] of [
+        [text.homepage, "https://nmap.org/"],
+        [text.packagePage, "https://www.kali.org/tools/nmap/"],
+        [text.source, "https://github.com/nmap/nmap"],
+    ]) {
+        const link = document.createElement("p");
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+        anchor.textContent = label;
+        link.append(anchor);
+        links.append(link);
+    }
+    appendDetailBlock(toolDetail, text.officialTitle, links);
+}
+
+function openNmapGuide() {
+    toolLibraryHome.hidden = true;
+    toolDetail.hidden = false;
+    renderNmapGuide();
+    document.querySelector("#tool-library").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 toolSearch.addEventListener("input", renderToolCatalog);
 toolCategory.addEventListener("change", renderToolCatalog);
-renderToolCatalog();
+toolLanguage.addEventListener("change", () => {
+    toolPageLanguage = toolLanguage.value;
+    localStorage.setItem("mengkhong-tool-language", toolPageLanguage);
+    localizeToolLibrary();
+});
+localizeToolLibrary();
 
 const themeToggle = document.querySelector("#theme-toggle");
 function setTheme(theme) {
