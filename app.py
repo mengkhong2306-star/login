@@ -933,6 +933,20 @@ DASHBOARD_PAGE = """
 </section>
 
 <section class="card">
+<h2>Account username</h2>
+<form class="auth-form" method="post" action="{{ url_for('update_username') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="username">New username</label>
+    <input id="username" name="username" maxlength="80"
+           autocomplete="username" value="{{ username }}" required>
+    <label for="current_password">Confirm your password</label>
+    <input id="current_password" name="current_password" type="password"
+           autocomplete="current-password" required>
+    <button type="submit">Save username</button>
+</form>
+</section>
+
+<section class="card">
 <h2>Account recovery</h2>
 {% if email %}
 <p class="muted">Recovery email: {{ email }}</p>
@@ -1236,6 +1250,47 @@ def update_recovery_email():
         ACCOUNT_EMAIL_PAGE,
         email=user["email"],
     )
+
+
+@app.route("/account/username", methods=["POST"])
+@login_required
+def update_username():
+    username = request.form.get("username", "").strip()
+    password = request.form.get("current_password", "")
+    if not username or len(username) > 80:
+        flash("Username must be between 1 and 80 characters.", "error")
+        return redirect(url_for("dashboard"))
+
+    with get_db() as db:
+        user = db.execute(
+            "SELECT username, password_hash FROM users WHERE id = ?",
+            (session["user_id"],),
+        ).fetchone()
+        if user is None:
+            abort(404)
+        if not check_password_hash(user["password_hash"], password):
+            flash("Your current password is incorrect.", "error")
+            return redirect(url_for("dashboard"))
+        if username == user["username"]:
+            flash("That is already your username.", "error")
+            return redirect(url_for("dashboard"))
+
+        username_in_use = db.execute(
+            "SELECT id FROM users WHERE username = ? AND id != ?",
+            (username, session["user_id"]),
+        ).fetchone()
+        if username_in_use:
+            flash("That username is already in use.", "error")
+            return redirect(url_for("dashboard"))
+
+        db.execute(
+            "UPDATE users SET username = ? WHERE id = ?",
+            (username, session["user_id"]),
+        )
+
+    session["username"] = username
+    flash("Username updated.", "success")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/dashboard")
