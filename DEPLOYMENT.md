@@ -1,33 +1,34 @@
-# Deploy NovaVault to Render
+# Render deployment checklist
 
-## Push the source to GitHub
+## 1. Connect the GitHub repository
 
-Install Git for Windows, then run these commands in PowerShell:
+The source is in [the `login` repository](https://github.com/mengkhong2306-star/login),
+on the `main` branch. In Render, choose **New + → Blueprint**, connect GitHub
+if prompted, and select this repository and branch. Render reads `render.yaml`
+and proposes the `novavault` web service and persistent disk.
 
-```powershell
-Set-Location C:\CyberLab
-git init -b main
-git add app.py wsgi.py requirements.txt render.yaml .gitignore templates
-git commit -m "Prepare NovaVault for Render"
-git remote add origin https://github.com/mengkhong2306-star/login.git
-git push -u origin main
-```
+## 2. Review the service and disk
 
-Sign in to GitHub if Git prompts you. Do not add `vault_secure.db`, `.env`
-files, or the virtual environment; `.gitignore` excludes them.
+The Blueprint selects a Starter web service and a 1 GB persistent disk mounted
+at `/var/data`. These resources may incur charges. Review the current price
+and service configuration in Render before confirming. Do not remove the
+persistent disk: SQLite is configured to store accounts, recovery addresses,
+reset tokens, and notes there.
 
-## Create the Render service
+## 3. Configure email delivery
 
-In Render, create a Blueprint instance and connect the `login` repository.
-Review the `starter` web service and 1 GB persistent disk before confirming:
-Render may charge for these resources. The persistent disk is where account,
-recovery-email, and note data are stored.
+Set the Blueprint's `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` values in the
+Render service environment. Use a Google App Password from an account with
+2-Step Verification enabled, not the account's normal password. Do not commit
+these values or share them in chat.
 
-Set the requested `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` environment
-variables in Render. Use a Google App Password (with 2-Step Verification
-enabled), not your normal Google password. Keep both values private.
-Render supplies `RENDER_EXTERNAL_URL`, which is used to build reset links.
+Render generates `FLASK_SECRET_KEY` and provides `RENDER_EXTERNAL_URL`. The
+app uses the external URL when constructing password-reset links and requires
+secure session cookies in the deployed environment.
 
-After the first deployment, open the deployed site and register an account
-using the recovery email you want associated with it. The local SQLite
-database is intentionally excluded from Git and is not copied to Render.
+## 4. Verify deployment
+
+Wait for Render's deploy to succeed, then open the generated `onrender.com`
+URL. Check `/health`, register a new account, add a note, and request a
+password-reset email. The local `vault_secure.db` is excluded from Git and is
+not migrated to Render; recreate accounts on the hosted site.
