@@ -200,7 +200,7 @@ def init_db():
 
             db.execute(
                 "INSERT INTO secrets (user_id, message) VALUES (?, ?)",
-                (user_id, "Welcome to your NovaVault learning space."),
+                (user_id, "Welcome to your MengKhong learning space."),
             )
 
 # ==================================================
@@ -224,11 +224,11 @@ def send_password_reset_email(recipient, reset_url):
         )
 
     message = EmailMessage()
-    message["Subject"] = "Reset your NovaVault password"
+    message["Subject"] = "Reset your MengKhong password"
     message["From"] = sender
     message["To"] = recipient
     message.set_content(
-        "We received a request to reset your NovaVault password.\n\n"
+        "We received a request to reset your MengKhong password.\n\n"
         f"Use this one-time link within 60 minutes:\n{reset_url}\n\n"
         "If you did not request this, you can ignore this email."
     )
@@ -285,7 +285,7 @@ LAYOUT = """
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ title }} | NovaVault</title>
+<title>{{ title }} | MengKhong</title>
 <style>
 :root {
     --bg: #eef4ff;
@@ -766,13 +766,13 @@ a:hover { text-decoration: underline; }
 </script>
 <main class="{% if title in ['Login', 'Register', 'Forgot password', 'Choose a new password'] %}auth-shell{% endif %}">
 <header>
-    <a href="{{ url_for('index') if session.get('user_id') else url_for('login') }}" class="brand" aria-label="NovaVault home">
+    <a href="{{ url_for('index') if session.get('user_id') else url_for('login') }}" class="brand" aria-label="MengKhong home">
         <span class="logo-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
                 <path d="M18 8h-1V6a5 5 0 1 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7 6.73V16a1 1 0 1 1-2 0v-1.27A2.5 2.5 0 1 1 11 14.73zm3-6.73H8V6a4 4 0 1 1 8 0v2z"/>
             </svg>
         </span>
-        <span class="brand-text">NovaVault</span>
+        <span class="brand-text">MengKhong</span>
     </a>
     <div class="header-actions">
         <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">🌙 Dark</button>
@@ -840,7 +840,7 @@ LOGIN_PAGE = """
     <button class="auth-submit" type="submit">Sign in</button>
 </form>
 <p class="auth-links"><a href="{{ url_for('forgot_password') }}">Forgot your password?</a></p>
-<p class="auth-links"><span>New to NovaVault?</span><a href="{{ url_for('register') }}">Create account</a></p>
+<p class="auth-links"><span>New to MengKhong?</span><a href="{{ url_for('register') }}">Create account</a></p>
 </section>
 """
 
@@ -850,7 +850,7 @@ REGISTER_PAGE = """
     <svg viewBox="0 0 64 64"><circle cx="32" cy="20" r="12"/><path d="M10 54c0-13 9-22 22-22s22 9 22 22v2H10z"/></svg>
 </span>
 <h2>Create an account</h2>
-<p class="muted">Set up your NovaVault login and recovery email.</p>
+<p class="muted">Set up your MengKhong login and recovery email.</p>
 <form class="auth-form" method="post" action="{{ url_for('register') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label for="username">Username</label>
@@ -1420,7 +1420,7 @@ def not_found(error):
 
 if __name__ == "__main__":
     init_db()
-    print("NovaVault is starting...")
+    print("MengKhong is starting...")
     print("Open this address: http://127.0.0.1:5000")
     print("Use only on a trusted private network.")
     app.run(host="0.0.0.0", port=5000, debug=False)

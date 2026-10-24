@@ -1,6 +1,6 @@
-# NovaVault
+# MengKhong
 
-NovaVault is a small Flask learning app for private notes, with account
+MengKhong is a small Flask learning app for private notes, with account
 registration, login, and email-based password recovery. It includes a
 responsive light/dark interface and stores passwords as hashes.
 
