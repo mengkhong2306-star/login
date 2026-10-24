@@ -1,93 +1,57 @@
-# Host MengKhong with PythonAnywhere and Supabase
+# Supabase + GitHub Pages setup
 
-PythonAnywhere runs the Flask app; Supabase stores account, reset-token, and
-note data in PostgreSQL. GitHub Pages only hosts the static landing page and
-cannot run the Flask login.
+GitHub Pages serves the static website, and Supabase provides authentication
+and PostgreSQL. The old Flask deployment is no longer used by this version.
 
-## Important free-plan network limitation
-
-PythonAnywhere free accounts restrict outbound internet access to an allowlist.
-The Supabase Session pooler hostname may not be reachable on that plan. Before
-configuring the web app, test the pooler host and port from a PythonAnywhere
-Bash console. Substitute only the hostname shown in the Supabase URI (do not
-include the username, password, or `postgresql://` prefix):
-
-```bash
-python -c "import socket; socket.create_connection(('YOUR_SESSION_POOLER_HOST', 5432), timeout=5).close(); print('Supabase pooler is reachable')"
-```
-
-If it times out or is blocked, the free plan cannot connect this app to
-Supabase; use a PythonAnywhere plan that allows external connections or choose
-another Flask host. Do not put a database password in the test command.
-
-Gmail SMTP may also be blocked on free accounts. Test real email delivery
-before relying on password recovery.
-
-## 1. Get the Supabase connection string
+## 1. Create the database tables and security policies
 
 1. Open your project in the [Supabase dashboard](https://supabase.com/dashboard).
-2. Select **Connect**, then choose the **Session pooler** connection string.
-3. Keep the full URI private. It contains your database password; never commit
-   it to GitHub or paste it into chat.
+2. Open **SQL Editor** and start a new query.
+3. Copy the entire contents of [`supabase/schema.sql`](./supabase/schema.sql),
+   run it, and confirm it completes without errors.
 
-The app creates its tables on startup. No SQL migration is required.
+The SQL creates user profiles and notes, enables Row Level Security (RLS),
+restricts reads and writes to the signed-in owner, and creates a profile when
+an auth user registers.
 
-## 2. Create the PythonAnywhere app
+## 2. Configure Supabase Auth redirects
 
-1. Create/sign in to a [PythonAnywhere account](https://www.pythonanywhere.com/).
-2. Open a Bash console and clone the repository:
+In Supabase, open **Authentication → URL Configuration**:
 
-   ```bash
-   git clone https://github.com/mengkhong2306-star/login.git
-   cd login
-   python3 -m venv ~/.virtualenvs/mengkhong
-   ~/.virtualenvs/mengkhong/bin/pip install -r requirements.txt
-   ```
+- Set **Site URL** to
+  `https://mengkhong2306-star.github.io/login/`.
+- Add that same URL to **Redirect URLs** so confirmation and password-reset
+  emails return to the static app.
+- Ensure the **Email** provider is enabled. If email confirmation is enabled,
+  new users must confirm their email before signing in.
 
-3. In **Web**, select **Add a new web app**, then choose **Manual
-   configuration** and the Python version matching the virtual environment.
-4. In the web app's **Virtualenv** field, enter:
-   `/home/YOUR_USERNAME/.virtualenvs/mengkhong`.
-5. Click the WSGI configuration-file link. Replace its contents with the
-   following, replacing the example values locally in that private file:
+## 3. Publish the app
 
-   ```python
-   import os
-   import sys
+The Supabase project URL and anon/publishable key are configured in
+[`app.js`](./app.js). The anon key is intentionally public browser
+configuration; database security must come from RLS. Never substitute a
+`service_role` or `sb_secret_` key.
 
-   project_home = "/home/YOUR_USERNAME/login"
-   if project_home not in sys.path:
-       sys.path.insert(0, project_home)
+Push changes to the `main` branch. GitHub Pages will publish the static app at
+<https://mengkhong2306-star.github.io/login/>. No Render, PythonAnywhere, or
+Flask server configuration is needed for the website.
 
-   os.environ["FLASK_SECRET_KEY"] = "GENERATE_A_PRIVATE_RANDOM_VALUE"
-   os.environ["DATABASE_URL"] = "PASTE_SUPABASE_SESSION_POOLER_URI"
-   os.environ["SESSION_COOKIE_SECURE"] = "true"
-   os.environ["PUBLIC_BASE_URL"] = "https://YOUR_USERNAME.pythonanywhere.com"
+## 4. Verify
 
-   # Optional: Google App Password, not your regular Google password.
-   # os.environ["GMAIL_ADDRESS"] = "your-sender@gmail.com"
-   # os.environ["GMAIL_APP_PASSWORD"] = "your-google-app-password"
+1. Open the GitHub Pages URL and create a test account.
+2. If email confirmation is enabled, follow the email link and return to the
+   site to sign in.
+3. Add a note, refresh, and confirm it remains. Sign out and register a
+   second test user to confirm the first user's notes are not visible.
+4. Test password recovery and verify that the reset link returns to the app.
 
-   from wsgi import app as application
-   ```
+The Supabase health and database status can be monitored in the Supabase
+dashboard. Do not post passwords, reset links, database connection strings, or
+secret API keys in chat or commit them to Git.
 
-   Generate the Flask secret in a console with
-   `python -c "import secrets; print(secrets.token_hex(32))"`.
-   Keep the WSGI configuration private; do not commit its values or paste
-   them into chat.
-6. Save the WSGI file and click **Reload** on the Web tab. The site URL is
-   `https://YOUR_USERNAME.pythonanywhere.com/`.
+## Existing account data
 
-## 3. Verify and update
-
-Open `/health`, then register an account, add a note, and reload the page.
-For a Supabase-backed deployment, accounts and notes should remain available
-after reload. Local SQLite accounts and notes are not migrated.
-
-To publish later code changes, run `git pull` in the PythonAnywhere Bash
-console and click **Reload** on the Web tab. If the app fails to start, check
-the error log linked from the Web tab; do not expose database credentials in
-the log or support request.
-
-If Gmail settings are not configured and tested, forgot-password requests
-cannot deliver email.
+Existing Flask/SQLite/Render accounts and notes do not transfer automatically.
+Users must create a new Supabase Auth account. Export notes separately before
+retiring the old service if you need to preserve them. Passwords are not
+migrated.
