@@ -38,22 +38,27 @@ use or commit your regular Google password. Restart the app after setting
 environment variables. For a public deployment, configure
 `PUBLIC_BASE_URL` to the HTTPS site URL.
 
-## Deploy to Render
+## Free hosting on PythonAnywhere
 
-The repository includes a Render Blueprint in [`render.yaml`](./render.yaml).
-In Render, create a **Blueprint** from the `main` branch of this repository,
-review the plan and persistent-disk costs, and confirm only if they are
-acceptable. The Starter service and 1 GB persistent disk may incur charges.
+PythonAnywhere can host the Flask app on a free account at a
+`<username>.pythonanywhere.com` address. Follow the
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) checklist to clone this repository, create a
+virtualenv, and configure the WSGI app.
 
-Configure the Blueprint's requested `GMAIL_ADDRESS` and
-`GMAIL_APP_PASSWORD` values in Render. Render generates `FLASK_SECRET_KEY`;
-the Blueprint configures the SQLite database on the persistent disk and
-enables secure session cookies. Render's `RENDER_EXTERNAL_URL` is used to
-create password-reset links.
+The SQLite database is stored under your PythonAnywhere home directory, not
+in GitHub. Create a new account on the hosted site; local users and notes are
+not uploaded.
 
-The persistent disk stores user accounts and notes. The local database is
-not uploaded or migrated; create accounts again on the deployed site.
-See [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the deployment checklist.
+Free hosting has resource and outbound-network restrictions. Confirm that
+your PythonAnywhere account can reach Gmail SMTP before relying on password
+reset emails; the login and notes app can work even if email delivery is
+unavailable.
+
+## Optional paid Render hosting
+
+[`render.yaml`](./render.yaml) remains available for a Render deployment. Its
+Starter web service and persistent disk may incur charges. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for setup guidance.
 
 ## Project files
 
