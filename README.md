@@ -38,31 +38,29 @@ use or commit your regular Google password. Restart the app after setting
 environment variables. For a public deployment, configure
 `PUBLIC_BASE_URL` to the HTTPS site URL.
 
-## Free hosting on PythonAnywhere
+## Free hosting with Render and Supabase
 
-PythonAnywhere can host the Flask app on a free account at a
-`<username>.pythonanywhere.com` address. Follow the
-[`DEPLOYMENT.md`](./DEPLOYMENT.md) checklist to clone this repository, create a
-virtualenv, and configure the WSGI app.
+Use Render's free web service to run Flask and Supabase's free PostgreSQL
+database to store accounts, reset tokens, and notes. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for setup steps.
 
-The SQLite database is stored under your PythonAnywhere home directory, not
-in GitHub. Create a new account on the hosted site; local users and notes are
-not uploaded.
+Render free services can sleep while idle, and Supabase free projects may
+pause when inactive. Review both providers' current free-tier limits and
+backup policies before relying on the service for important data.
 
-Free hosting has resource and outbound-network restrictions. Confirm that
-your PythonAnywhere account can reach Gmail SMTP before relying on password
-reset emails; the login and notes app can work even if email delivery is
-unavailable.
+The app keeps its existing Flask authentication and reset flow; Supabase is
+used as the database, not as the authentication provider. Configure Gmail
+App Password settings in Render if you want reset emails.
 
-## Optional paid Render hosting
+## Local database
 
-[`render.yaml`](./render.yaml) remains available for a Render deployment. Its
-Starter web service and persistent disk may incur charges. See
-[`DEPLOYMENT.md`](./DEPLOYMENT.md) for setup guidance.
+When `DATABASE_URL` is not set, the app uses a local SQLite database named
+`vault_secure.db`. That local file is excluded from Git and is not migrated
+to Supabase; create accounts again on the hosted app.
 
 ## Project files
 
 - `app.py` — Flask routes, database, templates, and application setup
 - `wsgi.py` — production startup entry point
-- `render.yaml` — Render service and persistent disk configuration
+- `render.yaml` — Render free web service configuration
 - `requirements.txt` — Python dependencies

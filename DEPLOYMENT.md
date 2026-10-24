@@ -1,101 +1,46 @@
-# Hosting NovaVault
+# Free hosting: Render + Supabase
 
-## Free option: PythonAnywhere
+Render runs the Flask app; Supabase provides the PostgreSQL database. The
+Render free web service can sleep when idle, and Supabase's free project has
+usage limits and may pause when inactive. Check both providers' current
+limits before using this for important data. GitHub Pages is only a static
+landing page; it cannot run the Flask login.
 
-PythonAnywhere's free plan can host a small Flask app, with resource, feature,
-and outbound-network limits. The public app URL will use your PythonAnywhere username:
-`https://YOUR_USERNAME.pythonanywhere.com/`.
+## 1. Create the Supabase database
 
-### 1. Create your account and clone the app
+1. Create a project at [Supabase](https://supabase.com/dashboard).
+2. Save the database password privately when creating the project.
+3. In the project dashboard, open **Connect** and select the **Session pooler**
+   connection string for Python/IPv4 deployments.
+4. Copy the full PostgreSQL URI. Keep it private; it contains the database
+   password. Do not paste it into GitHub or chat.
 
-Create a free account at [PythonAnywhere](https://www.pythonanywhere.com/),
-then open a **Bash console** from its dashboard and run:
+The app creates its tables on startup. No manual SQL migration is required.
 
-```bash
-git clone https://github.com/mengkhong2306-star/login.git
-cd ~/login
-mkvirtualenv --python=/usr/bin/python3.13 novavault-env
-pip install -r requirements.txt
-python -c "import secrets; print(secrets.token_hex(32))"
-```
+## 2. Deploy the GitHub repository to Render
 
-Keep the secret printed by the last command private. Do not put it in GitHub.
+1. Open the [Render Blueprint deploy link](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fmengkhong2306-star%2Flogin)
+   and sign in with GitHub.
+2. Select the `login` repository and `main` branch.
+3. Review the `novavault` service. The Blueprint uses Render's `free` web
+   service plan and does not create a paid disk.
+4. Set the requested `DATABASE_URL` to the Supabase Session pooler URI.
+5. Render generates `FLASK_SECRET_KEY`. Keep it generated and private.
+6. Optionally set `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` in the Render
+   environment to enable password-reset email. Use a Google App Password,
+   never your normal Google password.
+7. Confirm the Blueprint and wait for the deployment health check to pass.
+   Open the `onrender.com` URL shown by Render.
 
-### 2. Create the Flask web app
+The app's existing Flask login and password-reset token flow stays in place;
+Supabase is the database only. Render's `RENDER_EXTERNAL_URL` is used to
+build reset links, and secure cookies are enabled by the Blueprint.
 
-In the PythonAnywhere **Web** tab:
+## 3. Verify the hosted app
 
-1. Choose **Add a new web app**.
-2. Select **Manual configuration** and Python 3.13 (or the same version used
-   for the virtualenv).
-3. In the **Virtualenv** section, set
-   `/home/YOUR_USERNAME/.virtualenvs/novavault-env`.
-4. Open the WSGI configuration file linked on that page. Replace its contents
-   with the following, substituting your PythonAnywhere username and the
-   secret generated above:
+Open `/health` on the Render URL, register a new account, add a note, and
+check that the note remains after a page reload. Local SQLite accounts and
+notes are not copied to Supabase; create new accounts on the hosted site.
 
-```python
-import os
-import sys
-
-project_home = "/home/YOUR_USERNAME/login"
-if project_home not in sys.path:
-    sys.path.insert(0, project_home)
-
-os.environ["FLASK_SECRET_KEY"] = "PASTE_YOUR_PRIVATE_RANDOM_SECRET_HERE"
-os.environ["SESSION_COOKIE_SECURE"] = "true"
-
-from wsgi import app as application
-```
-
-5. Save the WSGI file and click **Reload** on the Web tab.
-6. Open `https://YOUR_USERNAME.pythonanywhere.com/` and register an account.
-
-The SQLite database is created beside the app in your home directory and
-persists between web-app reloads. Do not delete it if you need to keep the
-accounts and notes. The local database on your PC is not uploaded.
-
-### 3. Password reset email limitation
-
-The app sends recovery email through Gmail SMTP. Free hosting accounts can
-have restricted outbound Internet access, so Gmail SMTP may be unavailable
-from the free plan. Do not assume password reset email works until you have
-tested it. If SMTP is blocked, the app's login and notes still work, but
-password recovery email will not send from that host; use a permitted email
-service or a host/account that allows outbound SMTP.
-
-If outbound Gmail SMTP is supported for your account, add these privately to
-the WSGI config before importing `wsgi`:
-
-```python
-os.environ["GMAIL_ADDRESS"] = "your-sender@gmail.com"
-os.environ["GMAIL_APP_PASSWORD"] = "your-google-app-password"
-```
-
-Use a Google App Password, not your normal Google password. Never commit
-these values to GitHub or share them in chat.
-
-### 4. Update the hosted app
-
-After pushing changes to GitHub, use a PythonAnywhere Bash console:
-
-```bash
-cd ~/login
-git pull
-```
-
-Then click **Reload** on the Web tab. The SQLite database is ignored by Git
-and is not overwritten by `git pull`.
-
-## Alternative: Render
-
-The repository also includes [`render.yaml`](./render.yaml) for Render. It
-configures a Starter web service and persistent disk, which may incur charges.
-Review Render's current pricing before creating those resources.
-
-## GitHub Pages is not the Flask login
-
-GitHub Pages only serves static files; it cannot execute Flask or provide the
-database-backed login. The GitHub Pages landing page links to hosting
-information. Use the PythonAnywhere app URL above for the actual login once
-the web app is configured.
+If Gmail settings are not configured, forgot-password requests cannot deliver
+email. Do not rely on recovery until you have tested actual email delivery.
