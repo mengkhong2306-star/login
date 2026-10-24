@@ -42,7 +42,7 @@
             background: radial-gradient(circle at top, color-mix(in srgb, var(--primary) 13%, transparent), transparent 45%), #edf3fa;
         }
         body[data-theme="dark"] { background-color: #111923; }
-        button, input, textarea { font: inherit; }
+        button, input, textarea, select { font: inherit; }
         button, .button {
             display: inline-flex;
             min-height: 46px;
@@ -104,7 +104,7 @@
         .intro { margin: 0 0 22px; }
         .field { display: grid; gap: 7px; margin: 15px 0; }
         label { font-weight: 650; }
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 13px 14px;
             border: 1px solid var(--border);
@@ -144,11 +144,24 @@
         .lab-feedback { min-height: 1.5em; margin: 12px 0 0; }
         .lab-feedback[data-kind="success"] { color: #16824b; }
         .lab-feedback[data-kind="error"] { color: var(--danger); }
+        .tool-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr); gap: 12px; margin: 16px 0; }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
+        .tool-card { display: grid; align-content: start; gap: 10px; min-width: 0; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
+        .tool-card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+        .tool-card h3 { margin: 0; font-size: 1.1rem; }
+        .tool-card p { margin: 0; color: inherit; }
+        .tool-category { padding: 4px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .8rem; }
+        .tool-command-label { margin-bottom: -7px; color: var(--muted); font-size: .82rem; font-weight: 650; }
+        .tool-command { display: block; overflow-wrap: anywhere; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: inherit; font-size: .84rem; }
+        .tool-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 4px; }
+        .tool-actions a { font-size: .9rem; }
+        .tool-empty { grid-column: 1 / -1; margin: 0; padding: 18px; border: 1px dashed var(--border); border-radius: 14px; text-align: center; }
         @media (max-width: 520px) {
             body { padding: 12px; }
             header { margin-bottom: 12px; }
             .card { border-radius: 20px; }
             .dashboard-head { align-items: flex-start; }
+            .tool-filters { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -291,6 +304,25 @@
                             <tbody id="admin-users"></tbody>
                         </table>
                     </div>
+                </section>
+
+                <section class="note" style="margin-top:24px" aria-labelledby="tool-library-title">
+                    <h2 id="tool-library-title">Kali tool library</h2>
+                    <p class="intro">A starter directory with original summaries, install commands, safe local or offline examples, and links to official Kali documentation. Commands are examples only; this website does not run Kali tools.</p>
+                    <div class="tool-filters">
+                        <div class="field">
+                            <label for="tool-search">Search tools</label>
+                            <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
+                        </div>
+                        <div class="field">
+                            <label for="tool-category">Filter by category</label>
+                            <select id="tool-category">
+                                <option value="">All categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p id="tool-count" aria-live="polite"></p>
+                    <div id="tool-cards" class="tool-grid"></div>
                 </section>
 
                 <section class="note" style="margin-top:24px">

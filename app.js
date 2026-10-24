@@ -1,4 +1,5 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { toolCatalog } from "./tool-catalog.js";
 
 const SUPABASE_URL = "https://ddkqqauzhzeqnrvjguxh.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRka3FxYXV6aHplcW5ydmpndXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzOTAsImV4cCI6MjEwODM4NTM5MH0.chVjshiDlQRDoEIdCvTLNCIvPStxKw-7EDEU8LmdYFQ";
@@ -339,6 +340,107 @@ document.querySelectorAll(".lab-question").forEach((question) => {
         });
     });
 });
+
+const toolSearch = document.querySelector("#tool-search");
+const toolCategory = document.querySelector("#tool-category");
+const toolCards = document.querySelector("#tool-cards");
+const toolCount = document.querySelector("#tool-count");
+
+for (const category of [...new Set(toolCatalog.map((tool) => tool.category))].sort()) {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    toolCategory.append(option);
+}
+
+function renderToolCatalog() {
+    const query = toolSearch.value.trim().toLowerCase();
+    const category = toolCategory.value;
+    const filteredTools = toolCatalog.filter((tool) => {
+        const matchesCategory = !category || tool.category === category;
+        const searchableText = `${tool.name} ${tool.category} ${tool.summary} ${tool.packageName}`.toLowerCase();
+        return matchesCategory && searchableText.includes(query);
+    });
+
+    toolCards.replaceChildren();
+    toolCount.textContent = `${filteredTools.length} ${filteredTools.length === 1 ? "tool" : "tools"}`;
+
+    if (!filteredTools.length) {
+        const empty = document.createElement("p");
+        empty.className = "tool-empty";
+        empty.textContent = "No tools match your search. Try another name or category.";
+        toolCards.append(empty);
+        return;
+    }
+
+    for (const tool of filteredTools) {
+        const article = document.createElement("article");
+        article.className = "tool-card";
+
+        const heading = document.createElement("div");
+        heading.className = "tool-card-heading";
+        const title = document.createElement("h3");
+        title.textContent = tool.name;
+        const categoryLabel = document.createElement("span");
+        categoryLabel.className = "tool-category";
+        categoryLabel.textContent = tool.category;
+        heading.append(title, categoryLabel);
+
+        const summary = document.createElement("p");
+        summary.textContent = tool.summary;
+
+        const installLabel = document.createElement("span");
+        installLabel.className = "tool-command-label";
+        installLabel.textContent = "Install on Kali Linux";
+        const installCommand = document.createElement("code");
+        installCommand.className = "tool-command";
+        installCommand.textContent = `sudo apt install ${tool.packageName}`;
+
+        const exampleLabel = document.createElement("span");
+        exampleLabel.className = "tool-command-label";
+        exampleLabel.textContent = tool.commandLabel;
+        const exampleCommand = document.createElement("code");
+        exampleCommand.className = "tool-command";
+        exampleCommand.textContent = tool.command;
+
+        const actions = document.createElement("div");
+        actions.className = "tool-actions";
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "secondary small-button";
+        copyButton.textContent = "Copy example";
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(tool.command);
+                showStatus(`${tool.name} example copied.`);
+            } catch (error) {
+                console.error("Could not copy tool example:", error);
+                showStatus("Could not copy the command. Select and copy it instead.", "error");
+            }
+        });
+
+        const officialLink = document.createElement("a");
+        officialLink.href = tool.kaliUrl;
+        officialLink.target = "_blank";
+        officialLink.rel = "noopener noreferrer";
+        officialLink.textContent = "Kali documentation";
+        actions.append(copyButton, officialLink);
+        article.append(
+            heading,
+            summary,
+            installLabel,
+            installCommand,
+            exampleLabel,
+            exampleCommand,
+            actions,
+        );
+        toolCards.append(article);
+    }
+}
+
+toolSearch.addEventListener("input", renderToolCatalog);
+toolCategory.addEventListener("change", renderToolCatalog);
+renderToolCatalog();
 
 const themeToggle = document.querySelector("#theme-toggle");
 function setTheme(theme) {

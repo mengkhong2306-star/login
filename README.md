@@ -12,6 +12,7 @@ is no Flask server to run.
 - Change your username
 - Admin-only account invitations, removal, and sign-in activity
 - Safe, fictional defensive-security exercises
+- Searchable starter library of Kali tools with safe local/offline examples
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
 
@@ -30,6 +31,11 @@ Supabase `service_role` or `sb_secret_` key in browser code or GitHub.
 Admin account management is performed by an Edge Function that verifies
 admin membership server-side. Account removal is permanent and deletes that
 account's notes.
+
+The tool library is a small, original reference catalog in `tool-catalog.js`.
+It links to official Kali documentation and displays commands as text only;
+the website does not execute shell commands. Examples are limited to local
+audits, localhost, file integrity checks, and offline packet captures.
 
 ## Data migration
 
