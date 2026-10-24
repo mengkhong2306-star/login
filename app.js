@@ -370,13 +370,116 @@ const toolLanguage = document.querySelector("#tool-language");
 const toolLibraryHome = document.querySelector("#tool-library-home");
 const toolDetail = document.querySelector("#tool-detail");
 const toolImageDirectory = "./image/Kali%20Tools%20_%20Kali%20Linux%20Tools/";
+const toolPurposeSummaries = {
+    en: {
+        "network-protocol": "Checks or analyzes network protocols and connected devices for troubleshooting and authorized inventory.",
+        "network-traffic": "Captures or reviews network traffic to support troubleshooting and defensive monitoring.",
+        "digital-forensics": "Helps examine digital evidence, file systems, or storage media during an authorized investigation.",
+        "malware-analysis": "Supports defensive identification and analysis of suspicious files or system indicators.",
+        "wireless-security": "Helps review wireless technologies and configurations in an authorized security assessment.",
+        "credential-audit": "Supports authorized assessment of passwords, credential artifacts, or authentication controls.",
+        "web-security": "Helps assess websites and web applications for security issues in an authorized test environment.",
+        "domain-intelligence": "Collects or analyzes domain and DNS information for authorized asset inventory and research.",
+        "network-inventory": "Helps discover and document approved hosts, services, or network assets.",
+        "software-testing": "Tests software behavior and robustness in a controlled development or security-testing environment.",
+        "reverse-engineering": "Helps inspect software, binaries, or applications to understand their structure and behavior.",
+        "remote-access": "Supports administration or security review of remote-access services you are authorized to manage.",
+        "data-recovery": "Helps recover or inspect data from files and storage media during authorized maintenance or investigations.",
+        "security-platform": "Provides a platform for organizing, tracking, or reporting authorized security assessments.",
+        "development-tools": "Supports software development, debugging, or the preparation of controlled test materials.",
+        "system-audit": "Audits local systems or configurations to help identify security-hardening opportunities.",
+        "osint-research": "Organizes publicly available information for documented, authorized security research.",
+        "service-control": "Manages a supporting security or training service in an environment you administer.",
+        "identity-mapping": "Helps visualize identity and access relationships for authorized security reviews.",
+        "controlled-simulation": "Supports controlled security research and validation of defensive controls in an isolated, authorized lab.",
+        "credential-strength": "Helps teams evaluate password-policy strength using authorized, controlled test data.",
+        "crypto-tools": "Supports analysis or use of encryption and cryptographic data for authorized security work.",
+        "network-file-service": "Supports inspection or administration of network file-sharing services you are authorized to manage.",
+        "cloud-identity": "Helps inventory cloud identity relationships in an account you are authorized to review.",
+        "wireless-radio": "Supports configuration and analysis of radio or wireless communications equipment.",
+        "vulnerability-assessment": "Helps identify and document potential security weaknesses during an authorized assessment.",
+        "secure-communications": "Provides secure communication or tunneling capabilities for approved administration and testing.",
+        "privacy": "Supports privacy, anonymity, or data-protection tasks in a controlled and lawful setting.",
+        "category-reconnaissance": "Helps map approved assets and gather information for inventory and exposure review.",
+        "category-resource-development": "Helps create, inspect, or test software and research artifacts.",
+        "category-initial-access": "Helps security teams study entry-point protections in an authorized test environment.",
+        "category-execution": "Supports controlled software-execution testing and defensive validation.",
+        "category-persistence": "Supports defensive study of persistence risks and controls in isolated test environments.",
+        "category-privilege-escalation": "Helps audit privilege boundaries on systems you are authorized to assess.",
+        "category-defense-evasion": "Helps defenders assess detection coverage in a controlled test environment.",
+        "category-credential-access": "Supports authorized review of credential and authentication security.",
+        "category-discovery": "Helps find and catalog approved systems, services, or configuration data.",
+        "category-lateral-movement": "Supports defensive study of internal access controls in an authorized lab.",
+        "category-collection": "Helps collect or organize authorized data for investigation and defensive review.",
+        "category-command-and-control": "Supports controlled research into command-channel risks and defensive detection.",
+        "category-exfiltration": "Helps assess data-loss controls using synthetic data in an isolated lab.",
+        "category-impact": "Helps model availability or integrity risks safely in an isolated test environment.",
+        "category-forensics": "Helps examine digital evidence and storage media during authorized investigations.",
+        "category-services-and-other-tools": "Provides supporting lab, documentation, or security-management functions.",
+    },
+    km: {
+        "network-protocol": "ពិនិត្យពិធីការបណ្ដាញ និងឧបករណ៍ដែលបានភ្ជាប់ សម្រាប់ដោះស្រាយបញ្ហា និងរៀបចំបញ្ជីដោយមានការអនុញ្ញាត។",
+        "network-traffic": "ចាប់យក ឬពិនិត្យចរាចរណ៍បណ្ដាញ ដើម្បីដោះស្រាយបញ្ហា និងតាមដានការការពារ។",
+        "digital-forensics": "ជួយពិនិត្យភស្តុតាងឌីជីថល ប្រព័ន្ធឯកសារ ឬឧបករណ៍ផ្ទុក ក្នុងការស៊ើបអង្កេតដែលមានការអនុញ្ញាត។",
+        "malware-analysis": "ជួយកំណត់អត្តសញ្ញាណ និងវិភាគឯកសារគួរឱ្យសង្ស័យ ឬសញ្ញាប្រព័ន្ធ សម្រាប់ការពារ។",
+        "wireless-security": "ជួយពិនិត្យបច្ចេកវិទ្យា និងការកំណត់រចនាសម្ព័ន្ធឥតខ្សែ ក្នុងការវាយតម្លៃសុវត្ថិភាពដែលមានការអនុញ្ញាត។",
+        "credential-audit": "ជួយវាយតម្លៃពាក្យសម្ងាត់ ព័ត៌មានសម្គាល់ ឬការគ្រប់គ្រងការផ្ទៀងផ្ទាត់ ក្នុងការធ្វើតេស្តដែលមានការអនុញ្ញាត។",
+        "web-security": "ជួយវាយតម្លៃគេហទំព័រ និងកម្មវិធីបណ្ដាញ ក្នុងបរិស្ថានធ្វើតេស្តដែលមានការអនុញ្ញាត។",
+        "domain-intelligence": "ប្រមូល ឬវិភាគព័ត៌មាន domain និង DNS សម្រាប់រៀបចំបញ្ជីទ្រព្យសម្បត្តិដែលមានការអនុញ្ញាត។",
+        "network-inventory": "ជួយស្វែងរក និងកត់ត្រាម៉ាស៊ីន សេវាកម្ម ឬទ្រព្យសម្បត្តិបណ្ដាញដែលបានអនុញ្ញាត។",
+        "software-testing": "ធ្វើតេស្តឥរិយាបថ និងភាពរឹងមាំរបស់កម្មវិធី ក្នុងបរិស្ថានអភិវឌ្ឍន៍ ឬសុវត្ថិភាពដែលបានគ្រប់គ្រង។",
+        "reverse-engineering": "ជួយពិនិត្យកម្មវិធី ឯកសារប្រតិបត្តិ ឬកម្មវិធីផ្សេងៗ ដើម្បីយល់ពីរចនាសម្ព័ន្ធ និងឥរិយាបថ។",
+        "remote-access": "ជួយគ្រប់គ្រង ឬពិនិត្យសេវាចូលប្រើពីចម្ងាយដែលអ្នកមានសិទ្ធិគ្រប់គ្រង។",
+        "data-recovery": "ជួយស្ដារ ឬពិនិត្យទិន្នន័យពីឯកសារ និងឧបករណ៍ផ្ទុក សម្រាប់ការថែទាំ ឬស៊ើបអង្កេតដែលមានការអនុញ្ញាត។",
+        "security-platform": "ផ្ដល់វេទិកាសម្រាប់រៀបចំ តាមដាន ឬរាយការណ៍ការវាយតម្លៃសុវត្ថិភាពដែលមានការអនុញ្ញាត។",
+        "development-tools": "ជួយអភិវឌ្ឍកម្មវិធី ដោះស្រាយបញ្ហាកូដ ឬរៀបចំសម្ភារៈធ្វើតេស្តដែលបានគ្រប់គ្រង។",
+        "system-audit": "ធ្វើសវនកម្មប្រព័ន្ធ ឬការកំណត់រចនាសម្ព័ន្ធ ដើម្បីស្វែងរកចំណុចពង្រឹងសុវត្ថិភាព។",
+        "osint-research": "រៀបចំព័ត៌មានសាធារណៈសម្រាប់ការស្រាវជ្រាវសុវត្ថិភាពដែលមានឯកសារ និងការអនុញ្ញាត។",
+        "service-control": "គ្រប់គ្រងសេវាគាំទ្រផ្នែកសុវត្ថិភាព ឬការបណ្ដុះបណ្ដាល ក្នុងបរិស្ថានដែលអ្នកគ្រប់គ្រង។",
+        "identity-mapping": "ជួយបង្ហាញទំនាក់ទំនងអត្តសញ្ញាណ និងសិទ្ធិចូលប្រើ សម្រាប់ការពិនិត្យដែលមានការអនុញ្ញាត។",
+        "controlled-simulation": "ជួយស្រាវជ្រាវសុវត្ថិភាព និងផ្ទៀងផ្ទាត់វិធានការការពារ ក្នុងមន្ទីរពិសោធន៍ដាច់ដោយឡែកដែលមានការអនុញ្ញាត។",
+        "credential-strength": "ជួយវាយតម្លៃភាពរឹងមាំនៃគោលការណ៍ពាក្យសម្ងាត់ ដោយប្រើទិន្នន័យធ្វើតេស្តដែលបានអនុញ្ញាត។",
+        "crypto-tools": "ជួយវិភាគ ឬប្រើទិន្នន័យគ្រីបតូ សម្រាប់ការងារសុវត្ថិភាពដែលមានការអនុញ្ញាត។",
+        "network-file-service": "ជួយពិនិត្យ ឬគ្រប់គ្រងសេវាចែករំលែកឯកសារបណ្ដាញដែលអ្នកមានសិទ្ធិគ្រប់គ្រង។",
+        "cloud-identity": "ជួយរៀបចំបញ្ជីទំនាក់ទំនងអត្តសញ្ញាណ cloud ក្នុងគណនីដែលអ្នកមានសិទ្ធិពិនិត្យ។",
+        "wireless-radio": "ជួយកំណត់រចនាសម្ព័ន្ធ និងវិភាគឧបករណ៍ទំនាក់ទំនងវិទ្យុ ឬឥតខ្សែ។",
+        "vulnerability-assessment": "ជួយស្វែងរក និងកត់ត្រាចំណុចខ្សោយសុវត្ថិភាព ក្នុងការវាយតម្លៃដែលមានការអនុញ្ញាត។",
+        "secure-communications": "ផ្ដល់មុខងារទំនាក់ទំនង ឬផ្លូវរូងសុវត្ថិភាព សម្រាប់ការគ្រប់គ្រង និងធ្វើតេស្តដែលបានអនុម័ត។",
+        "privacy": "ជួយការងារឯកជនភាព ភាពអនាមិក ឬការការពារទិន្នន័យ ក្នុងបរិស្ថានដែលស្របច្បាប់។",
+        "category-reconnaissance": "ជួយគូសផែនទីទ្រព្យសម្បត្តិដែលបានអនុញ្ញាត និងប្រមូលព័ត៌មានសម្រាប់ពិនិត្យការបង្ហាញហានិភ័យ។",
+        "category-resource-development": "ជួយបង្កើត ពិនិត្យ ឬធ្វើតេស្តកម្មវិធី និងសម្ភារៈស្រាវជ្រាវ។",
+        "category-initial-access": "ជួយក្រុមសុវត្ថិភាពសិក្សាការការពារចំណុចចូល ក្នុងបរិស្ថានធ្វើតេស្តដែលមានការអនុញ្ញាត។",
+        "category-execution": "ជួយធ្វើតេស្តការប្រតិបត្តិកម្មវិធី និងការការពារ ក្នុងបរិស្ថានដែលបានគ្រប់គ្រង។",
+        "category-persistence": "ជួយសិក្សាហានិភ័យ និងវិធានការការពារការបន្តសកម្មភាព ក្នុងបរិស្ថានសាកល្បងដាច់ដោយឡែក។",
+        "category-privilege-escalation": "ជួយធ្វើសវនកម្មព្រំដែនសិទ្ធិលើប្រព័ន្ធដែលអ្នកមានសិទ្ធិពិនិត្យ។",
+        "category-defense-evasion": "ជួយអ្នកការពារវាយតម្លៃការគ្របដណ្ដប់នៃការរកឃើញ ក្នុងបរិស្ថានធ្វើតេស្តដែលបានគ្រប់គ្រង។",
+        "category-credential-access": "ជួយពិនិត្យសុវត្ថិភាពព័ត៌មានសម្គាល់ និងការផ្ទៀងផ្ទាត់ ដោយមានការអនុញ្ញាត។",
+        "category-discovery": "ជួយស្វែងរក និងកត់ត្រាប្រព័ន្ធ សេវាកម្ម ឬទិន្នន័យការកំណត់រចនាសម្ព័ន្ធដែលបានអនុញ្ញាត។",
+        "category-lateral-movement": "ជួយសិក្សាវិធានការគ្រប់គ្រងការចូលប្រើខាងក្នុង ក្នុងមន្ទីរពិសោធន៍ដែលមានការអនុញ្ញាត។",
+        "category-collection": "ជួយប្រមូល ឬរៀបចំទិន្នន័យដែលមានការអនុញ្ញាត សម្រាប់ស៊ើបអង្កេត និងពិនិត្យការការពារ។",
+        "category-command-and-control": "ជួយស្រាវជ្រាវហានិភ័យបណ្ដាញបញ្ជា និងការរកឃើញការការពារ ក្នុងបរិស្ថានសាកល្បង។",
+        "category-exfiltration": "ជួយវាយតម្លៃការគ្រប់គ្រងការបាត់បង់ទិន្នន័យ ដោយប្រើទិន្នន័យសិប្បនិម្មិតក្នុងមន្ទីរពិសោធន៍។",
+        "category-impact": "ជួយសិក្សាហានិភ័យលើភាពអាចប្រើបាន និងភាពត្រឹមត្រូវ ក្នុងបរិស្ថានសាកល្បងដាច់ដោយឡែក។",
+        "category-forensics": "ជួយពិនិត្យភស្តុតាងឌីជីថល និងឧបករណ៍ផ្ទុក ក្នុងការស៊ើបអង្កេតដែលមានការអនុញ្ញាត។",
+        "category-services-and-other-tools": "ផ្ដល់មុខងារគាំទ្រមន្ទីរពិសោធន៍ ឯកសារ ឬការគ្រប់គ្រងសុវត្ថិភាព។",
+    },
+};
 const normalizeToolImageKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 const toolCatalog = toolIndex.map((tool) => {
     const profile = safeToolProfiles[normalizeToolImageKey(tool.name)];
     const imageFile = toolImageFiles[normalizeToolImageKey(tool.name)]
         || toolImageFiles[normalizeToolImageKey(tool.slug)]
         || toolImageFiles.toolsiconmissing;
-    return { ...tool, ...profile, imageFile };
+    const purposeKey = tool.purposeKey || `category-${tool.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    return {
+        ...tool,
+        ...profile,
+        packageName: profile?.packageName || tool.slug,
+        kaliUrl: profile?.kaliUrl || `https://www.kali.org/tools/${encodeURIComponent(tool.slug)}/`,
+        summary: profile?.summary || toolPurposeSummaries.en[purposeKey],
+        summaryKm: profile?.summaryKm || toolPurposeSummaries.km[purposeKey],
+        imageFile,
+    };
 });
 const toolCopyFeedback = {
     en: (name) => `${name} example copied.`,
@@ -386,7 +489,7 @@ const toolTranslations = {
     en: {
         title: "Kali tool library",
         language: "Language",
-        description: "Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.",
+        description: "Browse 501 Kali tools with short purpose summaries, categories, and official documentation links. Selected tools also include safe local or offline demos.",
         source: "Open the official Kali tools index",
         artworkNote: "Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.",
         search: "Search tools",
@@ -397,13 +500,13 @@ const toolTranslations = {
         copyExample: "Copy example",
         copiedFallback: "Could not copy the command. Select and copy it instead.",
         official: "Kali documentation",
-        viewProfile: "View profile",
+        viewProfile: "View details",
         count: (number) => `${number} ${number === 1 ? "tool" : "tools"}`,
         noResults: "No tools match your search. Try another name or category.",
         back: "Back to tool library",
         tabsLabel: "Tool profile sections",
         profileTabs: ["Overview", "Safe example", "Package & links"],
-        profileSummary: "About this tool",
+        profileSummary: "What this tool is used for",
         profileUse: "Typical defensive use",
         usePermission: "Only run tools on systems and data you own or are explicitly authorized to assess. Commands are examples only; this website never executes them.",
         exampleTitle: "Example command",
@@ -415,7 +518,7 @@ const toolTranslations = {
     km: {
         title: "បណ្ណាល័យឧបករណ៍ Kali",
         language: "ភាសា",
-        description: "រកមើលឈ្មោះឧបករណ៍ Kali និងប្រភេទឧបករណ៍។ ឧបករណ៍ការពារដែលបានជ្រើសរើសមានព័ត៌មាន និងឧទាហរណ៍ក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ។ ឧបករណ៍ផ្សេងទៀតមានតំណទៅឯកសារផ្លូវការ។",
+        description: "រកមើលឧបករណ៍ Kali ចំនួន ៥០១ ជាមួយសេចក្ដីសង្ខេបពីគោលបំណង ប្រភេទ និងតំណទៅឯកសារផ្លូវការ។ ឧបករណ៍មួយចំនួនមានឧទាហរណ៍សុវត្ថិភាពក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ។",
         source: "បើកបញ្ជីឧបករណ៍ផ្លូវការរបស់ Kali",
         artworkNote: "រូបតំណាងឧបករណ៍ប្រើសម្រាប់កំណត់អត្តសញ្ញាណ និងមានតំណទៅឯកសារ Kali។ NiNJa GO ជាគម្រោងឯករាជ្យ និងមិនមានទំនាក់ទំនងជាមួយ Kali Linux ទេ។",
         search: "ស្វែងរកឧបករណ៍",
@@ -426,13 +529,13 @@ const toolTranslations = {
         copyExample: "ចម្លងឧទាហរណ៍",
         copiedFallback: "មិនអាចចម្លងពាក្យបញ្ជាបានទេ។ សូមជ្រើសរើស ហើយចម្លងវាដោយដៃ។",
         official: "ឯកសារ Kali",
-        viewProfile: "មើលព័ត៌មានឧបករណ៍",
+        viewProfile: "មើលព័ត៌មាន",
         count: (number) => `ឧបករណ៍ ${number}`,
         noResults: "រកមិនឃើញឧបករណ៍ដែលត្រូវនឹងការស្វែងរកទេ។ សូមសាកល្បងឈ្មោះ ឬប្រភេទផ្សេង។",
         back: "ត្រឡប់ទៅបណ្ណាល័យឧបករណ៍",
         tabsLabel: "ផ្នែកព័ត៌មានឧបករណ៍",
         profileTabs: ["ទិដ្ឋភាពទូទៅ", "ឧទាហរណ៍សុវត្ថិភាព", "កញ្ចប់ និងតំណ"],
-        profileSummary: "អំពីឧបករណ៍នេះ",
+        profileSummary: "ការប្រើប្រាស់ឧបករណ៍នេះ",
         profileUse: "ការប្រើប្រាស់ផ្នែកការពារទូទៅ",
         usePermission: "ដំណើរការឧបករណ៍តែលើប្រព័ន្ធ និងទិន្នន័យដែលជាកម្មសិទ្ធិរបស់អ្នក ឬដែលអ្នកមានការអនុញ្ញាតច្បាស់លាស់ឱ្យវាយតម្លៃប៉ុណ្ណោះ។ ពាក្យបញ្ជាគ្រាន់តែជាឧទាហរណ៍ គេហទំព័រនេះមិនដំណើរការពាក្យបញ្ជាទេ។",
         exampleTitle: "ពាក្យបញ្ជាឧទាហរណ៍",
@@ -648,14 +751,12 @@ function renderToolCatalog() {
             officialLink.rel = "noopener noreferrer";
             officialLink.textContent = tool.name;
             item.append(icon, officialLink);
-            if (tool.summary) {
-                const profileButton = document.createElement("button");
-                profileButton.type = "button";
-                profileButton.className = "tool-profile-link";
-                profileButton.textContent = text.viewProfile;
-                profileButton.addEventListener("click", () => openToolProfile(tool));
-                item.append(profileButton);
-            }
+            const profileButton = document.createElement("button");
+            profileButton.type = "button";
+            profileButton.className = "tool-profile-link";
+            profileButton.textContent = text.viewProfile;
+            profileButton.addEventListener("click", () => openToolProfile(tool));
+            item.append(profileButton);
             list.append(item);
         }
 
@@ -760,7 +861,12 @@ function renderToolProfile(tool) {
     tabs.setAttribute("role", "tablist");
     tabs.setAttribute("aria-label", text.tabsLabel);
     const panels = [];
-    const tabNames = ["overview", "example", "package"];
+    const tabNames = tool.command
+        ? ["overview", "example", "package"]
+        : ["overview", "package"];
+    const tabLabels = tool.command
+        ? text.profileTabs
+        : [text.profileTabs[0], text.profileTabs[2]];
     for (let index = 0; index < tabNames.length; index += 1) {
         const tabName = tabNames[index];
         const tab = document.createElement("button");
@@ -774,7 +880,7 @@ function renderToolProfile(tool) {
         tab.setAttribute("aria-controls", panelId);
         tab.setAttribute("aria-selected", index === 0 ? "true" : "false");
         tab.tabIndex = index === 0 ? 0 : -1;
-        tab.textContent = text.profileTabs[index];
+        tab.textContent = tabLabels[index];
         panel.id = panelId;
         panel.className = "tool-profile-panel";
         panel.setAttribute("role", "tabpanel");
@@ -809,36 +915,40 @@ function renderToolProfile(tool) {
         text.profileSummary,
         toolPageLanguage === "km" ? tool.summaryKm : tool.summary,
     );
-    appendDetailBlock(
-        overview,
-        text.profileUse,
-        toolPageLanguage === "km" ? tool.commandDescriptionKm : tool.commandDescription,
-    );
+    const useDescription = toolPageLanguage === "km"
+        ? tool.commandDescriptionKm || tool.commandDescription
+        : tool.commandDescription;
+    if (useDescription) {
+        appendDetailBlock(overview, text.profileUse, useDescription);
+    }
     const authorizationNote = document.createElement("p");
     authorizationNote.className = "status";
     authorizationNote.textContent = text.usePermission;
     overview.append(authorizationNote);
 
-    const example = panels[1];
-    appendDetailBlock(example, text.exampleTitle, "");
-    const toolExamples = tool.examples || [{
-        command: tool.command,
-        label: toolPageLanguage === "km" ? tool.commandLabelKm : tool.commandLabel,
-        description: toolPageLanguage === "km" ? tool.commandDescriptionKm : tool.commandDescription,
-    }];
-    for (const exampleItem of toolExamples) {
-        addCopyableCommand(
-            example,
-            tool,
-            exampleItem.command,
-            toolPageLanguage === "km" ? exampleItem.labelKm || exampleItem.label : exampleItem.label,
-            toolPageLanguage === "km"
-                ? exampleItem.descriptionKm || exampleItem.description
-                : exampleItem.description,
-        );
+    const exampleIndex = tabNames.indexOf("example");
+    if (exampleIndex !== -1) {
+        const example = panels[exampleIndex];
+        appendDetailBlock(example, text.exampleTitle, "");
+        const toolExamples = tool.examples || [{
+            command: tool.command,
+            label: toolPageLanguage === "km" ? tool.commandLabelKm : tool.commandLabel,
+            description: toolPageLanguage === "km" ? tool.commandDescriptionKm : tool.commandDescription,
+        }];
+        for (const exampleItem of toolExamples) {
+            addCopyableCommand(
+                example,
+                tool,
+                exampleItem.command,
+                toolPageLanguage === "km" ? exampleItem.labelKm || exampleItem.label : exampleItem.label,
+                toolPageLanguage === "km"
+                    ? exampleItem.descriptionKm || exampleItem.description
+                    : exampleItem.description,
+            );
+        }
     }
 
-    const packageInfo = panels[2];
+    const packageInfo = panels[tabNames.indexOf("package")];
     appendDetailBlock(packageInfo, text.profileInstallTitle, "");
     const installCommand = document.createElement("code");
     installCommand.className = "tool-command";

@@ -36,7 +36,9 @@ account's notes.
 The tool directory presents Kali tool names in compact, category-grouped
 cards. Its catalog was refreshed from the official Kali tools index on
 2026-10-24 and contains 501 unique tool names, package slugs, and categories;
-it does not bundle tool software or copy Kali descriptions. `tool-image-map.js`
+every entry has a concise, original high-level purpose summary and a details
+view; exact behavior links to the official Kali documentation. The directory
+does not bundle tool software or copy Kali descriptions. `tool-image-map.js`
 matches the SVG files supplied in `image/Kali Tools _ Kali Linux Tools` to
 tool names and categories; entries without a specific image use Kali's generic
 missing-icon asset. The supplied image directory is left unchanged.
