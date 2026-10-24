@@ -181,6 +181,11 @@
         .tool-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .tool-command-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; }
         .tool-related-list { display: grid; gap: 8px; margin: 0; padding-left: 20px; color: var(--muted); }
+        .tool-profile-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .tool-profile-tabs button[aria-selected="true"] { background: var(--primary); color: #fff; }
+        .tool-profile-panel { display: grid; gap: 16px; padding-top: 14px; }
+        .tool-profile-panel[hidden] { display: none !important; }
+        .tool-profile-panel h3 { margin-bottom: 0; }
         [lang="km"] { line-height: 1.8; }
         @media (max-width: 520px) {
             body { padding: 12px; }
