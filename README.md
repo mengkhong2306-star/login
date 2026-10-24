@@ -11,8 +11,7 @@ is no Flask server to run.
 - Add and delete private notes
 - Change your username
 - Admin-only account invitations, removal, and sign-in activity
-- Searchable starter library of Kali tools with safe local/offline examples
-- Tool profiles paraphrased from official Kali package pages, with easy Overview, Safe example, and Package & links tabs
+- Searchable directory of Kali tool names and categories with links to official documentation
 - Dashboard tabs for Notes, Kali tools, and Account
 - English and Khmer translations for the tool library, using Noto Sans Khmer
 - Responsive interface with light and dark themes
@@ -34,10 +33,19 @@ Admin account management is performed by an Edge Function that verifies
 admin membership server-side. Account removal is permanent and deletes that
 account's notes.
 
-The tool library is a small, original reference catalog in `tool-catalog.js`.
-It links to official Kali documentation and displays commands as text only;
-the website does not execute shell commands. Examples are limited to local
-audits, localhost, file integrity checks, and offline packet captures.
+The tool directory presents Kali tool names in compact, category-grouped
+cards and includes a snapshot of the public tool index. `tool-image-map.js`
+matches the SVG files supplied in `image/Kali Tools _ Kali Linux Tools` to
+tool names and categories; entries without a specific image use Kali's generic
+missing-icon asset. The supplied image directory is left unchanged.
+`tool-profiles.js` adds original summaries
+and local-only or offline example commands for a selected defensive set
+(Nmap on localhost, packet-capture review, local audits and scans, file hashes,
+and disk-image forensics). Other entries link to official Kali documentation
+without runnable examples. The directory does not execute commands or copy
+Kali's descriptions or page design. Tool artwork is used to identify links to
+the respective official documentation; MengKhong is independent and is not
+affiliated with Kali Linux.
 
 ## Data migration
 

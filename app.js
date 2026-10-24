@@ -1,5 +1,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-import { toolCatalog } from "./tool-catalog.js";
+import { toolIndex } from "./tool-index.js";
+import { safeToolProfiles } from "./tool-profiles.js";
+import { toolImageFiles } from "./tool-image-map.js";
 
 const SUPABASE_URL = "https://ddkqqauzhzeqnrvjguxh.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRka3FxYXV6aHplcW5ydmpndXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzOTAsImV4cCI6MjEwODM4NTM5MH0.chVjshiDlQRDoEIdCvTLNCIvPStxKw-7EDEU8LmdYFQ";
@@ -367,6 +369,15 @@ const toolCount = document.querySelector("#tool-count");
 const toolLanguage = document.querySelector("#tool-language");
 const toolLibraryHome = document.querySelector("#tool-library-home");
 const toolDetail = document.querySelector("#tool-detail");
+const toolImageDirectory = "./image/Kali%20Tools%20_%20Kali%20Linux%20Tools/";
+const normalizeToolImageKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+const toolCatalog = toolIndex.map((tool) => {
+    const profile = safeToolProfiles[normalizeToolImageKey(tool.name)];
+    const imageFile = toolImageFiles[normalizeToolImageKey(tool.name)]
+        || toolImageFiles[normalizeToolImageKey(tool.slug)]
+        || toolImageFiles.toolsiconmissing;
+    return { ...tool, ...profile, imageFile };
+});
 const toolCopyFeedback = {
     en: (name) => `${name} example copied.`,
     km: (name) => `បានចម្លងឧទាហរណ៍ ${name}។`,
@@ -375,9 +386,11 @@ const toolTranslations = {
     en: {
         title: "Kali tool library",
         language: "Language",
-        description: "Tool summaries paraphrased from official Kali package profiles, with install commands, safe local/offline examples, and direct source links. Commands are examples only; this site does not run tools.",
+        description: "Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.",
+        source: "Open the official Kali tools index",
+        artworkNote: "Tool artwork is shown for identification and links to its Kali documentation. MengKhong is an independent project and is not affiliated with Kali Linux.",
         search: "Search tools",
-        searchPlaceholder: "Search by name, package, or topic",
+        searchPlaceholder: "Search by tool name or category",
         category: "Filter by category",
         allCategories: "All categories",
         install: "Install on Kali Linux",
@@ -402,9 +415,11 @@ const toolTranslations = {
     km: {
         title: "បណ្ណាល័យឧបករណ៍ Kali",
         language: "ភាសា",
-        description: "សេចក្ដីសង្ខេបឧបករណ៍ដែលសរសេរឡើងវិញពីព័ត៌មានកញ្ចប់ផ្លូវការរបស់ Kali មានពាក្យបញ្ជាដំឡើង ឧទាហរណ៍សុវត្ថិភាពក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ និងតំណទៅប្រភពផ្លូវការ។ គេហទំព័រនេះមិនដំណើរការឧបករណ៍ទេ។",
+        description: "រកមើលឈ្មោះឧបករណ៍ Kali និងប្រភេទឧបករណ៍។ ឧបករណ៍ការពារដែលបានជ្រើសរើសមានព័ត៌មាន និងឧទាហរណ៍ក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ។ ឧបករណ៍ផ្សេងទៀតមានតំណទៅឯកសារផ្លូវការ។",
+        source: "បើកបញ្ជីឧបករណ៍ផ្លូវការរបស់ Kali",
+        artworkNote: "រូបតំណាងឧបករណ៍ប្រើសម្រាប់កំណត់អត្តសញ្ញាណ និងមានតំណទៅឯកសារ Kali។ MengKhong ជាគម្រោងឯករាជ្យ និងមិនមានទំនាក់ទំនងជាមួយ Kali Linux ទេ។",
         search: "ស្វែងរកឧបករណ៍",
-        searchPlaceholder: "ស្វែងរកតាមឈ្មោះ កញ្ចប់ ឬប្រធានបទ",
+        searchPlaceholder: "ស្វែងរកតាមឈ្មោះឧបករណ៍ ឬប្រភេទ",
         category: "ត្រងតាមប្រភេទ",
         allCategories: "គ្រប់ប្រភេទ",
         install: "ដំឡើងលើ Kali Linux",
@@ -464,11 +479,40 @@ const toolIconShapes = {
         { tag: "path", attrs: { d: "m35 42 8 8M23 25h8" } },
     ],
 };
+const toolCategoryIcons = {
+    "Reconnaissance": "nmap",
+    "Resource Development": "hash",
+    "Initial Access": "nmap",
+    "Execution": "audit",
+    "Persistence": "audit",
+    "Privilege Escalation": "shield",
+    "Defense Evasion": "shield",
+    "Credential Access": "hash",
+    "Discovery": "nmap",
+    "Lateral Movement": "traffic",
+    "Collection": "forensics",
+    "Command and Control": "traffic",
+    "Exfiltration": "traffic",
+    "Impact": "shield",
+    "Forensics": "forensics",
+    "Services and Other Tools": "audit",
+};
+const toolCategoryOrder = Object.keys(toolCategoryIcons);
 
-function createToolIcon(iconName, large = false) {
+function createToolIcon(iconName, large = false, imageFile = null) {
     const wrapper = document.createElement("span");
     wrapper.className = `tool-icon tool-icon-${iconName}${large ? " tool-icon-large" : ""}`;
     wrapper.setAttribute("aria-hidden", "true");
+
+    if (imageFile) {
+        const image = document.createElement("img");
+        image.src = `${toolImageDirectory}${encodeURIComponent(imageFile)}`;
+        image.alt = "";
+        image.loading = "lazy";
+        image.decoding = "async";
+        wrapper.append(image);
+        return wrapper;
+    }
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 64 64");
@@ -493,8 +537,30 @@ function createToolIcon(iconName, large = false) {
 let toolPageLanguage = localStorage.getItem("mengkhong-tool-language") === "km" ? "km" : "en";
 toolLanguage.value = toolPageLanguage;
 let activeToolProfile = null;
+const toolCategoryNamesKm = {
+    "Reconnaissance": "ការស៊ើបអង្កេត",
+    "Resource Development": "ការរៀបចំធនធាន",
+    "Initial Access": "ការចូលប្រើដំបូង",
+    "Execution": "ការប្រតិបត្តិ",
+    "Persistence": "ភាពបន្ត",
+    "Privilege Escalation": "ការបង្កើនសិទ្ធិ",
+    "Defense Evasion": "ការគេចវេសពីការការពារ",
+    "Credential Access": "ការចូលប្រើព័ត៌មានសម្ងាត់",
+    "Discovery": "ការស្វែងរក",
+    "Lateral Movement": "ការផ្លាស់ទីបន្តបន្ទាប់",
+    "Collection": "ការប្រមូលទិន្នន័យ",
+    "Command and Control": "ការបញ្ជា និងគ្រប់គ្រង",
+    "Exfiltration": "ការបញ្ជូនទិន្នន័យចេញ",
+    "Impact": "ផលប៉ះពាល់",
+    "Forensics": "កោសល្យវិច្ច័យ",
+    "Services and Other Tools": "សេវាកម្ម និងឧបករណ៍ផ្សេងៗ",
+};
 
-for (const category of [...new Set(toolCatalog.map((tool) => tool.category))].sort()) {
+function localizedToolCategory(category) {
+    return toolPageLanguage === "km" ? toolCategoryNamesKm[category] || category : category;
+}
+
+for (const category of toolCategoryOrder.filter((name) => toolCatalog.some((tool) => tool.category === name))) {
     const option = document.createElement("option");
     option.value = category;
     toolCategory.append(option);
@@ -510,16 +576,16 @@ function localizeToolLibrary() {
     document.querySelector("#tool-library-title").textContent = text.title;
     document.querySelector("#tool-language-label").textContent = text.language;
     document.querySelector("#tool-library-description").textContent = text.description;
+    document.querySelector("#tool-index-source").textContent = text.source;
+    document.querySelector("#tool-artwork-note").textContent = text.artworkNote;
     document.querySelector("#tool-search-label").textContent = text.search;
     toolSearch.placeholder = text.searchPlaceholder;
     document.querySelector("#tool-category-label").textContent = text.category;
     toolCategory.options[0].textContent = text.allCategories;
     for (const option of [...toolCategory.options].slice(1)) {
-        const entry = toolCatalog.find((tool) => tool.category === option.value);
-        option.textContent = toolPageLanguage === "km" ? entry.categoryKm : entry.category;
+        option.textContent = localizedToolCategory(option.value);
     }
     renderToolCatalog();
-    if (!toolDetail.hidden && activeToolProfile) renderToolProfile(activeToolProfile);
 }
 
 function renderToolCatalog() {
@@ -528,7 +594,7 @@ function renderToolCatalog() {
     const category = toolCategory.value;
     const filteredTools = toolCatalog.filter((tool) => {
         const matchesCategory = !category || tool.category === category;
-        const searchableText = `${tool.name} ${tool.category} ${tool.categoryKm} ${tool.summary} ${tool.summaryKm} ${tool.packageName}`.toLowerCase();
+        const searchableText = `${tool.name} ${tool.slug} ${tool.category} ${localizedToolCategory(tool.category)}`.toLowerCase();
         return matchesCategory && searchableText.includes(query);
     });
 
@@ -543,79 +609,58 @@ function renderToolCatalog() {
         return;
     }
 
+    const toolsByCategory = new Map();
     for (const tool of filteredTools) {
-        const article = document.createElement("article");
-        article.className = "tool-card";
+        if (!toolsByCategory.has(tool.category)) toolsByCategory.set(tool.category, []);
+        toolsByCategory.get(tool.category).push(tool);
+    }
 
-        const top = document.createElement("div");
-        top.className = "tool-card-top";
-        top.append(createToolIcon(tool.icon));
+    for (const [toolCategoryName, tools] of [...toolsByCategory].sort(
+        ([left], [right]) => toolCategoryOrder.indexOf(left) - toolCategoryOrder.indexOf(right),
+    )) {
+        const section = document.createElement("section");
+        section.className = "tool-category-card";
+        const heading = document.createElement("h3");
+        heading.className = "tool-category-heading";
+        heading.append(createToolIcon(
+            toolCategoryIcons[toolCategoryName] || "audit",
+            false,
+            toolImageFiles[normalizeToolImageKey(toolCategoryName)],
+        ));
+        const categoryTitle = document.createElement("span");
+        categoryTitle.textContent = localizedToolCategory(toolCategoryName);
+        heading.append(categoryTitle);
+        const list = document.createElement("ul");
+        list.className = "tool-directory-list";
 
-        const heading = document.createElement("div");
-        heading.className = "tool-card-heading";
-        const title = document.createElement("h3");
-        title.textContent = tool.name;
-        const categoryLabel = document.createElement("span");
-        categoryLabel.className = "tool-category";
-        categoryLabel.textContent = toolPageLanguage === "km" ? tool.categoryKm : tool.category;
-        heading.append(title, categoryLabel);
-        top.append(heading);
-
-        const summary = document.createElement("p");
-        summary.textContent = toolPageLanguage === "km" ? tool.summaryKm : tool.summary;
-
-        const installLabel = document.createElement("span");
-        installLabel.className = "tool-command-label";
-        installLabel.textContent = text.install;
-        const installCommand = document.createElement("code");
-        installCommand.className = "tool-command";
-        installCommand.textContent = `sudo apt install ${tool.packageName}`;
-
-        const exampleLabel = document.createElement("span");
-        exampleLabel.className = "tool-command-label";
-        exampleLabel.textContent = toolPageLanguage === "km" ? tool.commandLabelKm : tool.commandLabel;
-        const exampleCommand = document.createElement("code");
-        exampleCommand.className = "tool-command";
-        exampleCommand.textContent = tool.command;
-
-        const actions = document.createElement("div");
-        actions.className = "tool-actions";
-        const copyButton = document.createElement("button");
-        copyButton.type = "button";
-        copyButton.className = "secondary small-button";
-        copyButton.textContent = text.copyExample;
-        copyButton.addEventListener("click", async () => {
-            try {
-                await navigator.clipboard.writeText(tool.command);
-                showStatus(toolCopyFeedback[toolPageLanguage](tool.name));
-            } catch (error) {
-                console.error("Could not copy tool example:", error);
-                showStatus(text.copiedFallback, "error");
+        for (const tool of tools) {
+            const item = document.createElement("li");
+            item.className = "tool-directory-item";
+            const icon = createToolIcon(
+                tool.icon || toolCategoryIcons[toolCategoryName] || "audit",
+                false,
+                tool.imageFile,
+            );
+            icon.classList.add("tool-icon-small");
+            const officialLink = document.createElement("a");
+            officialLink.href = `https://www.kali.org/tools/${encodeURIComponent(tool.slug)}/`;
+            officialLink.target = "_blank";
+            officialLink.rel = "noopener noreferrer";
+            officialLink.textContent = tool.name;
+            item.append(icon, officialLink);
+            if (tool.summary) {
+                const profileButton = document.createElement("button");
+                profileButton.type = "button";
+                profileButton.className = "tool-profile-link";
+                profileButton.textContent = text.viewProfile;
+                profileButton.addEventListener("click", () => openToolProfile(tool));
+                item.append(profileButton);
             }
-        });
+            list.append(item);
+        }
 
-        const profileButton = document.createElement("button");
-        profileButton.type = "button";
-        profileButton.className = "secondary small-button";
-        profileButton.textContent = text.viewProfile;
-        profileButton.addEventListener("click", () => openToolProfile(tool));
-
-        const officialLink = document.createElement("a");
-        officialLink.href = tool.kaliUrl;
-        officialLink.target = "_blank";
-        officialLink.rel = "noopener noreferrer";
-        officialLink.textContent = text.official;
-        actions.append(profileButton, copyButton, officialLink);
-        article.append(
-            top,
-            summary,
-            installLabel,
-            installCommand,
-            exampleLabel,
-            exampleCommand,
-            actions,
-        );
-        toolCards.append(article);
+        section.append(heading, list);
+        toolCards.append(section);
     }
 }
 
@@ -689,7 +734,7 @@ function renderToolProfile(tool) {
     mark.className = "tool-original-mark";
     mark.setAttribute("role", "img");
     mark.setAttribute("aria-label", `MengKhong ${tool.name} tool icon`);
-    mark.append(createToolIcon(tool.icon, true));
+    mark.append(createToolIcon(tool.icon, true, tool.imageFile));
     const headingGroup = document.createElement("div");
     const heading = document.createElement("h2");
     heading.textContent = tool.name;
