@@ -1,6 +1,6 @@
-# MengKhong
+# NiNJa GO
 
-MengKhong is a static private-notes app. GitHub Pages serves the website;
+NiNJa GO is a static private-notes app. GitHub Pages serves the website;
 Supabase provides email/password authentication and PostgreSQL storage. There
 is no Flask server to run.
 
@@ -44,7 +44,7 @@ and local-only or offline example commands for a selected defensive set
 and disk-image forensics). Other entries link to official Kali documentation
 without runnable examples. The directory does not execute commands or copy
 Kali's descriptions or page design. Tool artwork is used to identify links to
-the respective official documentation; MengKhong is independent and is not
+the respective official documentation; NiNJa GO is independent and is not
 affiliated with Kali Linux.
 
 ## Data migration

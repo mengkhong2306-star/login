@@ -388,7 +388,7 @@ const toolTranslations = {
         language: "Language",
         description: "Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.",
         source: "Open the official Kali tools index",
-        artworkNote: "Tool artwork is shown for identification and links to its Kali documentation. MengKhong is an independent project and is not affiliated with Kali Linux.",
+        artworkNote: "Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.",
         search: "Search tools",
         searchPlaceholder: "Search by tool name or category",
         category: "Filter by category",
@@ -417,7 +417,7 @@ const toolTranslations = {
         language: "ភាសា",
         description: "រកមើលឈ្មោះឧបករណ៍ Kali និងប្រភេទឧបករណ៍។ ឧបករណ៍ការពារដែលបានជ្រើសរើសមានព័ត៌មាន និងឧទាហរណ៍ក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ។ ឧបករណ៍ផ្សេងទៀតមានតំណទៅឯកសារផ្លូវការ។",
         source: "បើកបញ្ជីឧបករណ៍ផ្លូវការរបស់ Kali",
-        artworkNote: "រូបតំណាងឧបករណ៍ប្រើសម្រាប់កំណត់អត្តសញ្ញាណ និងមានតំណទៅឯកសារ Kali។ MengKhong ជាគម្រោងឯករាជ្យ និងមិនមានទំនាក់ទំនងជាមួយ Kali Linux ទេ។",
+        artworkNote: "រូបតំណាងឧបករណ៍ប្រើសម្រាប់កំណត់អត្តសញ្ញាណ និងមានតំណទៅឯកសារ Kali។ NiNJa GO ជាគម្រោងឯករាជ្យ និងមិនមានទំនាក់ទំនងជាមួយ Kali Linux ទេ។",
         search: "ស្វែងរកឧបករណ៍",
         searchPlaceholder: "ស្វែងរកតាមឈ្មោះឧបករណ៍ ឬប្រភេទ",
         category: "ត្រងតាមប្រភេទ",
@@ -733,7 +733,7 @@ function renderToolProfile(tool) {
     const mark = document.createElement("div");
     mark.className = "tool-original-mark";
     mark.setAttribute("role", "img");
-    mark.setAttribute("aria-label", `MengKhong ${tool.name} tool icon`);
+    mark.setAttribute("aria-label", `NiNJa GO ${tool.name} tool icon`);
     mark.append(createToolIcon(tool.icon, true, tool.imageFile));
     const headingGroup = document.createElement("div");
     const heading = document.createElement("h2");
