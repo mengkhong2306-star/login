@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#08b9e8">
     <title>MengKhong</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             color-scheme: light;
@@ -122,6 +125,11 @@
         .status[data-kind="success"] { color: #16824b; }
         [hidden] { display: none !important; }
         .dashboard-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .dashboard-tabs { display: flex; gap: 8px; margin: 20px 0; padding: 6px; overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
+        .dashboard-tabs button { flex: 1 0 auto; min-height: 42px; }
+        .dashboard-tabs button[aria-selected="true"] { background: var(--primary); color: #fff; }
+        .dashboard-panel { min-width: 0; }
+        .dashboard-panel[hidden] { display: none !important; }
         .note-list { display: grid; gap: 12px; margin-top: 18px; }
         .note {
             padding: 16px;
@@ -137,13 +145,6 @@
         table { width: 100%; border-collapse: collapse; font-size: .92rem; }
         th, td { padding: 11px 9px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
         th { color: var(--muted); font-size: .82rem; }
-        .lab-grid { display: grid; gap: 14px; margin-top: 16px; }
-        .lab-question { padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
-        .lab-question p { margin: 0 0 12px; color: inherit; }
-        .lab-options { display: flex; flex-wrap: wrap; gap: 8px; }
-        .lab-feedback { min-height: 1.5em; margin: 12px 0 0; }
-        .lab-feedback[data-kind="success"] { color: #16824b; }
-        .lab-feedback[data-kind="error"] { color: var(--danger); }
         .tool-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr); gap: 12px; margin: 16px 0; }
         .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
         .tool-card { display: grid; align-content: start; gap: 10px; min-width: 0; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
@@ -169,7 +170,7 @@
         .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
         .tool-language label { color: var(--muted); font-size: .9rem; }
         .tool-language select { padding: 9px 12px; }
-        .tool-library [lang="km"], .tool-library:lang(km) { font-family: "Noto Sans Khmer", "Khmer OS System", "Segoe UI", Arial, sans-serif; }
+        .tool-library:lang(km), .tool-library:lang(km) * { font-family: "Noto Sans Khmer", "Khmer OS System", "Segoe UI", Arial, sans-serif; }
         .tool-detail { display: grid; gap: 18px; }
         .tool-detail-top { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: center; gap: 22px; }
         .tool-original-mark { width: 142px; height: 142px; border-radius: 24px; }
@@ -284,37 +285,80 @@
             <section id="dashboard" class="card dashboard" hidden>
                 <div class="dashboard-head">
                     <div>
-                        <h1 id="welcome">Your notes</h1>
+                        <h1 id="welcome">Dashboard</h1>
                         <p id="account-email" class="intro"></p>
                     </div>
                     <button id="sign-out" class="secondary" type="button">Sign out</button>
                 </div>
 
-                <section class="note">
-                    <h2>Account username</h2>
-                    <form id="username-form">
-                        <div class="field">
-                            <label for="username">Username</label>
-                            <input id="username" name="username" maxlength="80" autocomplete="username" required>
-                        </div>
-                        <button type="submit">Save username</button>
-                    </form>
+                <div class="dashboard-tabs" role="tablist" aria-label="Dashboard sections">
+                    <button id="dashboard-tab-notes" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-notes" aria-selected="true" tabindex="0" data-dashboard-tab="notes">Notes</button>
+                    <button id="dashboard-tab-tools" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-tools" aria-selected="false" tabindex="-1" data-dashboard-tab="tools">Kali tools</button>
+                    <button id="dashboard-tab-account" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-account" aria-selected="false" tabindex="-1" data-dashboard-tab="account">Account</button>
+                </div>
+
+                <section id="dashboard-panel-notes" class="dashboard-panel" role="tabpanel" aria-labelledby="dashboard-tab-notes" tabindex="0">
+                    <section class="note">
+                        <h2>Add a note</h2>
+                        <form id="note-form">
+                            <div class="field">
+                                <label for="note-message">Note</label>
+                                <textarea id="note-message" name="message" maxlength="4000" required></textarea>
+                            </div>
+                            <button type="submit">Save note</button>
+                        </form>
+                    </section>
+
+                    <section style="margin-top:24px">
+                        <h2>Your notes</h2>
+                        <div id="notes" class="note-list"></div>
+                    </section>
                 </section>
 
-                <section class="note" style="margin-top:16px">
-                    <h2>Add a note</h2>
-                    <form id="note-form">
-                        <div class="field">
-                            <label for="note-message">Note</label>
-                            <textarea id="note-message" name="message" maxlength="4000" required></textarea>
+                <section id="dashboard-panel-tools" class="dashboard-panel" role="tabpanel" aria-labelledby="dashboard-tab-tools" tabindex="0" hidden>
+                    <section id="tool-library" class="note tool-library" aria-labelledby="tool-library-title">
+                        <div id="tool-library-home">
+                            <div class="tool-library-heading">
+                                <h2 id="tool-library-title">Kali tool library</h2>
+                                <div class="tool-language">
+                                    <label id="tool-language-label" for="tool-language">Language</label>
+                                    <select id="tool-language" aria-label="Tool library language">
+                                        <option value="en">English</option>
+                                        <option value="km">ខ្មែរ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p id="tool-library-description" class="intro">A starter directory with original summaries, install commands, safe local or offline examples, and links to official Kali documentation. Commands are examples only; this website does not run Kali tools.</p>
+                            <div class="tool-filters">
+                                <div class="field">
+                                    <label id="tool-search-label" for="tool-search">Search tools</label>
+                                    <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
+                                </div>
+                                <div class="field">
+                                    <label id="tool-category-label" for="tool-category">Filter by category</label>
+                                    <select id="tool-category">
+                                        <option value="">All categories</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p id="tool-count" aria-live="polite"></p>
+                            <div id="tool-cards" class="tool-grid"></div>
                         </div>
-                        <button type="submit">Save note</button>
-                    </form>
+                        <div id="tool-detail" class="tool-detail" hidden></div>
+                    </section>
                 </section>
 
-                <section style="margin-top:24px">
-                    <h2>Your notes</h2>
-                    <div id="notes" class="note-list"></div>
+                <section id="dashboard-panel-account" class="dashboard-panel" role="tabpanel" aria-labelledby="dashboard-tab-account" tabindex="0" hidden>
+                    <section class="note">
+                        <h2>Account username</h2>
+                        <form id="username-form">
+                            <div class="field">
+                                <label for="username">Username</label>
+                                <input id="username" name="username" maxlength="80" autocomplete="username" required>
+                            </div>
+                            <button type="submit">Save username</button>
+                        </form>
+                    </section>
                 </section>
 
                 <section id="admin-panel" class="note" style="margin-top:24px" hidden>
@@ -341,67 +385,6 @@
                     </div>
                 </section>
 
-                <section id="tool-library" class="note tool-library" style="margin-top:24px" aria-labelledby="tool-library-title">
-                    <div id="tool-library-home">
-                        <div class="tool-library-heading">
-                            <h2 id="tool-library-title">Kali tool library</h2>
-                            <div class="tool-language">
-                                <label id="tool-language-label" for="tool-language">Language</label>
-                                <select id="tool-language" aria-label="Tool library language">
-                                    <option value="en">English</option>
-                                    <option value="km">ខ្មែរ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <p id="tool-library-description" class="intro">A starter directory with original summaries, install commands, safe local or offline examples, and links to official Kali documentation. Commands are examples only; this website does not run Kali tools.</p>
-                        <div class="tool-filters">
-                            <div class="field">
-                                <label id="tool-search-label" for="tool-search">Search tools</label>
-                                <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
-                            </div>
-                            <div class="field">
-                                <label id="tool-category-label" for="tool-category">Filter by category</label>
-                                <select id="tool-category">
-                                    <option value="">All categories</option>
-                                </select>
-                            </div>
-                        </div>
-                        <p id="tool-count" aria-live="polite"></p>
-                        <div id="tool-cards" class="tool-grid"></div>
-                    </div>
-                    <div id="tool-detail" class="tool-detail" hidden></div>
-                </section>
-
-                <section class="note" style="margin-top:24px">
-                    <h2>Cyber safety lab</h2>
-                    <p class="intro">Practice defensive decisions in fictional scenarios. These exercises run locally and do not target real systems.</p>
-                    <div class="lab-grid">
-                        <article class="lab-question" data-answer="report">
-                            <p><strong>1. Phishing check:</strong> A fictional message claims your account closes in ten minutes and links to <code>secure-login.example.invalid</code>. What is safest?</p>
-                            <div class="lab-options">
-                                <button class="secondary small-button" type="button" data-choice="report">Report it and visit the service using a saved bookmark.</button>
-                                <button class="secondary small-button" type="button" data-choice="click">Open the urgent link and enter your password.</button>
-                            </div>
-                            <p class="lab-feedback" aria-live="polite"></p>
-                        </article>
-                        <article class="lab-question" data-answer="parameterize">
-                            <p><strong>2. Query safety:</strong> How should an app include a username in a database query?</p>
-                            <div class="lab-options">
-                                <button class="secondary small-button" type="button" data-choice="parameterize">Use a parameterized query and validate the input.</button>
-                                <button class="secondary small-button" type="button" data-choice="concatenate">Concatenate the text directly into SQL.</button>
-                            </div>
-                            <p class="lab-feedback" aria-live="polite"></p>
-                        </article>
-                        <article class="lab-question" data-answer="own-data">
-                            <p><strong>3. Data access:</strong> A signed-in user requests another person's private note. What should Row Level Security do?</p>
-                            <div class="lab-options">
-                                <button class="secondary small-button" type="button" data-choice="own-data">Deny access unless the note belongs to the signed-in user.</button>
-                                <button class="secondary small-button" type="button" data-choice="all-data">Return all notes to any signed-in user.</button>
-                            </div>
-                            <p class="lab-feedback" aria-live="polite"></p>
-                        </article>
-                    </div>
-                </section>
             </section>
         </main>
     </div>

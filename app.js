@@ -202,6 +202,38 @@ async function showDashboard(user) {
     await loadAdminActivity();
 }
 
+const dashboardTabs = [...document.querySelectorAll("[data-dashboard-tab]")];
+const dashboardPanels = new Map(
+    dashboardTabs.map((tab) => [
+        tab.dataset.dashboardTab,
+        document.querySelector(`#dashboard-panel-${tab.dataset.dashboardTab}`),
+    ]),
+);
+
+function selectDashboardTab(name) {
+    for (const tab of dashboardTabs) {
+        const selected = tab.dataset.dashboardTab === name;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        dashboardPanels.get(tab.dataset.dashboardTab).hidden = !selected;
+    }
+}
+
+for (const [index, tab] of dashboardTabs.entries()) {
+    tab.addEventListener("click", () => selectDashboardTab(tab.dataset.dashboardTab));
+    tab.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const selectedIndex = event.key === "Home"
+            ? 0
+            : event.key === "End"
+                ? dashboardTabs.length - 1
+                : (index + (event.key === "ArrowRight" ? 1 : dashboardTabs.length - 1)) % dashboardTabs.length;
+        dashboardTabs[selectedIndex].focus();
+        dashboardTabs[selectedIndex].click();
+    });
+}
+
 document.querySelectorAll("[data-view]").forEach((link) => {
     link.addEventListener("click", () => showAuthView(link.dataset.view));
 });
@@ -325,19 +357,6 @@ document.querySelector("#sign-out").addEventListener("click", (event) => {
         currentUser = null;
         showAuthView("login");
         showStatus("You are signed out.");
-    });
-});
-
-document.querySelectorAll(".lab-question").forEach((question) => {
-    question.querySelectorAll("[data-choice]").forEach((button) => {
-        button.addEventListener("click", () => {
-            const correct = button.dataset.choice === question.dataset.answer;
-            const feedback = question.querySelector(".lab-feedback");
-            feedback.textContent = correct
-                ? "Correct. This choice follows a defensive security practice."
-                : "Not quite. Choose the option that protects users and their data.";
-            feedback.dataset.kind = correct ? "success" : "error";
-        });
     });
 });
 

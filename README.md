@@ -11,10 +11,10 @@ is no Flask server to run.
 - Add and delete private notes
 - Change your username
 - Admin-only account invitations, removal, and sign-in activity
-- Safe, fictional defensive-security exercises
 - Searchable starter library of Kali tools with safe local/offline examples
 - Tool profiles paraphrased from official Kali package pages, with easy Overview, Safe example, and Package & links tabs
-- English and Khmer translations for the tool library
+- Dashboard tabs for Notes, Kali tools, and Account
+- English and Khmer translations for the tool library, using Noto Sans Khmer
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
 
