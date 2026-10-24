@@ -1122,7 +1122,6 @@ def forgot_password():
         if user:
             base_url = (
                 os.environ.get("PUBLIC_BASE_URL")
-                or os.environ.get("RENDER_EXTERNAL_URL")
                 or request.url_root
             ).rstrip("/")
             reset_url = (

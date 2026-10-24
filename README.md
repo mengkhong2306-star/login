@@ -38,19 +38,22 @@ use or commit your regular Google password. Restart the app after setting
 environment variables. For a public deployment, configure
 `PUBLIC_BASE_URL` to the HTTPS site URL.
 
-## Free hosting with Render and Supabase
+## Host with PythonAnywhere and Supabase
 
-Use Render's free web service to run Flask and Supabase's free PostgreSQL
-database to store accounts, reset tokens, and notes. See
-[`DEPLOYMENT.md`](./DEPLOYMENT.md) for setup steps.
+Use PythonAnywhere to run Flask and Supabase PostgreSQL to store accounts,
+reset tokens, and notes. Follow [`DEPLOYMENT.md`](./DEPLOYMENT.md) for setup.
 
-Render free services can sleep while idle, and Supabase free projects may
-pause when inactive. Review both providers' current free-tier limits and
-backup policies before relying on the service for important data.
+PythonAnywhere free accounts restrict outbound network access. Test whether
+your Supabase pooler endpoint is reachable from the account before deploying;
+you may need a paid PythonAnywhere plan for external PostgreSQL access.
+Supabase free projects also have usage limits and may pause when inactive.
+Check both providers' current limits and backup policies before relying on
+the service for important data. GitHub Pages is only a static landing page
+and cannot run the Flask login.
 
 The app keeps its existing Flask authentication and reset flow; Supabase is
-used as the database, not as the authentication provider. Configure Gmail
-App Password settings in Render if you want reset emails.
+the database only. Configure Gmail App Password settings in PythonAnywhere
+if you want reset emails; outbound SMTP may also be restricted.
 
 ## Local database
 
@@ -62,5 +65,4 @@ to Supabase; create accounts again on the hosted app.
 
 - `app.py` — Flask routes, database, templates, and application setup
 - `wsgi.py` — production startup entry point
-- `render.yaml` — Render free web service configuration
 - `requirements.txt` — Python dependencies
