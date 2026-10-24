@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#08b9e8">
+    <title>NovaVault</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #374151;
+            background: #24252a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            display: grid;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            place-items: center;
+        }
+        main {
+            display: grid;
+            width: min(760px, 100%);
+            min-height: min(760px, calc(100vh - 40px));
+            padding: 32px;
+            place-items: center;
+            border-radius: 38px;
+            background: #08b9e8;
+        }
+        .card {
+            width: min(470px, 100%);
+            padding: 54px 38px 38px;
+            border-radius: 34px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 22px 45px rgba(0, 76, 107, 0.2);
+        }
+        .mark {
+            display: grid;
+            width: 92px;
+            height: 92px;
+            margin: -100px auto 22px;
+            place-items: center;
+            border-radius: 50%;
+            background: #f1f1f1;
+            color: #08a8d7;
+            font-size: 2.3rem;
+            font-weight: 800;
+            box-shadow: 0 10px 22px rgba(30, 41, 59, 0.14);
+        }
+        h1 {
+            margin: 0 0 14px;
+            color: #4b5563;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        p {
+            margin: 0 auto 24px;
+            color: #697586;
+            line-height: 1.6;
+        }
+        .notice {
+            margin: 24px 0;
+            padding: 16px;
+            border-radius: 16px;
+            background: #f0f3f5;
+            text-align: left;
+        }
+        .notice strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+        .notice p { margin: 0; font-size: 0.95rem; }
+        .button {
+            display: block;
+            padding: 16px 20px;
+            border-radius: 32px;
+            background: #28a9dc;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .button:hover { background: #159bd0; }
+        .links { margin: 20px 0 0; }
+        .links a { color: #687383; }
+        @media (max-width: 520px) {
+            main { min-height: calc(100vh - 40px); padding: 24px 16px; border-radius: 28px; }
+            .card { padding: 48px 22px 28px; border-radius: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="card" aria-labelledby="title">
+            <div class="mark" aria-hidden="true">N</div>
+            <h1 id="title">NovaVault</h1>
+            <p>Your private notes, protected by your account.</p>
+            <div class="notice" role="status">
+                <strong>The login app is not hosted yet</strong>
+                <p>This GitHub Pages address can show static pages, but it cannot run the Flask login, database, or password recovery. No passwords are requested or collected here.</p>
+            </div>
+            <a class="button" href="https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fmengkhong2306-star%2Flogin">Deploy NovaVault on Render</a>
+            <p class="links"><a href="https://github.com/mengkhong2306-star/login">View source on GitHub</a></p>
+        </section>
+    </main>
+</body>
+</html>
