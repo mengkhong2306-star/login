@@ -34,7 +34,9 @@ admin membership server-side. Account removal is permanent and deletes that
 account's notes.
 
 The tool directory presents Kali tool names in compact, category-grouped
-cards and includes a snapshot of the public tool index. `tool-image-map.js`
+cards. Its catalog was refreshed from the official Kali tools index on
+2026-10-24 and contains 501 unique tool names, package slugs, and categories;
+it does not bundle tool software or copy Kali descriptions. `tool-image-map.js`
 matches the SVG files supplied in `image/Kali Tools _ Kali Linux Tools` to
 tool names and categories; entries without a specific image use Kali's generic
 missing-icon asset. The supplied image directory is left unchanged.
