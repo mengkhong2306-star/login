@@ -2,9 +2,8 @@
 
 ## Free option: PythonAnywhere
 
-PythonAnywhere's free plan can host a small Flask app. It does not require a
-payment card, but has resource, feature, and outbound-network limits. The
-public app URL will use your PythonAnywhere username:
+PythonAnywhere's free plan can host a small Flask app, with resource, feature,
+and outbound-network limits. The public app URL will use your PythonAnywhere username:
 `https://YOUR_USERNAME.pythonanywhere.com/`.
 
 ### 1. Create your account and clone the app
