@@ -95,10 +95,8 @@ async function loadNotes() {
 
 async function loadAdminActivity() {
     const panel = document.querySelector("#admin-panel");
-    const status = document.querySelector("#admin-status");
     const body = document.querySelector("#admin-users");
     panel.hidden = true;
-    status.hidden = true;
 
     const { data, error } = await supabase.functions.invoke("admin-users", {
         body: { action: "list" },
@@ -106,10 +104,7 @@ async function loadAdminActivity() {
     if (error) {
         if (error.context?.status === 403) return;
         console.error("Could not load admin activity:", error);
-        panel.hidden = false;
-        status.textContent = "Admin activity could not be loaded. Check the Supabase Edge Function deployment and logs.";
-        status.dataset.kind = "error";
-        status.hidden = false;
+        showStatus("Admin features are temporarily unavailable. Please try again later.", "error");
         return;
     }
 
