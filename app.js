@@ -447,6 +447,68 @@ const toolTranslations = {
     },
 };
 
+const toolIconShapes = {
+    nmap: [
+        { tag: "circle", attrs: { cx: "27", cy: "27", r: "15" } },
+        { tag: "path", attrs: { d: "m38 38 14 14M12 27h30M27 12v30" } },
+        { tag: "circle", attrs: { cx: "27", cy: "27", r: "5" } },
+    ],
+    wireshark: [
+        { tag: "path", attrs: { d: "M6 34c7 0 7-16 14-16s7 28 14 28 7-24 14-24 7 12 10 12" } },
+        { tag: "path", attrs: { d: "M7 52h50M7 12h50" } },
+    ],
+    shield: [
+        { tag: "path", attrs: { d: "M32 6 52 14v15c0 13-8 22-20 29C20 51 12 42 12 29V14z" } },
+        { tag: "path", attrs: { d: "m22 32 7 7 14-16" } },
+    ],
+    traffic: [
+        { tag: "path", attrs: { d: "M7 42h9l7-20 10 28 8-20 5 12h11" } },
+        { tag: "path", attrs: { d: "M8 12h48M8 54h48" } },
+    ],
+    audit: [
+        { tag: "rect", attrs: { x: "14", y: "10", width: "36", height: "46", rx: "5" } },
+        { tag: "path", attrs: { d: "M25 10V6h14v8H25zM21 28l4 4 7-8M36 29h8M21 43l4 4 7-8M36 44h8" } },
+    ],
+    malware: [
+        { tag: "path", attrs: { d: "M32 7 51 14v14c0 13-7 21-19 29C20 49 13 41 13 28V14z" } },
+        { tag: "path", attrs: { d: "M32 20v18M23 29h18M25 23l14 14M39 23 25 37" } },
+        { tag: "circle", attrs: { cx: "32", cy: "29", r: "10" } },
+    ],
+    hash: [
+        { tag: "path", attrs: { d: "m24 9-6 46M46 9l-6 46M11 25h43M8 41h43" } },
+    ],
+    forensics: [
+        { tag: "path", attrs: { d: "M15 8h23l12 12v36H15zM38 8v13h12" } },
+        { tag: "circle", attrs: { cx: "29", cy: "36", r: "8" } },
+        { tag: "path", attrs: { d: "m35 42 8 8M23 25h8" } },
+    ],
+};
+
+function createToolIcon(iconName, large = false) {
+    const wrapper = document.createElement("span");
+    wrapper.className = `tool-icon tool-icon-${iconName}${large ? " tool-icon-large" : ""}`;
+    wrapper.setAttribute("aria-hidden", "true");
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 64 64");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "3");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("focusable", "false");
+
+    for (const shape of toolIconShapes[iconName] || []) {
+        const element = document.createElementNS("http://www.w3.org/2000/svg", shape.tag);
+        for (const [name, value] of Object.entries(shape.attrs)) {
+            element.setAttribute(name, value);
+        }
+        svg.append(element);
+    }
+    wrapper.append(svg);
+    return wrapper;
+}
+
 let toolPageLanguage = localStorage.getItem("mengkhong-tool-language") === "km" ? "km" : "en";
 toolLanguage.value = toolPageLanguage;
 
@@ -503,6 +565,10 @@ function renderToolCatalog() {
         const article = document.createElement("article");
         article.className = "tool-card";
 
+        const top = document.createElement("div");
+        top.className = "tool-card-top";
+        top.append(createToolIcon(tool.icon));
+
         const heading = document.createElement("div");
         heading.className = "tool-card-heading";
         const title = document.createElement("h3");
@@ -511,6 +577,7 @@ function renderToolCatalog() {
         categoryLabel.className = "tool-category";
         categoryLabel.textContent = toolPageLanguage === "km" ? tool.categoryKm : tool.category;
         heading.append(title, categoryLabel);
+        top.append(heading);
 
         const summary = document.createElement("p");
         summary.textContent = toolPageLanguage === "km" ? tool.summaryKm : tool.summary;
@@ -561,7 +628,7 @@ function renderToolCatalog() {
         officialLink.textContent = text.official;
         actions.append(copyButton, officialLink);
         article.append(
-            heading,
+            top,
             summary,
             installLabel,
             installCommand,
@@ -641,8 +708,8 @@ function renderNmapGuide() {
     const mark = document.createElement("div");
     mark.className = "tool-original-mark";
     mark.setAttribute("role", "img");
-    mark.setAttribute("aria-label", "Original MengKhong Nmap guide mark");
-    mark.textContent = "N";
+    mark.setAttribute("aria-label", "Original MengKhong Nmap guide icon");
+    mark.append(createToolIcon("nmap", true));
     const headingGroup = document.createElement("div");
     const heading = document.createElement("h2");
     heading.textContent = "Nmap";

@@ -1,6 +1,7 @@
 export const toolCatalog = [
     {
         name: "Nmap",
+        icon: "nmap",
         category: "Network discovery",
         categoryKm: "ការស្វែងរកបណ្ដាញ",
         packageName: "nmap",
@@ -13,6 +14,7 @@ export const toolCatalog = [
     },
     {
         name: "Wireshark",
+        icon: "wireshark",
         category: "Traffic analysis",
         categoryKm: "ការវិភាគចរាចរណ៍បណ្ដាញ",
         packageName: "wireshark",
@@ -25,6 +27,7 @@ export const toolCatalog = [
     },
     {
         name: "chkrootkit",
+        icon: "shield",
         category: "Malware defense",
         categoryKm: "ការការពារមេរោគ",
         packageName: "chkrootkit",
@@ -37,6 +40,7 @@ export const toolCatalog = [
     },
     {
         name: "tcpdump",
+        icon: "traffic",
         category: "Traffic analysis",
         categoryKm: "ការវិភាគចរាចរណ៍បណ្ដាញ",
         packageName: "tcpdump",
@@ -49,6 +53,7 @@ export const toolCatalog = [
     },
     {
         name: "Lynis",
+        icon: "audit",
         category: "System auditing",
         categoryKm: "ការត្រួតពិនិត្យប្រព័ន្ធ",
         packageName: "lynis",
@@ -61,6 +66,7 @@ export const toolCatalog = [
     },
     {
         name: "ClamAV",
+        icon: "malware",
         category: "Malware defense",
         categoryKm: "ការការពារមេរោគ",
         packageName: "clamav",
@@ -73,6 +79,7 @@ export const toolCatalog = [
     },
     {
         name: "hashdeep",
+        icon: "hash",
         category: "File integrity",
         categoryKm: "ភាពត្រឹមត្រូវរបស់ឯកសារ",
         packageName: "hashdeep",
@@ -85,6 +92,7 @@ export const toolCatalog = [
     },
     {
         name: "Sleuth Kit (fls)",
+        icon: "forensics",
         category: "Digital forensics",
         categoryKm: "កោសល្យវិច្ច័យឌីជីថល",
         packageName: "sleuthkit",

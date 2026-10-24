@@ -147,8 +147,17 @@
         .tool-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr); gap: 12px; margin: 16px 0; }
         .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
         .tool-card { display: grid; align-content: start; gap: 10px; min-width: 0; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
+        .tool-card-top { display: grid; grid-template-columns: 60px minmax(0, 1fr); align-items: center; gap: 12px; }
         .tool-card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
         .tool-card h3 { margin: 0; font-size: 1.1rem; }
+        .tool-icon { display: grid; width: 60px; height: 60px; flex: 0 0 auto; place-items: center; border: 1px solid color-mix(in srgb, var(--tool-icon-color, var(--primary)) 40%, var(--border)); border-radius: 17px; background: linear-gradient(145deg, color-mix(in srgb, var(--tool-icon-color, var(--primary)) 20%, var(--surface)), var(--input)); color: var(--tool-icon-color, var(--primary)); }
+        .tool-icon svg { display: block; width: 42px; height: 42px; }
+        .tool-icon-nmap { --tool-icon-color: #168fc0; }
+        .tool-icon-wireshark, .tool-icon-traffic { --tool-icon-color: #2576c5; }
+        .tool-icon-shield, .tool-icon-malware { --tool-icon-color: #269466; }
+        .tool-icon-audit { --tool-icon-color: #a87518; }
+        .tool-icon-hash { --tool-icon-color: #7654b5; }
+        .tool-icon-forensics { --tool-icon-color: #a34d75; }
         .tool-card p { margin: 0; color: inherit; }
         .tool-category { padding: 4px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .8rem; }
         .tool-command-label { margin-bottom: -7px; color: var(--muted); font-size: .82rem; font-weight: 650; }
@@ -163,7 +172,9 @@
         .tool-library [lang="km"], .tool-library:lang(km) { font-family: "Noto Sans Khmer", "Khmer OS System", "Segoe UI", Arial, sans-serif; }
         .tool-detail { display: grid; gap: 18px; }
         .tool-detail-top { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: center; gap: 22px; }
-        .tool-original-mark { display: grid; width: 142px; aspect-ratio: 1; place-items: center; border: 1px solid var(--border); border-radius: 24px; background: radial-gradient(circle, color-mix(in srgb, var(--primary) 20%, var(--surface)), var(--input)); color: var(--primary); font-size: 4rem; font-weight: 850; }
+        .tool-original-mark { width: 142px; height: 142px; border-radius: 24px; }
+        .tool-original-mark .tool-icon { width: 142px; height: 142px; border-radius: 24px; }
+        .tool-original-mark .tool-icon svg { width: 104px; height: 104px; }
         .tool-detail h3 { margin: 0 0 10px; font-size: 1.2rem; }
         .tool-detail p { margin: 0; }
         .tool-detail-block { display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border); }
@@ -178,7 +189,8 @@
             .dashboard-head { align-items: flex-start; }
             .tool-filters { grid-template-columns: 1fr; }
             .tool-detail-top { grid-template-columns: 1fr; }
-            .tool-original-mark { width: 110px; font-size: 3rem; }
+            .tool-original-mark, .tool-original-mark .tool-icon { width: 110px; height: 110px; }
+            .tool-original-mark .tool-icon svg { width: 82px; height: 82px; }
             .tool-command-row { grid-template-columns: 1fr; }
         }
     </style>
