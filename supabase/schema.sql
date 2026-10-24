@@ -14,8 +14,22 @@ create table if not exists public.notes (
     created_at timestamptz not null default now()
 );
 
+create table if not exists public.admin_users (
+    user_id uuid primary key references auth.users (id) on delete cascade,
+    created_at timestamptz not null default now()
+);
+
+create table if not exists public.login_events (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null default auth.uid()
+        references auth.users (id) on delete cascade,
+    signed_in_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.notes enable row level security;
+alter table public.admin_users enable row level security;
+alter table public.login_events enable row level security;
 
 drop policy if exists "Users can read their own profile" on public.profiles;
 create policy "Users can read their own profile"
@@ -48,8 +62,33 @@ create policy "Users can delete their own notes"
     to authenticated
     using ((select auth.uid()) = user_id);
 
+drop policy if exists "Users can record their own sign-ins" on public.login_events;
+create policy "Users can record their own sign-ins"
+    on public.login_events for insert
+    to authenticated
+    with check ((select auth.uid()) = user_id);
+
 grant select, update on public.profiles to authenticated;
 grant select, insert, delete on public.notes to authenticated;
+revoke all on public.admin_users from anon, authenticated;
+revoke all on public.login_events from anon, authenticated;
+grant insert (user_id) on public.login_events to authenticated;
+grant select on public.admin_users, public.login_events, public.profiles to service_role;
+
+create or replace function public.admin_user_last_sign_ins()
+returns table (user_id uuid, last_sign_in_at timestamptz)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+    select events.user_id, max(events.signed_in_at)
+    from public.login_events as events
+    group by events.user_id;
+$$;
+
+revoke all on function public.admin_user_last_sign_ins() from public, anon, authenticated;
+grant execute on function public.admin_user_last_sign_ins() to service_role;
 
 create or replace function public.create_profile_for_new_user()
 returns trigger

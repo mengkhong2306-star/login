@@ -10,13 +10,16 @@ is no Flask server to run.
 - Email-based password reset
 - Add and delete private notes
 - Change your username
+- Admin-only account invitations, removal, and sign-in activity
+- Safe, fictional defensive-security exercises
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
 
 ## Setup
 
-1. Follow [`DEPLOYMENT.md`](./DEPLOYMENT.md) to create the Supabase schema and
-   configure authentication redirects.
+1. Follow [`DEPLOYMENT.md`](./DEPLOYMENT.md) to create the Supabase schema,
+   configure authentication, deploy the protected admin function, and grant
+   your own account admin access.
 2. Ensure GitHub Pages is enabled for the `main` branch at the repository root.
    The site is <https://mengkhong2306-star.github.io/login/>.
 3. Register a new account and test sign-in, password recovery, and notes.
@@ -24,6 +27,9 @@ is no Flask server to run.
 The Supabase URL and anon/publishable key in `app.js` are public browser
 configuration. The SQL schema enables Row Level Security. Never put a
 Supabase `service_role` or `sb_secret_` key in browser code or GitHub.
+Admin account management is performed by an Edge Function that verifies
+admin membership server-side. Account removal is permanent and deletes that
+account's notes.
 
 ## Data migration
 

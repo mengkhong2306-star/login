@@ -133,6 +133,17 @@
         .note footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .85rem; }
         .small-button { min-height: 36px; padding: 7px 12px; font-size: .9rem; }
         .config-warning { margin-top: 16px; font-size: .85rem; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+        th, td { padding: 11px 9px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+        th { color: var(--muted); font-size: .82rem; }
+        .lab-grid { display: grid; gap: 14px; margin-top: 16px; }
+        .lab-question { padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--input); }
+        .lab-question p { margin: 0 0 12px; color: inherit; }
+        .lab-options { display: flex; flex-wrap: wrap; gap: 8px; }
+        .lab-feedback { min-height: 1.5em; margin: 12px 0 0; }
+        .lab-feedback[data-kind="success"] { color: #16824b; }
+        .lab-feedback[data-kind="error"] { color: var(--danger); }
         @media (max-width: 520px) {
             body { padding: 12px; }
             header { margin-bottom: 12px; }
@@ -256,6 +267,62 @@
                 <section style="margin-top:24px">
                     <h2>Your notes</h2>
                     <div id="notes" class="note-list"></div>
+                </section>
+
+                <section id="admin-panel" class="note" style="margin-top:24px" hidden>
+                    <h2>Admin: account management</h2>
+                    <p class="intro">Invite accounts, review sign-in activity, and permanently remove accounts. Passwords and IP addresses are never shown. Removing an account also removes its notes.</p>
+                    <p id="admin-status" class="status" role="status" hidden></p>
+                    <form id="admin-invite-form">
+                        <div class="field">
+                            <label for="invite-username">New user's username</label>
+                            <input id="invite-username" name="username" maxlength="80" required>
+                        </div>
+                        <div class="field">
+                            <label for="invite-email">New user's email</label>
+                            <input id="invite-email" name="email" type="email" required>
+                        </div>
+                        <button type="submit">Invite user by email</button>
+                    </form>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Username</th><th>Email</th><th>Account created</th><th>Last sign-in recorded</th><th>Action</th></tr>
+                            </thead>
+                            <tbody id="admin-users"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="note" style="margin-top:24px">
+                    <h2>Cyber safety lab</h2>
+                    <p class="intro">Practice defensive decisions in fictional scenarios. These exercises run locally and do not target real systems.</p>
+                    <div class="lab-grid">
+                        <article class="lab-question" data-answer="report">
+                            <p><strong>1. Phishing check:</strong> A fictional message claims your account closes in ten minutes and links to <code>secure-login.example.invalid</code>. What is safest?</p>
+                            <div class="lab-options">
+                                <button class="secondary small-button" type="button" data-choice="report">Report it and visit the service using a saved bookmark.</button>
+                                <button class="secondary small-button" type="button" data-choice="click">Open the urgent link and enter your password.</button>
+                            </div>
+                            <p class="lab-feedback" aria-live="polite"></p>
+                        </article>
+                        <article class="lab-question" data-answer="parameterize">
+                            <p><strong>2. Query safety:</strong> How should an app include a username in a database query?</p>
+                            <div class="lab-options">
+                                <button class="secondary small-button" type="button" data-choice="parameterize">Use a parameterized query and validate the input.</button>
+                                <button class="secondary small-button" type="button" data-choice="concatenate">Concatenate the text directly into SQL.</button>
+                            </div>
+                            <p class="lab-feedback" aria-live="polite"></p>
+                        </article>
+                        <article class="lab-question" data-answer="own-data">
+                            <p><strong>3. Data access:</strong> A signed-in user requests another person's private note. What should Row Level Security do?</p>
+                            <div class="lab-options">
+                                <button class="secondary small-button" type="button" data-choice="own-data">Deny access unless the note belongs to the signed-in user.</button>
+                                <button class="secondary small-button" type="button" data-choice="all-data">Return all notes to any signed-in user.</button>
+                            </div>
+                            <p class="lab-feedback" aria-live="polite"></p>
+                        </article>
+                    </div>
                 </section>
             </section>
         </main>

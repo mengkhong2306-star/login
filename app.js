@@ -93,6 +93,101 @@ async function loadNotes() {
     }
 }
 
+async function loadAdminActivity() {
+    const panel = document.querySelector("#admin-panel");
+    const status = document.querySelector("#admin-status");
+    const body = document.querySelector("#admin-users");
+    panel.hidden = true;
+    status.hidden = true;
+
+    const { data, error } = await supabase.functions.invoke("admin-users", {
+        body: { action: "list" },
+    });
+    if (error) {
+        if (error.context?.status === 403) return;
+        console.error("Could not load admin activity:", error);
+        panel.hidden = false;
+        status.textContent = "Admin activity could not be loaded. Check the Supabase Edge Function deployment and logs.";
+        status.dataset.kind = "error";
+        status.hidden = false;
+        return;
+    }
+
+    body.replaceChildren();
+    if (!data.users.length) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 4;
+        cell.textContent = "No accounts found.";
+        row.append(cell);
+        body.append(row);
+    } else {
+        for (const user of data.users) {
+            const row = document.createElement("tr");
+            for (const [value, isDate] of [
+                [user.username, false],
+                [user.email, false],
+                [user.created_at, true],
+                [user.last_sign_in_at, true],
+            ]) {
+                const cell = document.createElement("td");
+                cell.textContent = value
+                    ? (isDate ? new Date(value).toLocaleString() : value)
+                    : (isDate && value === null ? "No sign-in recorded" : "—");
+                row.append(cell);
+            }
+            const actionCell = document.createElement("td");
+            if (user.id !== currentUser.id) {
+                const remove = document.createElement("button");
+                remove.className = "danger small-button";
+                remove.type = "button";
+                remove.textContent = "Remove";
+                remove.setAttribute("aria-label", `Permanently remove ${user.email}`);
+                remove.addEventListener("click", () => {
+                    if (!window.confirm(
+                        `Permanently remove ${user.email} and all of their notes? This cannot be undone.`,
+                    )) return;
+                    withButton(remove, async () => {
+                        const { error: deleteError } = await supabase.functions.invoke(
+                            "admin-users",
+                            { body: { action: "delete", user_id: user.id } },
+                        );
+                        if (deleteError) throw deleteError;
+                        await loadAdminActivity();
+                        showStatus("Account and its notes permanently removed.");
+                    });
+                });
+                actionCell.append(remove);
+            } else {
+                actionCell.textContent = "Current admin";
+            }
+            row.append(actionCell);
+            body.append(row);
+        }
+    }
+    panel.hidden = false;
+}
+
+document.querySelector("#admin-invite-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const inviteForm = event.currentTarget;
+    const form = new FormData(inviteForm);
+    withButton(inviteForm.querySelector("button"), async () => {
+        const username = String(form.get("username")).trim().toLowerCase();
+        const email = String(form.get("email")).trim().toLowerCase();
+        if (!username || username.length > 80) {
+            throw new Error("Username must be between 1 and 80 characters.");
+        }
+        const { error } = await supabase.functions.invoke("admin-users", {
+            body: { action: "invite", username, email },
+        });
+        if (error) throw error;
+        inviteForm.reset();
+        await loadAdminActivity();
+        showStatus("Invitation sent. The user must confirm by email before signing in.");
+    });
+});
+
 async function showDashboard(user) {
     currentUser = user;
     authCard.hidden = true;
@@ -108,6 +203,7 @@ async function showDashboard(user) {
     document.querySelector("#welcome").textContent = `Welcome, ${profile.username}`;
     document.querySelector("#username").value = profile.username;
     await loadNotes();
+    await loadAdminActivity();
 }
 
 document.querySelectorAll("[data-view]").forEach((link) => {
@@ -118,11 +214,19 @@ document.querySelector("#login-form").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     withButton(event.currentTarget.querySelector("button"), async () => {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email: String(form.get("email")).trim(),
             password: String(form.get("password")),
         });
         if (error) throw error;
+        const { error: activityError } = await supabase
+            .from("login_events")
+            .insert({ user_id: data.user.id });
+        await showDashboard(data.user);
+        if (activityError) {
+            console.error("Could not record successful sign-in:", activityError);
+            showStatus("Signed in, but this sign-in could not be recorded.", "error");
+        }
     });
 });
 
@@ -146,6 +250,7 @@ document.querySelector("#register-form").addEventListener("submit", (event) => {
         });
         if (error) throw error;
         if (data.session) {
+            await showDashboard(data.user);
             showStatus("Account created.");
         } else {
             showAuthView("login");
@@ -227,6 +332,19 @@ document.querySelector("#sign-out").addEventListener("click", (event) => {
     });
 });
 
+document.querySelectorAll(".lab-question").forEach((question) => {
+    question.querySelectorAll("[data-choice]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const correct = button.dataset.choice === question.dataset.answer;
+            const feedback = question.querySelector(".lab-feedback");
+            feedback.textContent = correct
+                ? "Correct. This choice follows a defensive security practice."
+                : "Not quite. Choose the option that protects users and their data.";
+            feedback.dataset.kind = correct ? "success" : "error";
+        });
+    });
+});
+
 const themeToggle = document.querySelector("#theme-toggle");
 function setTheme(theme) {
     document.body.dataset.theme = theme;
@@ -244,8 +362,6 @@ if (recoveryInUrl) showAuthView("reset");
 supabase.auth.onAuthStateChange((event, session) => {
     if (event === "PASSWORD_RECOVERY") {
         showAuthView("reset");
-    } else if (event === "SIGNED_IN" && session && !recoveryInUrl) {
-        setTimeout(() => showDashboard(session.user).catch(showError), 0);
     } else if (event === "SIGNED_OUT") {
         currentUser = null;
         showAuthView("login");
