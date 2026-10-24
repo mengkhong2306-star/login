@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="3840" viewBox="0 0 3840 3840" role="img" aria-labelledby="title description">
+  <title id="title">NiNJa GO</title>
+  <desc id="description">An original geometric ninja mask on a dark background with warm orange highlights.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#182434"/>
+      <stop offset="1" stop-color="#080d14"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#ff7138"/>
+    </linearGradient>
+  </defs>
+  <rect x="96" y="96" width="3648" height="3648" rx="960" fill="url(#background)"/>
+  <path d="M1920 560 2960 1110 2790 2580 1920 3290 1050 2580 880 1110Z" fill="#26384b" stroke="#40566d" stroke-width="72" stroke-linejoin="round"/>
+  <path d="m1120 1490 800 310 800-310-210 640-590 410-590-410Z" fill="#101822"/>
+  <path d="m1250 1500 570 205-200 145-470-170Zm1340 0-570 205 200 145 470-170Z" fill="url(#accent)"/>
+  <path d="m1535 2120 385 220 385-220-165 510-220 170-220-170Z" fill="#1a2735"/>
+  <path d="M1920 2770v250" fill="none" stroke="#ff9651" stroke-linecap="round" stroke-width="76"/>
+</svg>
