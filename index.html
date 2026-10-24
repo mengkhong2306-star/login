@@ -177,6 +177,11 @@
         .tool-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 4px; }
         .tool-actions a { font-size: .9rem; }
         .tool-library-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .tool-usage-guide { margin: 16px 0; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--input); }
+        .tool-usage-guide summary { color: var(--primary); cursor: pointer; font-weight: 650; }
+        .tool-usage-guide-content { display: grid; gap: 12px; padding-top: 14px; }
+        .tool-usage-guide-content h3, .tool-usage-guide-content p { margin: 0; }
+        .tool-usage-guide-content ol, .tool-usage-guide-content ul { display: grid; gap: 8px; margin: 0; padding-left: 22px; }
         .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
         .tool-language label { color: var(--muted); font-size: .9rem; }
         .tool-language select { padding: 9px 12px; }
@@ -345,6 +350,26 @@
                             <p id="tool-library-description" class="intro">Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.</p>
                             <p><a id="tool-index-source" href="https://www.kali.org/tools/" target="_blank" rel="noopener noreferrer">Open the official Kali tools index</a></p>
                             <p id="tool-artwork-note" class="intro">Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.</p>
+                            <details id="tool-usage-guide" class="tool-usage-guide">
+                                <summary id="tool-usage-guide-title">How to use this library safely</summary>
+                                <div class="tool-usage-guide-content">
+                                    <h3 id="tool-usage-steps-title">How to use the library</h3>
+                                    <ol>
+                                        <li id="tool-usage-step-search">Search by tool name or filter by category.</li>
+                                        <li id="tool-usage-step-details">Choose View details to read the purpose and any available safe example.</li>
+                                        <li id="tool-usage-step-docs">Open the official Kali documentation to check requirements, limitations, and current instructions.</li>
+                                        <li id="tool-usage-step-learn">Practice only in an isolated lab that you own or are explicitly authorized to use.</li>
+                                    </ol>
+                                    <h3 id="tool-safety-title">Permission and protection checklist</h3>
+                                    <ul>
+                                        <li id="tool-safety-permission">Get clear permission and define the approved systems and scope before testing.</li>
+                                        <li id="tool-safety-lab">Use a separate, isolated lab; avoid production systems, other people's accounts, and real sensitive data.</li>
+                                        <li id="tool-safety-controls">Keep security controls enabled, use least privilege, and back up important lab data.</li>
+                                        <li id="tool-safety-examples">Examples are informational text only. This site never runs tools, scans targets, or verifies that you have permission.</li>
+                                    </ul>
+                                    <p id="tool-safety-confirmation" class="status">Use a tool only when you have authorization and can protect the systems and data involved.</p>
+                                </div>
+                            </details>
                             <div class="tool-filters">
                                 <div class="field">
                                     <label id="tool-search-label" for="tool-search">Search tools</label>

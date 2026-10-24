@@ -492,6 +492,22 @@ const toolTranslations = {
         description: "Browse 501 Kali tools with short purpose summaries, categories, and official documentation links. Selected tools also include safe local or offline demos.",
         source: "Open the official Kali tools index",
         artworkNote: "Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.",
+        usageGuideTitle: "How to use this library safely",
+        usageStepsTitle: "How to use the library",
+        usageSteps: [
+            "Search by tool name or filter by category.",
+            "Choose View details to read the purpose and any available safe example.",
+            "Open the official Kali documentation to check requirements, limitations, and current instructions.",
+            "Practice only in an isolated lab that you own or are explicitly authorized to use.",
+        ],
+        safetyTitle: "Permission and protection checklist",
+        safetySteps: [
+            "Get clear permission and define the approved systems and scope before testing.",
+            "Use a separate, isolated lab; avoid production systems, other people's accounts, and real sensitive data.",
+            "Keep security controls enabled, use least privilege, and back up important lab data.",
+            "Examples are informational text only. This site never runs tools, scans targets, or verifies that you have permission.",
+        ],
+        safetyConfirmation: "Use a tool only when you have authorization and can protect the systems and data involved.",
         search: "Search tools",
         searchPlaceholder: "Search by tool name or category",
         category: "Filter by category",
@@ -521,6 +537,22 @@ const toolTranslations = {
         description: "រកមើលឧបករណ៍ Kali ចំនួន ៥០១ ជាមួយសេចក្ដីសង្ខេបពីគោលបំណង ប្រភេទ និងតំណទៅឯកសារផ្លូវការ។ ឧបករណ៍មួយចំនួនមានឧទាហរណ៍សុវត្ថិភាពក្នុងម៉ាស៊ីន ឬក្រៅបណ្ដាញ។",
         source: "បើកបញ្ជីឧបករណ៍ផ្លូវការរបស់ Kali",
         artworkNote: "រូបតំណាងឧបករណ៍ប្រើសម្រាប់កំណត់អត្តសញ្ញាណ និងមានតំណទៅឯកសារ Kali។ NiNJa GO ជាគម្រោងឯករាជ្យ និងមិនមានទំនាក់ទំនងជាមួយ Kali Linux ទេ។",
+        usageGuideTitle: "របៀបប្រើបណ្ណាល័យនេះដោយសុវត្ថិភាព",
+        usageStepsTitle: "របៀបប្រើបណ្ណាល័យ",
+        usageSteps: [
+            "ស្វែងរកតាមឈ្មោះឧបករណ៍ ឬត្រងតាមប្រភេទ។",
+            "ជ្រើសរើស មើលព័ត៌មាន ដើម្បីអានគោលបំណង និងឧទាហរណ៍សុវត្ថិភាពដែលមាន។",
+            "បើកឯកសារផ្លូវការរបស់ Kali ដើម្បីពិនិត្យតម្រូវការ ដែនកំណត់ និងការណែនាំបច្ចុប្បន្ន។",
+            "សាកល្បងតែក្នុងមន្ទីរពិសោធន៍ដាច់ដោយឡែកដែលជាកម្មសិទ្ធិរបស់អ្នក ឬអ្នកមានការអនុញ្ញាតច្បាស់លាស់។",
+        ],
+        safetyTitle: "បញ្ជីត្រួតពិនិត្យការអនុញ្ញាត និងការការពារ",
+        safetySteps: [
+            "ទទួលបានការអនុញ្ញាតច្បាស់លាស់ និងកំណត់ប្រព័ន្ធនិងវិសាលភាពដែលអនុញ្ញាតមុនពេលសាកល្បង។",
+            "ប្រើមន្ទីរពិសោធន៍ដាច់ដោយឡែក។ ជៀសវាងប្រព័ន្ធផលិតកម្ម គណនីអ្នកដទៃ និងទិន្នន័យរសើបពិតប្រាកដ។",
+            "បើកការការពារសុវត្ថិភាពជានិច្ច ប្រើសិទ្ធិតិចបំផុតតាមតម្រូវការ និងបម្រុងទុកទិន្នន័យមន្ទីរពិសោធន៍សំខាន់ៗ។",
+            "ឧទាហរណ៍គ្រាន់តែជាអត្ថបទព័ត៌មានប៉ុណ្ណោះ។ គេហទំព័រនេះមិនដំណើរការឧបករណ៍ មិនស្កេនគោលដៅ និងមិនផ្ទៀងផ្ទាត់ការអនុញ្ញាតរបស់អ្នកទេ។",
+        ],
+        safetyConfirmation: "ប្រើឧបករណ៍តែនៅពេលអ្នកមានការអនុញ្ញាត និងអាចការពារប្រព័ន្ធនិងទិន្នន័យដែលពាក់ព័ន្ធបានប៉ុណ្ណោះ។",
         search: "ស្វែងរកឧបករណ៍",
         searchPlaceholder: "ស្វែងរកតាមឈ្មោះឧបករណ៍ ឬប្រភេទ",
         category: "ត្រងតាមប្រភេទ",
@@ -681,6 +713,16 @@ function localizeToolLibrary() {
     document.querySelector("#tool-library-description").textContent = text.description;
     document.querySelector("#tool-index-source").textContent = text.source;
     document.querySelector("#tool-artwork-note").textContent = text.artworkNote;
+    document.querySelector("#tool-usage-guide-title").textContent = text.usageGuideTitle;
+    document.querySelector("#tool-usage-steps-title").textContent = text.usageStepsTitle;
+    for (const [index, step] of text.usageSteps.entries()) {
+        document.querySelector(`#tool-usage-step-${["search", "details", "docs", "learn"][index]}`).textContent = step;
+    }
+    document.querySelector("#tool-safety-title").textContent = text.safetyTitle;
+    for (const [index, step] of text.safetySteps.entries()) {
+        document.querySelector(`#tool-safety-${["permission", "lab", "controls", "examples"][index]}`).textContent = step;
+    }
+    document.querySelector("#tool-safety-confirmation").textContent = text.safetyConfirmation;
     document.querySelector("#tool-search-label").textContent = text.search;
     toolSearch.placeholder = text.searchPlaceholder;
     document.querySelector("#tool-category-label").textContent = text.category;
