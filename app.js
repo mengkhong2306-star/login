@@ -530,7 +530,10 @@ const blackArchToolCatalog = blackArchIndex.map((tool) => ({
     distribution: "blackarch",
     categoryUrl: `https://blackarch.org/${tool.categoryPath}`,
     icon: "audit",
-    imageFile: null,
+    imageFile: toolImageFiles[normalizeToolImageKey(tool.name)] || null,
+    generatedArtwork: toolImageFiles[normalizeToolImageKey(tool.name)]
+        ? null
+        : createBlackArchPackageArtwork(tool.name, tool.category),
 }));
 const baseToolTranslations = {
     en: {
@@ -688,7 +691,18 @@ const toolCategoryIcons = {
 };
 const toolCategoryOrder = Object.keys(toolCategoryIcons);
 
-function createToolIcon(iconName, large = false, imageFile = null) {
+function createBlackArchPackageArtwork(packageName, category) {
+    const categoryHash = [...category].reduce(
+        (hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0,
+        0,
+    );
+    const hue = categoryHash % 360;
+    const monogram = packageName.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 2) || "TO";
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="15" fill="hsl(${hue} 58% 94%)" stroke="hsl(${hue} 58% 48%)" stroke-width="2"/><path d="M32 10 49 18v13c0 11-7 19-17 24-10-5-17-13-17-24V18z" fill="hsl(${hue} 58% 48%)"/><text x="32" y="36" fill="#fff" font-family="Arial,sans-serif" font-size="17" font-weight="700" text-anchor="middle">${monogram}</text><circle cx="49" cy="49" r="5" fill="hsl(${hue} 58% 48%)"/></svg>`;
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function createToolIcon(iconName, large = false, imageFile = null, generatedArtwork = null) {
     const wrapper = document.createElement("span");
     wrapper.className = `tool-icon tool-icon-${iconName}${large ? " tool-icon-large" : ""}`;
     wrapper.setAttribute("aria-hidden", "true");
@@ -696,6 +710,16 @@ function createToolIcon(iconName, large = false, imageFile = null) {
     if (imageFile) {
         const image = document.createElement("img");
         image.src = `${toolImageDirectory}${encodeURIComponent(imageFile.replace(/\.svg$/i, ".webp"))}`;
+        image.alt = "";
+        image.loading = "lazy";
+        image.decoding = "async";
+        wrapper.append(image);
+        return wrapper;
+    }
+
+    if (generatedArtwork) {
+        const image = document.createElement("img");
+        image.src = generatedArtwork;
         image.alt = "";
         image.loading = "lazy";
         image.decoding = "async";
@@ -893,6 +917,7 @@ function renderToolCatalog() {
                 tool.icon || toolCategoryIcons[toolCategoryName] || "audit",
                 false,
                 tool.imageFile,
+                tool.generatedArtwork,
             );
             icon.classList.add("tool-icon-small");
             const officialLink = document.createElement("a");
@@ -1083,7 +1108,7 @@ function renderToolProfile(tool) {
     mark.className = "tool-original-mark";
     mark.setAttribute("role", "img");
     mark.setAttribute("aria-label", `NiNJa GO ${tool.name} tool icon`);
-    mark.append(createToolIcon(tool.icon, true, tool.imageFile));
+    mark.append(createToolIcon(tool.icon, true, tool.imageFile, tool.generatedArtwork));
     const headingGroup = document.createElement("div");
     const heading = document.createElement("h2");
     heading.textContent = tool.name;

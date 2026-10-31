@@ -87,6 +87,10 @@ smaller than PNG exports. The original image directory is left unchanged. The
 directory does not execute commands or copy Kali's descriptions or page
 design. Tool artwork is used to identify links to the respective official
 documentation; NiNJa GO is independent and is not affiliated with Kali Linux.
+BlackArch entries use matching Kali artwork when an exact package-name image
+exists; remaining packages receive a category-colored generated badge with a
+package-name monogram. Generated badges are illustrations, not official
+BlackArch or upstream project logos.
 
 ## Data migration
 
