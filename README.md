@@ -61,10 +61,13 @@ The directory does not bundle tool software or copy Kali descriptions.
 Purpose summaries remain concise and high-level; the additional languages use
 localized category-level summaries, while English and Khmer retain the
 existing grouped-purpose summaries.
-The public library also links to the official BlackArch Linux site, which
-currently lists 2,868 repository tools. This is an external reference, not a
-second imported or searchable catalog; follow the official link for current
-package information. The displayed logo is the official asset from
+The distribution selector also provides a separate searchable BlackArch
+catalog with 2,868 package names, versions, and 50 official package groups
+from the BlackArch tools index (refreshed 2026-10-31). BlackArch entries link
+to their official group references and upstream project links where listed;
+publisher descriptions and tool-specific usage commands are not copied.
+Package installation guidance is for Arch Linux with the BlackArch
+repository configured. The displayed logo is the official asset from
 <https://blackarch.org/images/logo/ba-logo.png>.
 `tool-image-map.js` maps 501 catalog entries to 321 distinct, transparent
 2048×2048 WebP exports of the supplied SVG artwork. Tools that share a source

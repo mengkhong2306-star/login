@@ -1,10 +1,12 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 import { toolIndex } from "./tool-index.js";
+import { blackArchIndex } from "./blackarch-index.js";
 import { safeToolProfiles } from "./tool-profiles.js";
 import { toolImageFiles } from "./tool-image-map.js";
 import {
     additionalToolTranslations,
     blackArchTranslations,
+    distributionTranslations,
     toolLearningTranslations,
 } from "./tool-localizations.js";
 
@@ -400,6 +402,7 @@ const toolSearch = document.querySelector("#tool-search");
 const toolCategory = document.querySelector("#tool-category");
 const toolCards = document.querySelector("#tool-cards");
 const toolCount = document.querySelector("#tool-count");
+const toolDistribution = document.querySelector("#tool-distribution");
 const toolLanguage = document.querySelector("#tool-language");
 const toolLibraryHome = document.querySelector("#tool-library-home");
 const toolDetail = document.querySelector("#tool-detail");
@@ -499,7 +502,7 @@ const toolPurposeSummaries = {
     },
 };
 const normalizeToolImageKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
-const toolCatalog = toolIndex.map((tool) => {
+const kaliToolCatalog = toolIndex.map((tool) => {
     const profile = safeToolProfiles[normalizeToolImageKey(tool.name)];
     const imageFile = toolImageFiles[normalizeToolImageKey(tool.name)]
         || toolImageFiles[normalizeToolImageKey(tool.slug)]
@@ -508,6 +511,7 @@ const toolCatalog = toolIndex.map((tool) => {
     return {
         ...tool,
         ...profile,
+        distribution: "kali",
         packageName: profile?.packageName || tool.slug,
         kaliUrl: profile?.kaliUrl || `https://www.kali.org/tools/${encodeURIComponent(tool.slug)}/`,
         summary: profile?.summary || toolPurposeSummaries.en[purposeKey],
@@ -515,6 +519,15 @@ const toolCatalog = toolIndex.map((tool) => {
         imageFile,
     };
 });
+const blackArchToolCatalog = blackArchIndex.map((tool) => ({
+    ...tool,
+    slug: tool.name,
+    packageName: tool.name,
+    distribution: "blackarch",
+    categoryUrl: `https://blackarch.org/${tool.categoryPath}`,
+    icon: "audit",
+    imageFile: null,
+}));
 const baseToolTranslations = {
     en: {
         title: "Kali tool library",
@@ -710,6 +723,10 @@ const supportedToolLanguages = new Set(Object.keys(toolTranslations));
 const savedToolLanguage = localStorage.getItem("mengkhong-tool-language");
 let toolPageLanguage = supportedToolLanguages.has(savedToolLanguage) ? savedToolLanguage : "en";
 toolLanguage.value = toolPageLanguage;
+const supportedDistributions = new Set(["kali", "blackarch"]);
+const savedDistribution = localStorage.getItem("mengkhong-tool-distribution");
+let activeDistribution = supportedDistributions.has(savedDistribution) ? savedDistribution : "kali";
+toolDistribution.value = activeDistribution;
 let activeToolProfile = null;
 const toolCategoryNamesKm = {
     "Reconnaissance": "ការស៊ើបអង្កេត",
@@ -731,35 +748,66 @@ const toolCategoryNamesKm = {
 };
 
 function localizedToolCategory(category) {
+    if (activeDistribution === "blackarch") {
+        return category.replace(/^blackarch-/, "").split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
     return activeToolTranslation().categoryNames?.[category]
         || (toolPageLanguage === "km" ? toolCategoryNamesKm[category] : category)
         || category;
 }
 
 function localizedToolSummary(tool) {
+    if (tool.distribution === "blackarch") {
+        const text = distributionTranslations[toolPageLanguage].blackArch;
+        return text.packageSummary
+            .replace("{name}", tool.name)
+            .replace("{category}", localizedToolCategory(tool.category))
+            .replace("{version}", tool.version);
+    }
     if (toolPageLanguage === "en") return tool.summary;
     if (toolPageLanguage === "km") return tool.summaryKm;
     return activeToolTranslation().categorySummaries?.[tool.category] || tool.summary;
-}
-
-for (const category of toolCategoryOrder.filter((name) => toolCatalog.some((tool) => tool.category === name))) {
-    const option = document.createElement("option");
-    option.value = category;
-    toolCategory.append(option);
 }
 
 function activeToolTranslation() {
     return toolTranslations[toolPageLanguage];
 }
 
+function activeToolCatalog() {
+    return activeDistribution === "blackarch" ? blackArchToolCatalog : kaliToolCatalog;
+}
+
+function renderToolCategoryOptions() {
+    const text = activeToolTranslation();
+    const categories = [...new Set(activeToolCatalog().map((tool) => tool.category))]
+        .sort((left, right) => localizedToolCategory(left).localeCompare(localizedToolCategory(right)));
+    toolCategory.replaceChildren(new Option(text.allCategories, ""));
+    for (const category of categories) {
+        toolCategory.add(new Option(localizedToolCategory(category), category));
+    }
+}
+
 function localizeToolLibrary() {
     const text = activeToolTranslation();
+    const distributionText = distributionTranslations[toolPageLanguage];
+    const isBlackArch = activeDistribution === "blackarch";
+    const catalogText = isBlackArch ? distributionText.blackArch : text;
     document.querySelector("#tool-library").lang = toolPageLanguage;
     document.querySelector("#tool-library").dir = toolPageLanguage === "ar" ? "rtl" : "ltr";
-    document.querySelector("#tool-library-title").textContent = text.title;
+    document.querySelector("#public-tools").setAttribute("aria-label", catalogText.title);
+    document.querySelector("#tool-library-title").textContent = catalogText.title;
+    document.querySelector("#tool-distribution-label").textContent = distributionText.selectorLabel;
+    toolDistribution.setAttribute("aria-label", distributionText.selectorLabel);
+    toolDistribution.options[0].textContent = distributionText.kaliOption;
+    toolDistribution.options[1].textContent = distributionText.blackArchOption;
     document.querySelector("#tool-language-label").textContent = text.language;
-    document.querySelector("#tool-library-description").textContent = text.description;
-    document.querySelector("#tool-index-source").textContent = text.source;
+    document.querySelector("#tool-library-description").textContent = catalogText.description;
+    const sourceLink = document.querySelector("#tool-index-source");
+    sourceLink.textContent = catalogText.source;
+    sourceLink.href = isBlackArch ? catalogText.sourceUrl : "https://www.kali.org/tools/";
+    document.querySelector("#blackarch-feature").hidden = isBlackArch;
     const blackArch = blackArchTranslations[toolPageLanguage] || blackArchTranslations.en;
     document.querySelector("#blackarch-feature").setAttribute("aria-label", blackArch.label);
     document.querySelector("#blackarch-logo").alt = blackArch.logoAlt;
@@ -780,10 +828,7 @@ function localizeToolLibrary() {
     document.querySelector("#tool-search-label").textContent = text.search;
     toolSearch.placeholder = text.searchPlaceholder;
     document.querySelector("#tool-category-label").textContent = text.category;
-    toolCategory.options[0].textContent = text.allCategories;
-    for (const option of [...toolCategory.options].slice(1)) {
-        option.textContent = localizedToolCategory(option.value);
-    }
+    renderToolCategoryOptions();
     renderToolCatalog();
 }
 
@@ -791,9 +836,9 @@ function renderToolCatalog() {
     const text = activeToolTranslation();
     const query = toolSearch.value.trim().toLowerCase();
     const category = toolCategory.value;
-    const filteredTools = toolCatalog.filter((tool) => {
+    const filteredTools = activeToolCatalog().filter((tool) => {
         const matchesCategory = !category || tool.category === category;
-        const searchableText = `${tool.name} ${tool.slug} ${tool.category} ${localizedToolCategory(tool.category)}`.toLowerCase();
+        const searchableText = `${tool.name} ${tool.slug} ${tool.packageName} ${tool.version || ""} ${tool.category} ${localizedToolCategory(tool.category)}`.toLowerCase();
         return matchesCategory && searchableText.includes(query);
     });
 
@@ -815,7 +860,12 @@ function renderToolCatalog() {
     }
 
     for (const [toolCategoryName, tools] of [...toolsByCategory].sort(
-        ([left], [right]) => toolCategoryOrder.indexOf(left) - toolCategoryOrder.indexOf(right),
+        ([left], [right]) => {
+            const leftIndex = toolCategoryOrder.indexOf(left);
+            const rightIndex = toolCategoryOrder.indexOf(right);
+            if (leftIndex !== -1 && rightIndex !== -1) return leftIndex - rightIndex;
+            return localizedToolCategory(left).localeCompare(localizedToolCategory(right));
+        },
     )) {
         const section = document.createElement("section");
         section.className = "tool-category-card";
@@ -842,7 +892,9 @@ function renderToolCatalog() {
             );
             icon.classList.add("tool-icon-small");
             const officialLink = document.createElement("a");
-            officialLink.href = `https://www.kali.org/tools/${encodeURIComponent(tool.slug)}/`;
+            officialLink.href = tool.distribution === "blackarch"
+                ? tool.categoryUrl
+                : `https://www.kali.org/tools/${encodeURIComponent(tool.slug)}/`;
             officialLink.target = "_blank";
             officialLink.rel = "noopener noreferrer";
             officialLink.textContent = tool.name;
@@ -912,6 +964,8 @@ function addCopyableCommand(parent, tool, command, label, note) {
 
 function renderToolProfile(tool) {
     const text = activeToolTranslation();
+    const distributionText = distributionTranslations[toolPageLanguage];
+    const isBlackArch = tool.distribution === "blackarch";
     const learning = toolLearningTranslations[toolPageLanguage] || toolLearningTranslations.en;
     toolDetail.replaceChildren();
 
@@ -942,7 +996,8 @@ function renderToolProfile(tool) {
     meta.className = "tool-meta";
     for (const label of [
         localizedToolCategory(tool.category),
-        `${text.packageTitle}: ${tool.packageName}`,
+        `${isBlackArch ? distributionText.blackArch.packageLabel : text.packageTitle}: ${tool.packageName}`,
+        ...(tool.version ? [`${distributionText.blackArch.versionLabel}: ${tool.version}`] : []),
     ]) {
         const badge = document.createElement("span");
         badge.className = "tool-category";
@@ -1022,9 +1077,15 @@ function renderToolProfile(tool) {
     authorizationNote.className = "status";
     authorizationNote.textContent = text.usePermission;
     overview.append(authorizationNote);
-    appendDetailBlock(overview, text.learnTitle, "");
+    appendDetailBlock(
+        overview,
+        isBlackArch ? distributionText.blackArch.learnTitle : text.learnTitle,
+        "",
+    );
     const learningSteps = document.createElement("ol");
-    for (const step of learning.learnSteps) {
+    const learningStepTexts = [...learning.learnSteps];
+    if (isBlackArch) learningStepTexts[0] = distributionText.blackArch.firstLearnStep;
+    for (const step of learningStepTexts) {
         const item = document.createElement("li");
         item.textContent = step;
         learningSteps.append(item);
@@ -1056,30 +1117,62 @@ function renderToolProfile(tool) {
     }
 
     const packageInfo = panels[tabNames.indexOf("package")];
-    appendDetailBlock(packageInfo, learning.installTitle, learning.installDescription);
+    appendDetailBlock(
+        packageInfo,
+        isBlackArch ? distributionText.blackArch.installTitle : learning.installTitle,
+        isBlackArch ? distributionText.blackArch.installDescription : learning.installDescription,
+    );
     const updateLabel = document.createElement("span");
     updateLabel.className = "tool-command-label";
-    updateLabel.textContent = learning.updateLabel;
+    updateLabel.textContent = isBlackArch
+        ? distributionText.blackArch.updateLabel
+        : learning.updateLabel;
     const updateCommand = document.createElement("code");
     updateCommand.className = "tool-command";
-    updateCommand.textContent = "sudo apt update";
+    updateCommand.textContent = isBlackArch ? "sudo pacman -Syu" : "sudo apt update";
     packageInfo.append(updateLabel, updateCommand);
     const installLabel = document.createElement("span");
     installLabel.className = "tool-command-label";
-    installLabel.textContent = learning.installLabel;
+    installLabel.textContent = isBlackArch
+        ? distributionText.blackArch.installLabel
+        : learning.installLabel;
     const installCommand = document.createElement("code");
     installCommand.className = "tool-command";
-    installCommand.textContent = `sudo apt install ${tool.packageName}`;
+    installCommand.textContent = isBlackArch
+        ? `sudo pacman -S ${tool.packageName}`
+        : `sudo apt install ${tool.packageName}`;
     const installNote = document.createElement("p");
-    installNote.textContent = learning.installNote;
+    installNote.textContent = isBlackArch
+        ? distributionText.blackArch.installNote
+        : learning.installNote;
     packageInfo.append(installLabel, installCommand, installNote);
-    appendDetailBlock(packageInfo, text.kaliReference, "");
+    appendDetailBlock(
+        packageInfo,
+        isBlackArch ? distributionText.blackArch.source : text.kaliReference,
+        "",
+    );
     const officialLink = document.createElement("a");
-    officialLink.href = tool.kaliUrl;
+    officialLink.href = isBlackArch ? tool.categoryUrl : tool.kaliUrl;
     officialLink.target = "_blank";
     officialLink.rel = "noopener noreferrer";
-    officialLink.textContent = tool.kaliUrl;
+    officialLink.textContent = tool.categoryUrl || tool.kaliUrl;
     packageInfo.append(officialLink);
+    if (isBlackArch) {
+        if (tool.projectUrl) {
+            const projectLink = document.createElement("a");
+            projectLink.href = tool.projectUrl;
+            projectLink.target = "_blank";
+            projectLink.rel = "noopener noreferrer";
+            projectLink.textContent = distributionText.blackArch.projectLabel;
+            packageInfo.append(projectLink);
+        }
+        const repositoryGuide = document.createElement("a");
+        repositoryGuide.href = "https://blackarch.org/downloads.html";
+        repositoryGuide.target = "_blank";
+        repositoryGuide.rel = "noopener noreferrer";
+        repositoryGuide.textContent = distributionText.blackArch.repositoryLabel;
+        packageInfo.append(repositoryGuide);
+    }
 
     toolDetail.append(tabs, ...panels);
 }
@@ -1094,6 +1187,15 @@ function openToolProfile(tool) {
 
 toolSearch.addEventListener("input", renderToolCatalog);
 toolCategory.addEventListener("change", renderToolCatalog);
+toolDistribution.addEventListener("change", () => {
+    activeDistribution = toolDistribution.value;
+    localStorage.setItem("mengkhong-tool-distribution", activeDistribution);
+    toolCategory.value = "";
+    activeToolProfile = null;
+    toolDetail.hidden = true;
+    toolLibraryHome.hidden = false;
+    localizeToolLibrary();
+});
 toolLanguage.addEventListener("change", () => {
     toolPageLanguage = toolLanguage.value;
     localStorage.setItem("mengkhong-tool-language", toolPageLanguage);

@@ -185,6 +185,7 @@
         .tool-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 4px; }
         .tool-actions a { font-size: .9rem; }
         .tool-library-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .tool-library-heading-controls { display: flex; flex-wrap: wrap; gap: 12px; }
         .tool-usage-guide { margin: 16px 0; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--input); }
         .tool-usage-guide summary { color: var(--primary); cursor: pointer; font-weight: 650; }
         .tool-usage-guide-content { display: grid; gap: 12px; padding-top: 14px; }
@@ -254,20 +255,29 @@
                     <div id="tool-library-home">
                         <div class="tool-library-heading">
                             <h1 id="tool-library-title">Kali tool library</h1>
-                            <div class="tool-language">
-                                <label id="tool-language-label" for="tool-language">Language</label>
-                                <select id="tool-language" aria-label="Tool library language">
-                                    <option value="en">English</option>
-                                    <option value="km">ខ្មែរ</option>
-                                    <option value="es">Español</option>
-                                    <option value="fr">Français</option>
-                                    <option value="zh">简体中文</option>
-                                    <option value="ar">العربية</option>
-                                    <option value="hi">हिन्दी</option>
-                                    <option value="vi">Tiếng Việt</option>
-                                    <option value="ja">日本語</option>
-                                    <option value="ko">한국어</option>
-                                </select>
+                            <div class="tool-library-heading-controls">
+                                <div class="tool-language">
+                                    <label id="tool-distribution-label" for="tool-distribution">Tool collection</label>
+                                    <select id="tool-distribution" aria-label="Tool collection">
+                                        <option value="kali">Kali Linux tools</option>
+                                        <option value="blackarch">BlackArch Linux tools</option>
+                                    </select>
+                                </div>
+                                <div class="tool-language">
+                                    <label id="tool-language-label" for="tool-language">Language</label>
+                                    <select id="tool-language" aria-label="Tool library language">
+                                        <option value="en">English</option>
+                                        <option value="km">ខ្មែរ</option>
+                                        <option value="es">Español</option>
+                                        <option value="fr">Français</option>
+                                        <option value="zh">简体中文</option>
+                                        <option value="ar">العربية</option>
+                                        <option value="hi">हिन्दी</option>
+                                        <option value="vi">Tiếng Việt</option>
+                                        <option value="ja">日本語</option>
+                                        <option value="ko">한국어</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <p id="tool-library-description" class="intro">Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.</p>
