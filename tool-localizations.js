@@ -71,6 +71,149 @@ export const blackArchTranslations = {
     },
 };
 
+export const toolLearningTranslations = {
+    en: {
+        learnTitle: "How to learn and use this tool safely",
+        learnSteps: [
+            "Read the official Kali tool page first to confirm the tool's purpose, package name, supported version, and limitations.",
+            "Learn in an isolated lab using only files, sample data, or systems you own or have explicit permission to assess.",
+            "Begin with the official introductory guide and its harmless examples; tool options differ, so do not assume another tool's commands apply.",
+            "Save your notes and results, review findings carefully, and clean up temporary lab data when finished.",
+        ],
+        installTitle: "Install on Kali Linux",
+        installDescription: "These package-manager commands are for Kali Linux. Confirm the package name and requirements in the official Kali tool page, and review the proposed changes before accepting them.",
+        updateLabel: "Refresh package lists",
+        installLabel: "Install this package",
+        installNote: "Run the install command after the package lists are refreshed. APT will show what it plans to change before you confirm.",
+    },
+    km: {
+        learnTitle: "របៀបរៀន និងប្រើឧបករណ៍នេះដោយសុវត្ថិភាព",
+        learnSteps: [
+            "អានទំព័រឧបករណ៍ផ្លូវការរបស់ Kali ជាមុន ដើម្បីផ្ទៀងផ្ទាត់គោលបំណង ឈ្មោះកញ្ចប់ កំណែដែលគាំទ្រ និងដែនកំណត់។",
+            "រៀនក្នុងមន្ទីរពិសោធន៍ដាច់ដោយឡែក ដោយប្រើតែឯកសារ ទិន្នន័យគំរូ ឬប្រព័ន្ធដែលអ្នកកាន់កាប់ ឬមានការអនុញ្ញាតច្បាស់លាស់។",
+            "ចាប់ផ្ដើមពីការណែនាំផ្លូវការ និងឧទាហរណ៍ដែលគ្មានផលប៉ះពាល់។ ជម្រើសឧបករណ៍នីមួយៗខុសគ្នា ដូច្នេះកុំសន្មតថាពាក្យបញ្ជារបស់ឧបករណ៍មួយអាចប្រើជាមួយឧបករណ៍ផ្សេងបាន។",
+            "រក្សាទុកកំណត់ចំណាំ និងលទ្ធផល ពិនិត្យការរកឃើញដោយប្រុងប្រយ័ត្ន ហើយសម្អាតទិន្នន័យមន្ទីរពិសោធន៍បណ្ដោះអាសន្ននៅពេលបញ្ចប់។",
+        ],
+        installTitle: "ដំឡើងលើ Kali Linux",
+        installDescription: "ពាក្យបញ្ជាគ្រប់គ្រងកញ្ចប់ទាំងនេះសម្រាប់ Kali Linux។ ផ្ទៀងផ្ទាត់ឈ្មោះកញ្ចប់ និងតម្រូវការនៅទំព័រឧបករណ៍ផ្លូវការរបស់ Kali ហើយពិនិត្យការផ្លាស់ប្ដូរដែលបានស្នើ មុនពេលយល់ព្រម។",
+        updateLabel: "ធ្វើបច្ចុប្បន្នភាពបញ្ជីកញ្ចប់",
+        installLabel: "ដំឡើងកញ្ចប់នេះ",
+        installNote: "ដំណើរការពាក្យបញ្ជាដំឡើង បន្ទាប់ពីធ្វើបច្ចុប្បន្នភាពបញ្ជីកញ្ចប់។ APT នឹងបង្ហាញការផ្លាស់ប្ដូរដែលវាគ្រោងធ្វើ មុនពេលអ្នកបញ្ជាក់។",
+    },
+    es: {
+        learnTitle: "Cómo aprender y usar esta herramienta de forma segura",
+        learnSteps: [
+            "Lee primero la página oficial de Kali para confirmar el propósito, el nombre del paquete, la versión compatible y sus limitaciones.",
+            "Aprende en un laboratorio aislado y usa únicamente archivos, datos de prueba o sistemas propios o autorizados explícitamente.",
+            "Empieza con la guía oficial y ejemplos inocuos; las opciones varían entre herramientas, así que no supongas que los comandos son intercambiables.",
+            "Guarda tus notas y resultados, revisa los hallazgos con cuidado y elimina los datos temporales del laboratorio al terminar.",
+        ],
+        installTitle: "Instalar en Kali Linux",
+        installDescription: "Estos comandos del gestor de paquetes son para Kali Linux. Confirma el nombre y los requisitos en la página oficial de Kali y revisa los cambios propuestos antes de aceptarlos.",
+        updateLabel: "Actualizar las listas de paquetes",
+        installLabel: "Instalar este paquete",
+        installNote: "Ejecuta la instalación después de actualizar las listas. APT mostrará los cambios previstos antes de que los confirmes.",
+    },
+    fr: {
+        learnTitle: "Apprendre à utiliser cet outil en toute sécurité",
+        learnSteps: [
+            "Consultez d’abord la page officielle Kali pour vérifier l’objectif, le nom du paquet, la version prise en charge et les limites.",
+            "Apprenez dans un laboratoire isolé avec uniquement des fichiers, des échantillons ou des systèmes qui vous appartiennent ou que vous êtes autorisé à évaluer.",
+            "Commencez par le guide officiel et ses exemples sans risque ; les options diffèrent selon les outils, ne supposez pas que leurs commandes sont interchangeables.",
+            "Conservez vos notes et résultats, examinez les constats avec soin et supprimez les données temporaires du laboratoire après usage.",
+        ],
+        installTitle: "Installer sur Kali Linux",
+        installDescription: "Ces commandes du gestionnaire de paquets sont destinées à Kali Linux. Vérifiez le nom du paquet et les prérequis sur la page officielle Kali, puis examinez les changements proposés avant de les accepter.",
+        updateLabel: "Actualiser les listes de paquets",
+        installLabel: "Installer ce paquet",
+        installNote: "Lancez l’installation après l’actualisation des listes. APT affiche les changements prévus avant votre confirmation.",
+    },
+    zh: {
+        learnTitle: "安全学习和使用此工具",
+        learnSteps: [
+            "先阅读 Kali 官方工具页面，确认用途、软件包名称、支持的版本和限制。",
+            "在隔离实验环境中学习，仅使用自己拥有或明确获准测试的文件、样本数据或系统。",
+            "从官方入门指南和无害示例开始；不同工具的选项各不相同，不要假设命令可以通用。",
+            "保存笔记和结果，仔细复核发现，并在结束后清理临时实验数据。",
+        ],
+        installTitle: "在 Kali Linux 上安装",
+        installDescription: "以下软件包管理命令适用于 Kali Linux。请在 Kali 官方工具页面确认软件包名称和要求，并在接受前检查拟进行的更改。",
+        updateLabel: "刷新软件包列表",
+        installLabel: "安装此软件包",
+        installNote: "刷新软件包列表后再运行安装命令。APT 会在确认前显示计划进行的更改。",
+    },
+    ar: {
+        learnTitle: "كيفية تعلم الأداة واستخدامها بأمان",
+        learnSteps: [
+            "اقرأ صفحة أداة Kali الرسمية أولًا للتحقق من الغرض واسم الحزمة والإصدار المدعوم والقيود.",
+            "تعلّم داخل مختبر معزول باستخدام ملفات أو عينات أو أنظمة تملكها أو لديك إذن صريح لتقييمها فقط.",
+            "ابدأ بالدليل الرسمي وأمثلته غير الضارة؛ تختلف خيارات الأدوات، فلا تفترض أن أوامرها قابلة للتبادل.",
+            "احفظ ملاحظاتك ونتائجك، وراجع المؤشرات بعناية، ونظّف بيانات المختبر المؤقتة عند الانتهاء.",
+        ],
+        installTitle: "التثبيت على Kali Linux",
+        installDescription: "أوامر إدارة الحزم هذه مخصصة لـ Kali Linux. تحقق من اسم الحزمة ومتطلباتها في صفحة Kali الرسمية، وراجع التغييرات المقترحة قبل قبولها.",
+        updateLabel: "تحديث قوائم الحزم",
+        installLabel: "تثبيت هذه الحزمة",
+        installNote: "نفّذ أمر التثبيت بعد تحديث القوائم. سيعرض APT التغييرات المقترحة قبل تأكيدك.",
+    },
+    hi: {
+        learnTitle: "इस टूल को सुरक्षित रूप से सीखें और उपयोग करें",
+        learnSteps: [
+            "उद्देश्य, पैकेज नाम, समर्थित संस्करण और सीमाएँ जानने के लिए पहले Kali का आधिकारिक टूल पेज पढ़ें।",
+            "अलग-थलग लैब में सीखें और केवल अपनी या स्पष्ट अनुमति वाली फ़ाइलों, नमूना डेटा या सिस्टम का उपयोग करें।",
+            "आधिकारिक शुरुआती मार्गदर्शिका और अहानिकर उदाहरणों से शुरू करें; हर टूल के विकल्प अलग होते हैं, इसलिए कमांड को परस्पर उपयोग योग्य न मानें।",
+            "अपने नोट्स और परिणाम सहेजें, निष्कर्षों की सावधानी से समीक्षा करें और काम पूरा होने पर अस्थायी लैब डेटा साफ़ करें।",
+        ],
+        installTitle: "Kali Linux पर इंस्टॉल करें",
+        installDescription: "ये पैकेज-मैनेजर कमांड Kali Linux के लिए हैं। आधिकारिक Kali टूल पेज पर पैकेज नाम और आवश्यकताएँ जाँचें और स्वीकार करने से पहले प्रस्तावित बदलावों की समीक्षा करें।",
+        updateLabel: "पैकेज सूची ताज़ा करें",
+        installLabel: "यह पैकेज इंस्टॉल करें",
+        installNote: "सूचियाँ ताज़ा करने के बाद इंस्टॉल कमांड चलाएँ। पुष्टि से पहले APT प्रस्तावित बदलाव दिखाएगा।",
+    },
+    vi: {
+        learnTitle: "Cách học và sử dụng công cụ an toàn",
+        learnSteps: [
+            "Đọc trang công cụ Kali chính thức trước để xác nhận mục đích, tên gói, phiên bản được hỗ trợ và giới hạn.",
+            "Học trong phòng lab cô lập, chỉ dùng tệp, dữ liệu mẫu hoặc hệ thống thuộc sở hữu của bạn hoặc được cho phép rõ ràng.",
+            "Bắt đầu bằng hướng dẫn chính thức và ví dụ vô hại; tùy chọn khác nhau giữa các công cụ, không nên cho rằng lệnh có thể dùng thay thế.",
+            "Lưu ghi chú và kết quả, xem xét phát hiện cẩn thận, rồi xóa dữ liệu lab tạm thời khi hoàn tất.",
+        ],
+        installTitle: "Cài đặt trên Kali Linux",
+        installDescription: "Các lệnh quản lý gói này dành cho Kali Linux. Xác nhận tên gói và yêu cầu trên trang công cụ Kali chính thức, đồng thời xem lại thay đổi dự kiến trước khi chấp nhận.",
+        updateLabel: "Làm mới danh sách gói",
+        installLabel: "Cài đặt gói này",
+        installNote: "Chạy lệnh cài đặt sau khi làm mới danh sách. APT sẽ hiển thị thay đổi dự kiến để bạn xác nhận.",
+    },
+    ja: {
+        learnTitle: "このツールを安全に学び、使用する方法",
+        learnSteps: [
+            "まず Kali の公式ツールページを読み、目的、パッケージ名、対応バージョン、制限を確認します。",
+            "隔離されたラボで学び、自分が所有する、または明確な許可を得たファイル、サンプルデータ、システムだけを使用します。",
+            "公式の入門ガイドと無害な例から始めます。ツールごとにオプションは異なるため、コマンドを使い回せるとは限りません。",
+            "メモと結果を保存して慎重に確認し、終了後は一時的なラボデータを削除します。",
+        ],
+        installTitle: "Kali Linux にインストール",
+        installDescription: "以下のパッケージ管理コマンドは Kali Linux 用です。Kali の公式ツールページでパッケージ名と要件を確認し、実行前に変更内容を確認してください。",
+        updateLabel: "パッケージ一覧を更新",
+        installLabel: "このパッケージをインストール",
+        installNote: "一覧を更新してからインストールコマンドを実行します。APT は確定前に変更内容を表示します。",
+    },
+    ko: {
+        learnTitle: "이 도구를 안전하게 배우고 사용하는 방법",
+        learnSteps: [
+            "먼저 Kali 공식 도구 페이지에서 목적, 패키지 이름, 지원 버전 및 제한 사항을 확인하세요.",
+            "격리된 실습 환경에서 배우고, 소유하거나 명시적인 허가를 받은 파일·샘플 데이터·시스템만 사용하세요.",
+            "공식 입문 안내와 무해한 예제부터 시작하세요. 도구마다 옵션이 다르므로 명령을 서로 바꿔 쓸 수 있다고 가정하지 마세요.",
+            "메모와 결과를 저장하고 발견 사항을 신중히 검토한 뒤 임시 실습 데이터를 정리하세요.",
+        ],
+        installTitle: "Kali Linux에 설치",
+        installDescription: "다음 패키지 관리자 명령은 Kali Linux용입니다. Kali 공식 도구 페이지에서 패키지 이름과 요구 사항을 확인하고, 승인하기 전에 변경 내용을 검토하세요.",
+        updateLabel: "패키지 목록 새로 고침",
+        installLabel: "이 패키지 설치",
+        installNote: "패키지 목록을 새로 고친 후 설치 명령을 실행하세요. APT가 확인 전에 변경 사항을 표시합니다.",
+    },
+};
+
 const categories = [
     "Reconnaissance", "Resource Development", "Initial Access", "Execution",
     "Persistence", "Privilege Escalation", "Defense Evasion", "Credential Access",
@@ -78,7 +221,7 @@ const categories = [
     "Exfiltration", "Impact", "Forensics", "Services and Other Tools",
 ];
 
-const makeLocale = (labels, categoryNames, categorySummaries, countUnit) => {
+const makeLocale = (labels, categoryNames, categorySummaries, countUnit, locale) => {
     const [
         title, language, description, source, artworkNote, usageGuideTitle,
         usageStepsTitle, safetyTitle, safetyConfirmation, search,
@@ -115,6 +258,7 @@ const makeLocale = (labels, categoryNames, categorySummaries, countUnit) => {
         profileTabs: labels.slice(38, 41),
         profileSummary,
         profileUse,
+        ...toolLearningTranslations[locale],
         usePermission,
         exampleTitle,
         packageTitle,
@@ -399,6 +543,6 @@ export const additionalToolTranslations = Object.fromEntries(
         makeLocale(labels, categoryNames[locale], categorySummaries[locale], {
             es: "herramientas", fr: "outils", zh: "个工具", ar: "أداة",
             hi: "टूल", vi: "công cụ", ja: "個のツール", ko: "개 도구",
-        }[locale]),
+        }[locale], locale),
     ]),
 );

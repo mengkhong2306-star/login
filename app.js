@@ -2,7 +2,11 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { toolIndex } from "./tool-index.js";
 import { safeToolProfiles } from "./tool-profiles.js";
 import { toolImageFiles } from "./tool-image-map.js";
-import { additionalToolTranslations, blackArchTranslations } from "./tool-localizations.js";
+import {
+    additionalToolTranslations,
+    blackArchTranslations,
+    toolLearningTranslations,
+} from "./tool-localizations.js";
 
 const SUPABASE_URL = "https://ddkqqauzhzeqnrvjguxh.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRka3FxYXV6aHplcW5ydmpndXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzOTAsImV4cCI6MjEwODM4NTM5MH0.chVjshiDlQRDoEIdCvTLNCIvPStxKw-7EDEU8LmdYFQ";
@@ -550,6 +554,7 @@ const baseToolTranslations = {
         profileTabs: ["Overview", "Safe example", "Package & links"],
         profileSummary: "What this tool is used for",
         profileUse: "Typical defensive use",
+        ...toolLearningTranslations.en,
         usePermission: "Only run tools on systems and data you own or are explicitly authorized to assess. Commands are examples only; this website never executes them.",
         exampleTitle: "Example command",
         packageTitle: "Kali package",
@@ -597,6 +602,7 @@ const baseToolTranslations = {
         profileTabs: ["ទិដ្ឋភាពទូទៅ", "ឧទាហរណ៍សុវត្ថិភាព", "កញ្ចប់ និងតំណ"],
         profileSummary: "ការប្រើប្រាស់ឧបករណ៍នេះ",
         profileUse: "ការប្រើប្រាស់ផ្នែកការពារទូទៅ",
+        ...toolLearningTranslations.km,
         usePermission: "ដំណើរការឧបករណ៍តែលើប្រព័ន្ធ និងទិន្នន័យដែលជាកម្មសិទ្ធិរបស់អ្នក ឬដែលអ្នកមានការអនុញ្ញាតច្បាស់លាស់ឱ្យវាយតម្លៃប៉ុណ្ណោះ។ ពាក្យបញ្ជាគ្រាន់តែជាឧទាហរណ៍ គេហទំព័រនេះមិនដំណើរការពាក្យបញ្ជាទេ។",
         exampleTitle: "ពាក្យបញ្ជាឧទាហរណ៍",
         packageTitle: "កញ្ចប់ Kali",
@@ -906,6 +912,7 @@ function addCopyableCommand(parent, tool, command, label, note) {
 
 function renderToolProfile(tool) {
     const text = activeToolTranslation();
+    const learning = toolLearningTranslations[toolPageLanguage] || toolLearningTranslations.en;
     toolDetail.replaceChildren();
 
     const back = document.createElement("button");
@@ -1015,6 +1022,14 @@ function renderToolProfile(tool) {
     authorizationNote.className = "status";
     authorizationNote.textContent = text.usePermission;
     overview.append(authorizationNote);
+    appendDetailBlock(overview, text.learnTitle, "");
+    const learningSteps = document.createElement("ol");
+    for (const step of learning.learnSteps) {
+        const item = document.createElement("li");
+        item.textContent = step;
+        learningSteps.append(item);
+    }
+    overview.append(learningSteps);
 
     const exampleIndex = tabNames.indexOf("example");
     if (exampleIndex !== -1) {
@@ -1041,11 +1056,23 @@ function renderToolProfile(tool) {
     }
 
     const packageInfo = panels[tabNames.indexOf("package")];
-    appendDetailBlock(packageInfo, text.profileInstallTitle, "");
+    appendDetailBlock(packageInfo, learning.installTitle, learning.installDescription);
+    const updateLabel = document.createElement("span");
+    updateLabel.className = "tool-command-label";
+    updateLabel.textContent = learning.updateLabel;
+    const updateCommand = document.createElement("code");
+    updateCommand.className = "tool-command";
+    updateCommand.textContent = "sudo apt update";
+    packageInfo.append(updateLabel, updateCommand);
+    const installLabel = document.createElement("span");
+    installLabel.className = "tool-command-label";
+    installLabel.textContent = learning.installLabel;
     const installCommand = document.createElement("code");
     installCommand.className = "tool-command";
     installCommand.textContent = `sudo apt install ${tool.packageName}`;
-    packageInfo.append(installCommand);
+    const installNote = document.createElement("p");
+    installNote.textContent = learning.installNote;
+    packageInfo.append(installLabel, installCommand, installNote);
     appendDetailBlock(packageInfo, text.kaliReference, "");
     const officialLink = document.createElement("a");
     officialLink.href = tool.kaliUrl;

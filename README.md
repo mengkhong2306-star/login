@@ -41,11 +41,14 @@ cards. Its catalog was refreshed from the official Kali tools index on
 2026-10-24 and contains 501 unique tool names, package slugs, and categories;
 every entry has a concise, original high-level purpose summary and a details
 view. The library is public and opens without signing in. Search by name or
-filter by category, choose **View details** to read a purpose summary, and
-follow the official Kali documentation link for authoritative requirements
-and instructions. Private notes and account management remain available only
-to authenticated users. A small selected defensive set has safe local or
-offline examples; other entries have summaries and documentation links only.
+filter by category, then choose **View details** for the purpose summary, safe
+learning workflow, Kali package installation steps, and official
+documentation. The package tab explains refreshing package lists and
+installing the listed Kali package; confirm the package and requirements on
+the official tool page before installation. Private notes and account
+management remain available only to authenticated users. A selected
+defensive set has safe local or offline examples; other tools provide
+documentation links rather than unverified run commands.
 
 Examples are text for learning and are not run by this website. The site does
 not install software, run scans, or confirm authorization. Only test systems
