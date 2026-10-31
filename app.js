@@ -955,6 +955,34 @@ function renderSecurityFieldGuide() {
                 reference.textContent = `${tool.quickStart.label}: ${tool.quickStart.text} ${tool.quickStart.note}`;
                 item.append(reference);
             }
+            const more = document.createElement("details");
+            more.className = "security-guide-more";
+            const moreSummary = document.createElement("summary");
+            moreSummary.textContent = "Installation, explanation & safe use";
+            const moreContent = document.createElement("div");
+            moreContent.className = "security-guide-more-content";
+            const details = document.createElement("p");
+            details.textContent = tool.details;
+            const safeUse = document.createElement("p");
+            safeUse.textContent = `How to learn safely: ${tool.safeUse}`;
+            const install = document.createElement("p");
+            install.textContent = "Installation: Follow the official project instructions for your operating system and version. Check prerequisites, licensing, and integrity instructions before installing. Kali and BlackArch packages may differ from upstream instructions.";
+            const links = document.createElement("div");
+            links.className = "security-guide-links";
+            for (const [label, url] of [
+                ["Official download / project page", tool.installUrl],
+                ["Official documentation and usage", tool.docsUrl],
+            ]) {
+                const link = document.createElement("a");
+                link.href = url;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = label;
+                links.append(link);
+            }
+            moreContent.append(details, safeUse, install, links);
+            more.append(moreSummary, moreContent);
+            item.append(more);
             list.append(item);
         }
         section.append(heading, safety, list);

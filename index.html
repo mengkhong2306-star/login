@@ -205,6 +205,12 @@
         .security-guide-item h3 { margin: 0 0 5px; font-size: 1rem; }
         .security-guide-item p { margin: 0 0 6px; font-size: .9rem; }
         .security-guide-focus { color: var(--muted); }
+        .security-guide-more { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+        .security-guide-more > summary { color: var(--primary); cursor: pointer; font-size: .88rem; font-weight: 600; }
+        .security-guide-more-content { display: grid; gap: 8px; padding-top: 8px; }
+        .security-guide-more-content p { margin: 0; font-size: .9rem; }
+        .security-guide-links { display: flex; flex-wrap: wrap; gap: 12px; }
+        .security-guide-links a { font-size: .88rem; }
         .security-guide-steps { display: grid; gap: 6px; margin: 10px 0 14px; padding-left: 22px; color: var(--muted); font-size: .92rem; }
         .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
         .tool-language label { color: var(--muted); font-size: .9rem; }
@@ -331,7 +337,7 @@
                         </details>
                         <section id="security-field-guide" class="security-field-guide" lang="en" aria-labelledby="security-field-guide-title">
                             <h2 id="security-field-guide-title">Security tools field guide</h2>
-                            <p>Plain-language descriptions and defensive learning goals for commonly used security tools. This English-language guide is educational; it does not provide attack procedures or authorize testing.</p>
+                            <p>Plain-language explanations, safe learning steps, and official installation/documentation links for commonly used security tools. This English-language guide is educational; it does not provide attack procedures or authorize testing.</p>
                             <p>Commands below are limited to local help/version information or opening an application. They do not scan a target or perform an assessment. Command names and installation paths can vary by operating system and version.</p>
                             <ol class="security-guide-steps">
                                 <li>Install from the official publisher and check its documentation for your operating system.</li>

@@ -310,11 +310,261 @@ const safeQuickStarts = {
     "Burp Suite BChecks": { type: "reference", text: "In Burp Suite, open Scanner and review the BChecks documentation.", label: "In-app learning path", note: "BChecks are custom scanner checks, not a standalone command. Test your own check only against an authorized practice application." },
 };
 
+const toolEducation = {
+    Maltego: {
+        details: "Maltego presents information as a graph: entities such as domains or organizations are nodes, and sourced relationships are links. Results depend on the data sources and transforms available to your account, so a link is a research lead rather than proof.",
+        safeUse: "Create a small graph from fictional or organization-owned sample data. Open each source, record where a fact came from, and distinguish confirmed facts from inferred connections.",
+        installUrl: "https://www.maltego.com/downloads/",
+        docsUrl: "https://docs.maltego.com/",
+    },
+    Shodan: {
+        details: "Shodan indexes service banners and metadata collected from internet-connected devices. It complements an asset inventory, but its records can be stale and should not be treated as a live vulnerability confirmation.",
+        safeUse: "Start with Shodan's documentation and search only for assets your organization owns. Compare any result with your own inventory and report unexpected exposure to the asset owner.",
+        installUrl: "https://cli.shodan.io/",
+        docsUrl: "https://help.shodan.io/",
+    },
+    theHarvester: {
+        details: "theHarvester queries supported public sources and organizes domain-related information such as hostnames and contact addresses. Available results depend on source access, configuration, and provider limits.",
+        safeUse: "Use a domain explicitly assigned to your organization, review each result's source, and remove personal data that is not needed for the inventory.",
+        installUrl: "https://github.com/laramies/theHarvester",
+        docsUrl: "https://github.com/laramies/theHarvester/wiki",
+    },
+    Amass: {
+        details: "Amass helps map an organization's external domain and DNS footprint by combining passive sources and other supported discovery methods. It is an inventory aid, not proof that every discovered name is in scope or active.",
+        safeUse: "Read the project scope and data-source documentation first. Work from an approved organization-owned domain, begin with passive inventory concepts, and have an owner confirm discovered assets.",
+        installUrl: "https://github.com/owasp-amass/amass/blob/master/doc/user_guide.md",
+        docsUrl: "https://owasp.org/www-project-amass/",
+    },
+    SpiderFoot: {
+        details: "SpiderFoot automates collection and correlation across many data sources, then presents observations and relationships for review. Integrations may require accounts or API keys; protect those secrets and assess source reliability.",
+        safeUse: "Review enabled modules before a run, use an approved organization-owned seed, avoid collecting unnecessary personal information, and treat correlations as unverified leads.",
+        installUrl: "https://github.com/smicallef/spiderfoot",
+        docsUrl: "https://www.spiderfoot.net/documentation/",
+    },
+    Nmap: {
+        details: "Nmap identifies reachable hosts and describes network services using configurable probes. Its output supports asset inventory and service-owner verification; scan results can vary with network controls and timing.",
+        safeUse: "Learn the output format with the built-in help and published sample data. For practical testing, use a private virtual lab you control and obtain written approval before assessing any other network.",
+        installUrl: "https://nmap.org/book/install.html",
+        docsUrl: "https://nmap.org/book/man.html",
+    },
+    Masscan: {
+        details: "Masscan is optimized for high-rate port discovery. Its speed can generate substantial traffic, trigger alerts, or affect fragile equipment, so it requires careful rate planning and an explicitly authorized scope.",
+        safeUse: "Begin with the source documentation and a small isolated virtual network. Study rate limits and packet impact; do not scan public address ranges or networks you do not administer.",
+        installUrl: "https://github.com/robertdavidgraham/masscan",
+        docsUrl: "https://github.com/robertdavidgraham/masscan/blob/master/README.md",
+    },
+    Wireshark: {
+        details: "Wireshark decodes packet captures into protocol layers and fields. It is useful for troubleshooting and defensive investigations, but captures can contain credentials or personal data if traffic is unencrypted.",
+        safeUse: "Open a provided sample capture, select a packet, and follow its protocol layers. Prefer offline sample files; limit live capture to an interface and network you are authorized to monitor.",
+        installUrl: "https://www.wireshark.org/download.html",
+        docsUrl: "https://www.wireshark.org/docs/",
+    },
+    Nessus: {
+        details: "Nessus checks selected assets against vulnerability and configuration tests and produces findings for review. The scanner can affect systems; findings may be false positives, and scan profiles determine impact.",
+        safeUse: "Read the setup and scan policy documentation, obtain written approval, and practice against a disposable lab target. Review credentials, scan scope, rate, and maintenance window with the system owner.",
+        installUrl: "https://www.tenable.com/downloads/nessus",
+        docsUrl: "https://docs.tenable.com/nessus/",
+    },
+    "OpenVAS / Greenbone": {
+        details: "Greenbone's vulnerability-management platform coordinates feeds, scan configurations, results, and remediation reports. It requires a manager/scanner setup and current vulnerability data; an alert is a lead to validate.",
+        safeUse: "Follow the official installation guide for a supported lab setup. First learn how scan configurations and reports work, then have an owner approve a narrowly scoped test and safe schedule.",
+        installUrl: "https://greenbone.github.io/docs/latest/",
+        docsUrl: "https://greenbone.github.io/docs/latest/",
+    },
+    RustScan: {
+        details: "RustScan performs fast port discovery and can pass results to Nmap for service identification. Fast discovery is not a full vulnerability assessment and can still create load or trigger monitoring.",
+        safeUse: "Read its scope and rate guidance, then compare help output with a small local virtual lab. Do not direct it at public or third-party systems.",
+        installUrl: "https://github.com/RustScan/RustScan",
+        docsUrl: "https://github.com/RustScan/RustScan#usage",
+    },
+    "Burp Suite (Community / Professional)": {
+        details: "Burp Suite is an intercepting proxy for inspecting how a browser and web application exchange HTTP messages. Community and Professional editions differ in features; automated checks can alter application state.",
+        safeUse: "Use a dedicated browser profile and a deliberately vulnerable local training app. Learn to read requests and responses before changing anything, and keep proxy scope limited to that lab.",
+        installUrl: "https://portswigger.net/burp/releases",
+        docsUrl: "https://portswigger.net/burp/documentation",
+    },
+    "OWASP ZAP": {
+        details: "ZAP is an open-source proxy and dynamic application testing tool. It can passively observe requests and can also send active test traffic, so the mode and target scope matter.",
+        safeUse: "Install the desktop application, use its learning materials, and start with a local practice app and passive observations. Do not use automated active scans on a public site without explicit permission.",
+        installUrl: "https://www.zaproxy.org/download/",
+        docsUrl: "https://www.zaproxy.org/getting-started/",
+    },
+    sqlmap: {
+        details: "sqlmap automates SQL-injection testing against web requests and can retrieve or alter data when misused. Its capabilities make it appropriate only for a specifically authorized test application.",
+        safeUse: "Learn the underlying issue using a deliberately vulnerable local training app and its remediation lesson. Focus on parameterized queries, least-privilege database accounts, and safe report interpretation.",
+        installUrl: "https://github.com/sqlmapproject/sqlmap",
+        docsUrl: "https://github.com/sqlmapproject/sqlmap/wiki",
+    },
+    ffuf: {
+        details: "ffuf sends many controlled HTTP requests to compare application responses. It is commonly used for content discovery and input testing, but request volume can burden services and reveal non-public paths.",
+        safeUse: "Use a local training service, synthetic wordlists, and conservative settings described in the official documentation. Learn to recognize response differences without testing external sites.",
+        installUrl: "https://github.com/ffuf/ffuf",
+        docsUrl: "https://github.com/ffuf/ffuf#usage",
+    },
+    Gobuster: {
+        details: "Gobuster checks candidate names or paths against a specified service to help maintain an approved asset inventory. It generates traffic and may expose paths that should remain private.",
+        safeUse: "Practice against a local web server you control and a small synthetic wordlist. Review the mode and impact before use, and never enumerate third-party domains without written authorization.",
+        installUrl: "https://github.com/OJ/gobuster",
+        docsUrl: "https://github.com/OJ/gobuster#usage",
+    },
+    Nuclei: {
+        details: "Nuclei runs declarative templates that check for known exposures and configuration patterns. Templates are code-like checks; inspect their behavior and source before running them.",
+        safeUse: "Read the template documentation and inspect each selected template. Use a local test application, review logs and request impact, and verify any alert with the application owner.",
+        installUrl: "https://docs.projectdiscovery.io/tools/nuclei/install",
+        docsUrl: "https://docs.projectdiscovery.io/tools/nuclei/overview",
+    },
+    Postman: {
+        details: "Postman organizes API requests, environments, tests, and documentation. Environment variables can contain tokens, so keep secrets out of shared workspaces and exported collections.",
+        safeUse: "Import a training collection or use a local API, inspect method, URL, headers, and body before sending, and use synthetic credentials and data.",
+        installUrl: "https://www.postman.com/downloads/",
+        docsUrl: "https://learning.postman.com/docs/getting-started/overview/",
+    },
+    Kiterunner: {
+        details: "Kiterunner helps assess API route coverage by comparing candidate routes with an approved API. Discovery results should be reconciled with the API specification and service owner.",
+        safeUse: "Start with the project's documentation and an intentionally local test API. Keep route discovery within written scope and use low-impact lab settings.",
+        installUrl: "https://github.com/assetnote/kiterunner",
+        docsUrl: "https://github.com/assetnote/kiterunner#usage",
+    },
+    BloodHound: {
+        details: "BloodHound models identity and permission relationships as a graph so defenders can locate excessive privileges and risky trust paths. Data collection and graph exports are sensitive and must be protected.",
+        safeUse: "Use the vendor's community lab materials and synthetic identities in an isolated directory. Focus on explaining a permission path and recommending least-privilege remediation.",
+        installUrl: "https://github.com/SpecterOps/BloodHound",
+        docsUrl: "https://bloodhound.specterops.io/",
+    },
+    Impacket: {
+        details: "Impacket is a Python library and collection of protocol utilities. It supports legitimate protocol analysis and administration but also includes powerful remote-access and credential-related capabilities.",
+        safeUse: "Study protocol documentation and benign help output in a disposable lab. Use synthetic accounts, avoid credential-dumping functions, and monitor the corresponding defensive logs.",
+        installUrl: "https://github.com/fortra/impacket",
+        docsUrl: "https://github.com/fortra/impacket/tree/master/examples",
+    },
+    "NetExec (formerly CrackMapExec)": {
+        details: "NetExec is a multi-protocol assessment framework for reviewing enterprise services. Some features can attempt authentication or execute actions remotely, so misuse can cause lockouts or compromise.",
+        safeUse: "Use only in an isolated directory lab with test accounts and written scope. For learning, review documentation and defensive event logs; do not run password-spraying or remote-execution workflows.",
+        installUrl: "https://www.netexec.wiki/getting-started/installation",
+        docsUrl: "https://www.netexec.wiki/",
+    },
+    Responder: {
+        details: "Responder demonstrates risks in legacy local name-resolution protocols by answering network requests. Its normal operation can capture authentication challenge material from nearby systems.",
+        safeUse: "Do not run it on a shared or production network. Study the protocol and defenses from documentation or a disconnected lab with synthetic machines; focus on disabling legacy resolution and monitoring.",
+        installUrl: "https://github.com/lgandx/Responder",
+        docsUrl: "https://github.com/lgandx/Responder/blob/master/README.md",
+    },
+    "Metasploit Framework": {
+        details: "Metasploit is a modular validation framework containing auxiliary checks, exploit modules, payloads, and post-access features. Modules can change or interrupt target systems.",
+        safeUse: "Use the official training course and intentionally vulnerable, isolated VMs. Learn vulnerability identification and defensive evidence first; do not use exploit or payload modules against real systems.",
+        installUrl: "https://docs.metasploit.com/docs/using-metasploit/getting-started/nightly-installers.html",
+        docsUrl: "https://docs.metasploit.com/",
+    },
+    BeEF: {
+        details: "BeEF is a browser-security research framework that demonstrates how unsafe browser content and trust decisions can create risk. A hooked browser can expose sensitive information and affect connected environments.",
+        safeUse: "Use only a disconnected training VM and a browser profile created for that lab. Study browser protections and detection; never send hook content to a real user or device.",
+        installUrl: "https://github.com/beefproject/beef",
+        docsUrl: "https://github.com/beefproject/beef/wiki",
+    },
+    Sliver: {
+        details: "Sliver is a red-team command-and-control framework for authorized emulation. Its implant and session capabilities are highly sensitive and can provide remote control of a machine.",
+        safeUse: "Do not deploy agents or listeners on public networks. Learn with vendor documentation and defensive telemetry in a disconnected, disposable lab under a formal written plan.",
+        installUrl: "https://github.com/BishopFox/sliver",
+        docsUrl: "https://sliver.sh/docs",
+    },
+    "Cobalt Strike": {
+        details: "Cobalt Strike is a licensed threat-emulation platform for professional security teams. It can control test endpoints and is frequently abused, so licensing, authorization, and isolation are essential.",
+        safeUse: "Follow the vendor's legal use policy and training. Work only in a dedicated isolated environment with written authorization and a defensive objective; never distribute or run unlicensed copies.",
+        installUrl: "https://www.cobaltstrike.com/",
+        docsUrl: "https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/",
+    },
+    "PEASS-ng (LinPEAS / WinPEAS)": {
+        details: "PEASS-ng provides local system-audit scripts that flag permissions, configuration, and software conditions for review. Findings are indicators, not proof that a system is vulnerable.",
+        safeUse: "Read the script and documentation before running it, and use a disposable VM you own. Prefer recording configuration findings and applying documented hardening fixes over attempting privilege escalation.",
+        installUrl: "https://github.com/peass-ng/PEASS-ng",
+        docsUrl: "https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS",
+    },
+    "GTFOBins / LOLBAS": {
+        details: "GTFOBins and LOLBAS are reference catalogs describing security-relevant behavior of built-in Unix and Windows programs. They are documentation, not installable scanners.",
+        safeUse: "Use the entries to identify risky permissions and execution policies, then consult platform documentation and improve controls. Avoid copying abuse recipes into production systems.",
+        installUrl: "https://gtfobins.github.io/",
+        docsUrl: "https://lolbas-project.github.io/",
+    },
+    Mimikatz: {
+        details: "Mimikatz is a Windows security research tool associated with sensitive authentication material. Running it can expose credentials and trigger endpoint protections; even test output must be treated as secret.",
+        safeUse: "Do not run it on a personal, workplace, or production computer. Learn credential protections and detection from official Windows security documentation or a purpose-built isolated training lab with synthetic identities.",
+        installUrl: "https://github.com/gentilkiwi/mimikatz",
+        docsUrl: "https://github.com/gentilkiwi/mimikatz/wiki",
+    },
+    Hashcat: {
+        details: "Hashcat performs offline password recovery against supplied hash data and can consume substantial GPU resources. Hashes remain sensitive data, even when they are not plaintext passwords.",
+        safeUse: "Use only synthetic hashes generated for a password-policy lesson. Protect input and result files, set resource limits for your hardware, and focus on strengthening password storage and user guidance.",
+        installUrl: "https://hashcat.net/wiki/doku.php?id=download",
+        docsUrl: "https://hashcat.net/wiki/",
+    },
+    "John the Ripper": {
+        details: "John the Ripper audits password strength offline across a range of hash and file formats. It may use substantial CPU resources, and input hashes should be treated as confidential.",
+        safeUse: "Use a synthetic sample from a password-security lesson. Learn how to identify the format and interpret the report without using real account hashes or attempting online logins.",
+        installUrl: "https://www.openwall.com/john/",
+        docsUrl: "https://www.openwall.com/john/doc/",
+    },
+    Hydra: {
+        details: "Hydra attempts authentication against network services and can lock accounts, violate acceptable-use rules, or expose passwords. This guide intentionally does not provide login-guessing instructions.",
+        safeUse: "Do not test live accounts. Learn defenses instead: review MFA, throttling, lockout policy, password-reset controls, and authentication logs in your own application.",
+        installUrl: "https://github.com/vanhauser-thc/thc-hydra",
+        docsUrl: "https://github.com/vanhauser-thc/thc-hydra",
+    },
+    "Aircrack-ng": {
+        details: "Aircrack-ng is a suite for wireless network assessment and capture analysis. Some functions can disrupt radio communications or attempt to recover wireless credentials.",
+        safeUse: "Study Wi-Fi security concepts and sample captures first. Any practical lab must use your own isolated access point, test clients, and an RF environment where you have permission to transmit.",
+        installUrl: "https://www.aircrack-ng.org/doku.php?id=install_aircrack",
+        docsUrl: "https://www.aircrack-ng.org/doku.php",
+    },
+    Kismet: {
+        details: "Kismet passively monitors wireless and other supported radio sources for network inventory and troubleshooting. Captures can reveal private device identifiers and location-related information.",
+        safeUse: "Begin with the install and configuration documentation. Monitor only your own lab equipment, minimize retained data, and avoid collecting neighbors' wireless traffic.",
+        installUrl: "https://www.kismetwireless.net/docs/readme/installing_kismet/",
+        docsUrl: "https://www.kismetwireless.net/docs/",
+    },
+    Wifite: {
+        details: "Wifite automates sequences of wireless checks by coordinating other installed tools. Automation can make disruptive actions easier to trigger and does not replace understanding each component.",
+        safeUse: "Do not use automated checks against nearby networks. Learn the component tools separately with documentation and your own isolated access point; keep the RF lab controlled and authorized.",
+        installUrl: "https://github.com/derv82/wifite2",
+        docsUrl: "https://github.com/derv82/wifite2/wiki",
+    },
+    Prowler: {
+        details: "Prowler evaluates cloud configuration against security benchmarks and provider guidance. It uses cloud identity permissions, and reports can contain sensitive account and resource details.",
+        safeUse: "Follow the least-privilege audit setup in a dedicated sandbox account. Review requested permissions, store reports securely, and turn each verified finding into a reviewed configuration fix.",
+        installUrl: "https://docs.prowler.com/projects/prowler-open-source/en/latest/",
+        docsUrl: "https://docs.prowler.com/",
+    },
+    Pacu: {
+        details: "Pacu is an AWS security research framework with modules that can inspect or change cloud resources. Some operations can expose data or create persistent changes, so it is inappropriate for casual use.",
+        safeUse: "Use a disposable AWS sandbox with synthetic resources and narrowly scoped temporary credentials. Study AWS IAM and audit logging first; do not use modules that access, alter, or persist in real accounts.",
+        installUrl: "https://github.com/RhinoSecurityLabs/pacu",
+        docsUrl: "https://github.com/RhinoSecurityLabs/pacu/wiki",
+    },
+    ScoutSuite: {
+        details: "ScoutSuite collects cloud configuration through provider APIs and summarizes security posture. Reports may contain account identifiers, resource names, and configuration details that must be protected.",
+        safeUse: "Use a sandbox account with a reviewed read-only audit role. Learn provider permissions, protect generated reports, and validate findings before changing any resource.",
+        installUrl: "https://github.com/nccgroup/ScoutSuite",
+        docsUrl: "https://github.com/nccgroup/ScoutSuite/wiki",
+    },
+    PentestGPT: {
+        details: "PentestGPT is an experimental AI assistant project for organizing security-testing concepts. AI output can be inaccurate, unsafe, or outdated; sending data to a hosted model may disclose it.",
+        safeUse: "Use fictional scenarios and sanitized notes only. Ask it to explain security concepts or remediation, independently verify each claim, and do not request or follow exploit instructions.",
+        installUrl: "https://github.com/GreyDGL/PentestGPT",
+        docsUrl: "https://github.com/GreyDGL/PentestGPT",
+    },
+    "Burp Suite BChecks": {
+        details: "BChecks are Burp Scanner rules written in a constrained format to check application behavior. They are customizable checks, not an AI feature or a separate scanner installation.",
+        safeUse: "Read the format documentation and inspect a check before enabling it. Create a benign check for an expected response in a local training app and validate the result manually.",
+        installUrl: "https://portswigger.net/burp/documentation/scanner/bchecks",
+        docsUrl: "https://portswigger.net/burp/documentation/scanner/bchecks",
+    },
+};
+
 export const securityFieldGuide = securityFieldGuideData.map((category) => ({
     ...category,
     tools: category.tools.map((tool) => {
         const quickStart = safeQuickStarts[tool.name];
-        if (!quickStart) throw new Error(`Missing safe quick start for ${tool.name}`);
-        return { ...tool, quickStart };
+        const education = toolEducation[tool.name];
+        if (!quickStart || !education) throw new Error(`Missing learning resources for ${tool.name}`);
+        return { ...tool, quickStart, ...education };
     }),
 }));

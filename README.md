@@ -74,10 +74,11 @@ with high-level descriptions and defensive learning focuses for 41 tools across
 10 categories, including reconnaissance, network and web assessment, enterprise
 security, threat emulation, password and wireless auditing, cloud security, and
 AI. Each entry includes a safe help/version command, a desktop-app launch hint,
-or a documentation starting point, with an explanation of what it does. The
-guide includes category-specific safety boundaries and a beginner practice
-checklist; it provides no attack procedures and does not change either
-distribution's package list.
+or a documentation starting point, with an explanation of what it does. Expand
+an entry for a detailed explanation, a safe learning workflow, and official
+installation and usage links. The guide includes category-specific safety
+boundaries and a beginner practice checklist; it provides no attack procedures
+and does not change either distribution's package list.
 `tool-image-map.js` maps 501 catalog entries to 321 distinct, transparent
 2048×2048 WebP exports of the supplied SVG artwork. Tools that share a source
 logo share its export, and tools without a specific image use the generic
