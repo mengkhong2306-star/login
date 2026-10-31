@@ -2,6 +2,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { toolIndex } from "./tool-index.js";
 import { safeToolProfiles } from "./tool-profiles.js";
 import { toolImageFiles } from "./tool-image-map.js";
+import { additionalToolTranslations } from "./tool-localizations.js";
 
 const SUPABASE_URL = "https://ddkqqauzhzeqnrvjguxh.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRka3FxYXV6aHplcW5ydmpndXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzOTAsImV4cCI6MjEwODM4NTM5MH0.chVjshiDlQRDoEIdCvTLNCIvPStxKw-7EDEU8LmdYFQ";
@@ -510,11 +511,7 @@ const toolCatalog = toolIndex.map((tool) => {
         imageFile,
     };
 });
-const toolCopyFeedback = {
-    en: (name) => `${name} example copied.`,
-    km: (name) => `បានចម្លងឧទាហរណ៍ ${name}។`,
-};
-const toolTranslations = {
+const baseToolTranslations = {
     en: {
         title: "Kali tool library",
         language: "Language",
@@ -559,6 +556,8 @@ const toolTranslations = {
         profileInstallTitle: "Install command",
         kaliReference: "Kali tool profile",
         copy: "Copy",
+        copyFeedback: "{name} example copied.",
+        exampleNote: "Use only in an isolated lab with explicit authorization.",
     },
     km: {
         title: "បណ្ណាល័យឧបករណ៍ Kali",
@@ -604,8 +603,11 @@ const toolTranslations = {
         profileInstallTitle: "ពាក្យបញ្ជាដំឡើង",
         kaliReference: "ព័ត៌មានឧបករណ៍ Kali",
         copy: "ចម្លង",
+        copyFeedback: "បានចម្លងឧទាហរណ៍ {name}។",
+        exampleNote: "ប្រើតែក្នុងមន្ទីរពិសោធន៍ដាច់ដោយឡែកដែលមានការអនុញ្ញាតច្បាស់លាស់។",
     },
 };
+const toolTranslations = { ...baseToolTranslations, ...additionalToolTranslations };
 
 const toolIconShapes = {
     nmap: [
@@ -698,7 +700,9 @@ function createToolIcon(iconName, large = false, imageFile = null) {
     return wrapper;
 }
 
-let toolPageLanguage = localStorage.getItem("mengkhong-tool-language") === "km" ? "km" : "en";
+const supportedToolLanguages = new Set(Object.keys(toolTranslations));
+const savedToolLanguage = localStorage.getItem("mengkhong-tool-language");
+let toolPageLanguage = supportedToolLanguages.has(savedToolLanguage) ? savedToolLanguage : "en";
 toolLanguage.value = toolPageLanguage;
 let activeToolProfile = null;
 const toolCategoryNamesKm = {
@@ -721,7 +725,15 @@ const toolCategoryNamesKm = {
 };
 
 function localizedToolCategory(category) {
-    return toolPageLanguage === "km" ? toolCategoryNamesKm[category] || category : category;
+    return activeToolTranslation().categoryNames?.[category]
+        || (toolPageLanguage === "km" ? toolCategoryNamesKm[category] : category)
+        || category;
+}
+
+function localizedToolSummary(tool) {
+    if (toolPageLanguage === "en") return tool.summary;
+    if (toolPageLanguage === "km") return tool.summaryKm;
+    return activeToolTranslation().categorySummaries?.[tool.category] || tool.summary;
 }
 
 for (const category of toolCategoryOrder.filter((name) => toolCatalog.some((tool) => tool.category === name))) {
@@ -737,6 +749,7 @@ function activeToolTranslation() {
 function localizeToolLibrary() {
     const text = activeToolTranslation();
     document.querySelector("#tool-library").lang = toolPageLanguage;
+    document.querySelector("#tool-library").dir = toolPageLanguage === "ar" ? "rtl" : "ltr";
     document.querySelector("#tool-library-title").textContent = text.title;
     document.querySelector("#tool-language-label").textContent = text.language;
     document.querySelector("#tool-library-description").textContent = text.description;
@@ -875,7 +888,7 @@ function addCopyableCommand(parent, tool, command, label, note) {
     button.addEventListener("click", async () => {
         try {
             await navigator.clipboard.writeText(command);
-            showStatus(toolCopyFeedback[toolPageLanguage](tool.name));
+            showStatus(activeToolTranslation().copyFeedback.replace("{name}", tool.name));
         } catch (error) {
             console.error(`Could not copy ${tool.name} example:`, error);
             showStatus(activeToolTranslation().copiedFallback, "error");
@@ -911,12 +924,12 @@ function renderToolProfile(tool) {
     const heading = document.createElement("h2");
     heading.textContent = tool.name;
     const subtitle = document.createElement("p");
-    subtitle.textContent = toolPageLanguage === "km" ? tool.summaryKm : tool.summary;
+    subtitle.textContent = localizedToolSummary(tool);
     const meta = document.createElement("div");
     meta.className = "tool-meta";
     for (const label of [
-        toolPageLanguage === "km" ? tool.categoryKm : tool.category,
-        `${toolPageLanguage === "km" ? text.packageTitle : "Package"}: ${tool.packageName}`,
+        localizedToolCategory(tool.category),
+        `${text.packageTitle}: ${tool.packageName}`,
     ]) {
         const badge = document.createElement("span");
         badge.className = "tool-category";
@@ -984,11 +997,11 @@ function renderToolProfile(tool) {
     appendDetailBlock(
         overview,
         text.profileSummary,
-        toolPageLanguage === "km" ? tool.summaryKm : tool.summary,
+        localizedToolSummary(tool),
     );
     const useDescription = toolPageLanguage === "km"
         ? tool.commandDescriptionKm || tool.commandDescription
-        : tool.commandDescription;
+    : toolPageLanguage === "en" ? tool.commandDescription : undefined;
     if (useDescription) {
         appendDetailBlock(overview, text.profileUse, useDescription);
     }
@@ -1011,10 +1024,12 @@ function renderToolProfile(tool) {
                 example,
                 tool,
                 exampleItem.command,
-                toolPageLanguage === "km" ? exampleItem.labelKm || exampleItem.label : exampleItem.label,
+                toolPageLanguage === "km"
+                    ? exampleItem.labelKm || exampleItem.label
+                    : toolPageLanguage === "en" ? exampleItem.label : text.exampleTitle,
                 toolPageLanguage === "km"
                     ? exampleItem.descriptionKm || exampleItem.description
-                    : exampleItem.description,
+                    : toolPageLanguage === "en" ? exampleItem.description : text.exampleNote,
             );
         }
     }

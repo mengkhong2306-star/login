@@ -14,7 +14,8 @@ is no Flask server to run.
 - Public, searchable directory of Kali tool names and categories with links to official documentation
 - Sign-in required only for private notes and account management
 - Dashboard tabs for Notes and Account
-- English and Khmer translations for the tool library, using Noto Sans Khmer
+- English, Khmer, Spanish, French, Simplified Chinese, Arabic, Hindi, Thai,
+  Vietnamese, Japanese, and Korean translations for the public tool library
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
 
@@ -53,6 +54,9 @@ and avoid production systems and real sensitive data. Do not treat a summary
 as a substitute for the tool's official documentation.
 
 The directory does not bundle tool software or copy Kali descriptions.
+Purpose summaries remain concise and high-level; the additional languages use
+localized category-level summaries, while English and Khmer retain the
+existing grouped-purpose summaries.
 `tool-image-map.js` matches the SVG files supplied in
 `image/Kali Tools _ Kali Linux Tools` to tool names and categories; entries
 without a specific image use Kali's generic missing-icon asset. The supplied
