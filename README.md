@@ -57,13 +57,14 @@ The directory does not bundle tool software or copy Kali descriptions.
 Purpose summaries remain concise and high-level; the additional languages use
 localized category-level summaries, while English and Khmer retain the
 existing grouped-purpose summaries.
-`tool-image-map.js` matches the SVG files supplied in
-`image/Kali Tools _ Kali Linux Tools` to tool names and categories; entries
-without a specific image use Kali's generic missing-icon asset. The supplied
-image directory is left unchanged. The directory does not execute commands or
-copy Kali's descriptions or page design. Tool artwork is used to identify
-links to the respective official documentation; NiNJa GO is independent and
-is not affiliated with Kali Linux.
+`tool-image-map.js` maps 501 catalog entries to 321 distinct, transparent
+2048×2048 WebP exports of the supplied SVG artwork. Tools that share a source
+logo share its export, and tools without a specific image use the generic
+missing-icon artwork. WebP keeps the 2K transparent images substantially
+smaller than PNG exports. The original image directory is left unchanged. The
+directory does not execute commands or copy Kali's descriptions or page
+design. Tool artwork is used to identify links to the respective official
+documentation; NiNJa GO is independent and is not affiliated with Kali Linux.
 
 ## Data migration
 

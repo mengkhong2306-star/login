@@ -399,7 +399,7 @@ const toolCount = document.querySelector("#tool-count");
 const toolLanguage = document.querySelector("#tool-language");
 const toolLibraryHome = document.querySelector("#tool-library-home");
 const toolDetail = document.querySelector("#tool-detail");
-const toolImageDirectory = "./image/Kali%20Tools%20_%20Kali%20Linux%20Tools/";
+const toolImageDirectory = "./image/tool-logos-2k/";
 const toolPurposeSummaries = {
     en: {
         "network-protocol": "Checks or analyzes network protocols and connected devices for troubleshooting and authorized inventory.",
@@ -672,7 +672,7 @@ function createToolIcon(iconName, large = false, imageFile = null) {
 
     if (imageFile) {
         const image = document.createElement("img");
-        image.src = `${toolImageDirectory}${encodeURIComponent(imageFile)}`;
+        image.src = `${toolImageDirectory}${encodeURIComponent(imageFile.replace(/\.svg$/i, ".webp"))}`;
         image.alt = "";
         image.loading = "lazy";
         image.decoding = "async";
