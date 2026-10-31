@@ -10,6 +10,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const statusElement = document.querySelector("#status");
 const authCard = document.querySelector("#auth-card");
 const dashboard = document.querySelector("#dashboard");
+const publicTools = document.querySelector("#public-tools");
+const accountNavigation = document.querySelector("#account-navigation");
 const authViews = [...document.querySelectorAll(".auth-view")];
 let currentUser = null;
 
@@ -24,13 +26,29 @@ function clearStatus() {
     statusElement.hidden = true;
 }
 
+function updateAccountNavigation() {
+    accountNavigation.textContent = publicTools.hidden
+        ? "Kali tools"
+        : currentUser ? "My notes" : "Sign in for notes";
+}
+
+function showPublicTools() {
+    authCard.hidden = true;
+    dashboard.hidden = true;
+    publicTools.hidden = false;
+    clearStatus();
+    updateAccountNavigation();
+}
+
 function showAuthView(name) {
     authViews.forEach((view) => {
         view.hidden = view.id !== `auth-${name}`;
     });
     authCard.hidden = false;
     dashboard.hidden = true;
+    publicTools.hidden = true;
     clearStatus();
+    updateAccountNavigation();
 }
 
 function showError(error) {
@@ -190,6 +208,8 @@ async function showDashboard(user) {
     currentUser = user;
     authCard.hidden = true;
     dashboard.hidden = false;
+    publicTools.hidden = true;
+    updateAccountNavigation();
     document.querySelector("#account-email").textContent = user.email || "";
 
     const { data: profile, error } = await supabase
@@ -235,6 +255,16 @@ for (const [index, tab] of dashboardTabs.entries()) {
         dashboardTabs[selectedIndex].click();
     });
 }
+
+accountNavigation.addEventListener("click", () => {
+    if (publicTools.hidden) {
+        showPublicTools();
+    } else if (currentUser) {
+        showDashboard(currentUser).catch(showError);
+    } else {
+        showAuthView("login");
+    }
+});
 
 document.querySelectorAll("[data-view]").forEach((link) => {
     link.addEventListener("click", () => showAuthView(link.dataset.view));
@@ -357,7 +387,7 @@ document.querySelector("#sign-out").addEventListener("click", (event) => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
         currentUser = null;
-        showAuthView("login");
+        showPublicTools();
         showStatus("You are signed out.");
     });
 });
@@ -1036,24 +1066,32 @@ themeToggle.addEventListener("click", () => {
 });
 
 const recoveryInUrl = new URLSearchParams(window.location.hash.slice(1)).get("type") === "recovery";
-if (recoveryInUrl) showAuthView("reset");
+const authRoute = window.location.hash.slice(1);
+if (recoveryInUrl) {
+    showAuthView("reset");
+} else if (["login", "register", "forgot"].includes(authRoute)) {
+    showAuthView(authRoute);
+} else {
+    showPublicTools();
+}
 
 supabase.auth.onAuthStateChange((event, session) => {
     if (event === "PASSWORD_RECOVERY") {
         showAuthView("reset");
     } else if (event === "SIGNED_OUT") {
         currentUser = null;
-        showAuthView("login");
+        showPublicTools();
     }
 });
 
 const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
 if (sessionError) {
     showError(sessionError);
-} else if (sessionData.session && !recoveryInUrl) {
-    try {
-        await showDashboard(sessionData.session.user);
-    } catch (error) {
-        showError(error);
-    }
+} else if (
+    sessionData.session
+    && !recoveryInUrl
+    && !["login", "register", "forgot"].includes(authRoute)
+) {
+    currentUser = sessionData.session.user;
+    showPublicTools();
 }

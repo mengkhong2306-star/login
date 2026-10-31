@@ -16,7 +16,7 @@
             color: #263247;
             background: #edf3fa;
             --surface: #fff;
-            --muted: #68778b;
+            --muted: #066aed;
             --border: #dce5ef;
             --input: #f4f7fa;
             --primary: #169fce;
@@ -227,13 +227,71 @@
                 <img class="logo" src="./ninja-go-logo.svg" alt="">
                 <span class="brand-name">NiNJa GO</span>
             </a>
-            <button id="theme-toggle" class="secondary" type="button" aria-label="Toggle color theme">Dark mode</button>
+            <div class="tool-actions">
+                <button id="account-navigation" class="secondary" type="button">Sign in for notes</button>
+                <button id="theme-toggle" class="secondary" type="button" aria-label="Toggle color theme">Dark mode</button>
+            </div>
         </header>
 
         <main>
             <p id="status" class="status" role="status" aria-live="polite" hidden></p>
 
-            <section id="auth-card" class="card" aria-labelledby="auth-title">
+            <section id="public-tools" class="card dashboard" aria-label="Public Kali tool library">
+                <section id="tool-library" class="tool-library" aria-labelledby="tool-library-title">
+                    <div id="tool-library-home">
+                        <div class="tool-library-heading">
+                            <h1 id="tool-library-title">Kali tool library</h1>
+                            <div class="tool-language">
+                                <label id="tool-language-label" for="tool-language">Language</label>
+                                <select id="tool-language" aria-label="Tool library language">
+                                    <option value="en">English</option>
+                                    <option value="km">ខ្មែរ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p id="tool-library-description" class="intro">Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.</p>
+                        <p><a id="tool-index-source" href="https://www.kali.org/tools/" target="_blank" rel="noopener noreferrer">Open the official Kali tools index</a></p>
+                        <p id="tool-artwork-note" class="intro">Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.</p>
+                        <details id="tool-usage-guide" class="tool-usage-guide">
+                            <summary id="tool-usage-guide-title">How to use this library safely</summary>
+                            <div class="tool-usage-guide-content">
+                                <h3 id="tool-usage-steps-title">How to use the library</h3>
+                                <ol>
+                                    <li id="tool-usage-step-search">Search by tool name or filter by category.</li>
+                                    <li id="tool-usage-step-details">Choose View details to read the purpose and any available safe example.</li>
+                                    <li id="tool-usage-step-docs">Open the official Kali documentation to check requirements, limitations, and current instructions.</li>
+                                    <li id="tool-usage-step-learn">Practice only in an isolated lab that you own or are explicitly authorized to use.</li>
+                                </ol>
+                                <h3 id="tool-safety-title">Permission and protection checklist</h3>
+                                <ul>
+                                    <li id="tool-safety-permission">Get clear permission and define the approved systems and scope before testing.</li>
+                                    <li id="tool-safety-lab">Use a separate, isolated lab; avoid production systems, other people's accounts, and real sensitive data.</li>
+                                    <li id="tool-safety-controls">Keep security controls enabled, use least privilege, and back up important lab data.</li>
+                                    <li id="tool-safety-examples">Examples are informational text only. This site never runs tools, scans targets, or verifies that you have permission.</li>
+                                </ul>
+                                <p id="tool-safety-confirmation" class="status">Use a tool only when you have authorization and can protect the systems and data involved.</p>
+                            </div>
+                        </details>
+                        <div class="tool-filters">
+                            <div class="field">
+                                <label id="tool-search-label" for="tool-search">Search tools</label>
+                                <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
+                            </div>
+                            <div class="field">
+                                <label id="tool-category-label" for="tool-category">Filter by category</label>
+                                <select id="tool-category">
+                                    <option value="">All categories</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p id="tool-count" aria-live="polite"></p>
+                        <div id="tool-cards" class="tool-grid"></div>
+                    </div>
+                    <div id="tool-detail" class="tool-detail" hidden></div>
+                </section>
+            </section>
+
+            <section id="auth-card" class="card" aria-labelledby="auth-title" hidden>
                 <div id="auth-login" class="auth-view">
                     <h1 id="auth-title">Welcome For Hacking Tools</h1>
                     <p class="intro">Sign in to your private notes.</p>
@@ -312,7 +370,6 @@
 
                 <div class="dashboard-tabs" role="tablist" aria-label="Dashboard sections">
                     <button id="dashboard-tab-notes" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-notes" aria-selected="true" tabindex="0" data-dashboard-tab="notes">Notes</button>
-                    <button id="dashboard-tab-tools" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-tools" aria-selected="false" tabindex="-1" data-dashboard-tab="tools">Kali tools</button>
                     <button id="dashboard-tab-account" class="secondary" type="button" role="tab" aria-controls="dashboard-panel-account" aria-selected="false" tabindex="-1" data-dashboard-tab="account">Account</button>
                 </div>
 
@@ -331,61 +388,6 @@
                     <section style="margin-top:24px">
                         <h2>Your notes</h2>
                         <div id="notes" class="note-list"></div>
-                    </section>
-                </section>
-
-                <section id="dashboard-panel-tools" class="dashboard-panel" role="tabpanel" aria-labelledby="dashboard-tab-tools" tabindex="0" hidden>
-                    <section id="tool-library" class="note tool-library" aria-labelledby="tool-library-title">
-                        <div id="tool-library-home">
-                            <div class="tool-library-heading">
-                                <h2 id="tool-library-title">Kali tool library</h2>
-                                <div class="tool-language">
-                                    <label id="tool-language-label" for="tool-language">Language</label>
-                                    <select id="tool-language" aria-label="Tool library language">
-                                        <option value="en">English</option>
-                                        <option value="km">ខ្មែរ</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <p id="tool-library-description" class="intro">Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.</p>
-                            <p><a id="tool-index-source" href="https://www.kali.org/tools/" target="_blank" rel="noopener noreferrer">Open the official Kali tools index</a></p>
-                            <p id="tool-artwork-note" class="intro">Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.</p>
-                            <details id="tool-usage-guide" class="tool-usage-guide">
-                                <summary id="tool-usage-guide-title">How to use this library safely</summary>
-                                <div class="tool-usage-guide-content">
-                                    <h3 id="tool-usage-steps-title">How to use the library</h3>
-                                    <ol>
-                                        <li id="tool-usage-step-search">Search by tool name or filter by category.</li>
-                                        <li id="tool-usage-step-details">Choose View details to read the purpose and any available safe example.</li>
-                                        <li id="tool-usage-step-docs">Open the official Kali documentation to check requirements, limitations, and current instructions.</li>
-                                        <li id="tool-usage-step-learn">Practice only in an isolated lab that you own or are explicitly authorized to use.</li>
-                                    </ol>
-                                    <h3 id="tool-safety-title">Permission and protection checklist</h3>
-                                    <ul>
-                                        <li id="tool-safety-permission">Get clear permission and define the approved systems and scope before testing.</li>
-                                        <li id="tool-safety-lab">Use a separate, isolated lab; avoid production systems, other people's accounts, and real sensitive data.</li>
-                                        <li id="tool-safety-controls">Keep security controls enabled, use least privilege, and back up important lab data.</li>
-                                        <li id="tool-safety-examples">Examples are informational text only. This site never runs tools, scans targets, or verifies that you have permission.</li>
-                                    </ul>
-                                    <p id="tool-safety-confirmation" class="status">Use a tool only when you have authorization and can protect the systems and data involved.</p>
-                                </div>
-                            </details>
-                            <div class="tool-filters">
-                                <div class="field">
-                                    <label id="tool-search-label" for="tool-search">Search tools</label>
-                                    <input id="tool-search" type="search" placeholder="Search by name, package, or topic">
-                                </div>
-                                <div class="field">
-                                    <label id="tool-category-label" for="tool-category">Filter by category</label>
-                                    <select id="tool-category">
-                                        <option value="">All categories</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <p id="tool-count" aria-live="polite"></p>
-                            <div id="tool-cards" class="tool-grid"></div>
-                        </div>
-                        <div id="tool-detail" class="tool-detail" hidden></div>
                     </section>
                 </section>
 

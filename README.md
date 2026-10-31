@@ -11,8 +11,9 @@ is no Flask server to run.
 - Add and delete private notes
 - Change your username
 - Admin-only account invitations, removal, and sign-in activity
-- Searchable directory of Kali tool names and categories with links to official documentation
-- Dashboard tabs for Notes, Kali tools, and Account
+- Public, searchable directory of Kali tool names and categories with links to official documentation
+- Sign-in required only for private notes and account management
+- Dashboard tabs for Notes and Account
 - English and Khmer translations for the tool library, using Noto Sans Khmer
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
@@ -37,11 +38,13 @@ The tool directory presents Kali tool names in compact, category-grouped
 cards. Its catalog was refreshed from the official Kali tools index on
 2026-10-24 and contains 501 unique tool names, package slugs, and categories;
 every entry has a concise, original high-level purpose summary and a details
-view. To use it, open the **Kali tools** dashboard tab, search by name or
+view. The library is public and opens without signing in. Search by name or
 filter by category, choose **View details** to read a purpose summary, and
 follow the official Kali documentation link for authoritative requirements
-and instructions. A small selected defensive set has safe local or offline
-examples; other entries have summaries and documentation links only.
+and instructions. Choose **Sign in for notes** only when you want to use
+private notes or account features. A small selected defensive set has safe
+local or offline examples; other entries have summaries and documentation
+links only.
 
 Examples are text for learning and are not run by this website. The site does
 not install software, run scans, or confirm authorization. Only test systems
