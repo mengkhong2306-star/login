@@ -2,7 +2,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { toolIndex } from "./tool-index.js";
 import { safeToolProfiles } from "./tool-profiles.js";
 import { toolImageFiles } from "./tool-image-map.js";
-import { additionalToolTranslations } from "./tool-localizations.js";
+import { additionalToolTranslations, blackArchTranslations } from "./tool-localizations.js";
 
 const SUPABASE_URL = "https://ddkqqauzhzeqnrvjguxh.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRka3FxYXV6aHplcW5ydmpndXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzOTAsImV4cCI6MjEwODM4NTM5MH0.chVjshiDlQRDoEIdCvTLNCIvPStxKw-7EDEU8LmdYFQ";
@@ -754,6 +754,12 @@ function localizeToolLibrary() {
     document.querySelector("#tool-language-label").textContent = text.language;
     document.querySelector("#tool-library-description").textContent = text.description;
     document.querySelector("#tool-index-source").textContent = text.source;
+    const blackArch = blackArchTranslations[toolPageLanguage] || blackArchTranslations.en;
+    document.querySelector("#blackarch-feature").setAttribute("aria-label", blackArch.label);
+    document.querySelector("#blackarch-logo").alt = blackArch.logoAlt;
+    document.querySelector("#blackarch-description").textContent = blackArch.description;
+    document.querySelector("#blackarch-site-link").textContent = blackArch.site;
+    document.querySelector("#blackarch-tools-link").textContent = blackArch.tools;
     document.querySelector("#tool-artwork-note").textContent = text.artworkNote;
     document.querySelector("#tool-usage-guide-title").textContent = text.usageGuideTitle;
     document.querySelector("#tool-usage-steps-title").textContent = text.usageStepsTitle;

@@ -12,6 +12,7 @@ is no Flask server to run.
 - Change your username
 - Admin-only account invitations, removal, and sign-in activity
 - Public, searchable directory of Kali tool names and categories with links to official documentation
+- BlackArch Linux overview with its official logo and links to the official site and tool repository
 - Sign-in required only for private notes and account management
 - Dashboard tabs for Notes and Account
 - English, Khmer, Spanish, French, Simplified Chinese, Arabic, Hindi, Thai,
@@ -57,6 +58,11 @@ The directory does not bundle tool software or copy Kali descriptions.
 Purpose summaries remain concise and high-level; the additional languages use
 localized category-level summaries, while English and Khmer retain the
 existing grouped-purpose summaries.
+The public library also links to the official BlackArch Linux site, which
+currently lists 2,868 repository tools. This is an external reference, not a
+second imported or searchable catalog; follow the official link for current
+package information. The displayed logo is the official asset from
+<https://blackarch.org/images/logo/ba-logo.png>.
 `tool-image-map.js` maps 501 catalog entries to 321 distinct, transparent
 2048×2048 WebP exports of the supplied SVG artwork. Tools that share a source
 logo share its export, and tools without a specific image use the generic

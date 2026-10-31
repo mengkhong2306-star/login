@@ -149,6 +149,14 @@
         .tool-category-heading { display: flex; align-items: center; gap: 10px; margin: 0; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 1rem; font-weight: 600; }
         .tool-category-heading .tool-icon { width: 28px; height: 28px; border-radius: 8px; }
         .tool-category-heading .tool-icon svg { width: 19px; height: 19px; }
+        .distro-feature { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: center; gap: 16px; margin: 22px 0; padding: 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--input); }
+        .distro-feature-logo { display: block; width: 84px; height: 84px; object-fit: contain; }
+        .distro-feature h2 { margin: 0 0 6px; }
+        .distro-feature p { margin: 0 0 12px; }
+        .distro-feature .tool-actions { grid-column: 2; gap: 8px; }
+        .distro-feature .button { min-height: 40px; padding: 8px 12px; border-radius: 11px; font-size: .88rem; }
+        .distro-feature .button.secondary { border: 1px solid var(--border); background: var(--surface); color: inherit; }
+        .distro-feature .button.secondary:hover { background: var(--primary); color: #fff; }
         .tool-directory-list { display: grid; gap: 2px; margin: 0; padding: 8px; list-style: none; }
         .tool-directory-item { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 7px; min-width: 0; min-height: 25px; }
         .tool-directory-item > a { overflow: hidden; color: inherit; font-size: .88rem; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
@@ -213,6 +221,9 @@
             header { margin-bottom: 12px; }
             .card { border-radius: 20px; }
             .dashboard-head { align-items: flex-start; }
+            .distro-feature { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 12px; }
+            .distro-feature-logo { width: 64px; height: 64px; }
+            .distro-feature .tool-actions { grid-column: 1 / -1; }
             .tool-filters { grid-template-columns: 1fr; }
             .tool-grid { columns: 1; }
             .tool-detail-top { grid-template-columns: 1fr; }
@@ -262,6 +273,17 @@
                         </div>
                         <p id="tool-library-description" class="intro">Browse Kali tool names and categories. Selected defensive tools have original profiles and local or offline demos; other tools link to official documentation.</p>
                         <p><a id="tool-index-source" href="https://www.kali.org/tools/" target="_blank" rel="noopener noreferrer">Open the official Kali tools index</a></p>
+                        <section id="blackarch-feature" class="distro-feature" aria-labelledby="blackarch-title">
+                            <img id="blackarch-logo" class="distro-feature-logo" src="./image/blackarch-logo.png" alt="BlackArch Linux logo">
+                            <div>
+                                <h2 id="blackarch-title">BlackArch Linux</h2>
+                                <p id="blackarch-description">BlackArch Linux is an Arch-based penetration-testing distribution. Its official repository currently lists 2,868 security tools.</p>
+                            </div>
+                            <div class="tool-actions">
+                                <a id="blackarch-site-link" class="button" href="https://blackarch.org/" target="_blank" rel="noopener noreferrer">BlackArch official site</a>
+                                <a id="blackarch-tools-link" class="button secondary" href="https://blackarch.org/tools.html" target="_blank" rel="noopener noreferrer">Browse the official tools</a>
+                            </div>
+                        </section>
                         <p id="tool-artwork-note" class="intro">Tool artwork is shown for identification and links to its Kali documentation. NiNJa GO is an independent project and is not affiliated with Kali Linux.</p>
                         <details id="tool-usage-guide" class="tool-usage-guide">
                             <summary id="tool-usage-guide-title">How to use this library safely</summary>

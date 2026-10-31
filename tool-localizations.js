@@ -1,3 +1,83 @@
+export const blackArchTranslations = {
+    en: {
+        label: "BlackArch Linux distribution information",
+        logoAlt: "BlackArch Linux logo",
+        description: "BlackArch Linux is an Arch-based penetration-testing distribution. Its official repository currently lists 2,868 security tools.",
+        site: "BlackArch official site",
+        tools: "Browse the official tools",
+    },
+    km: {
+        label: "ព័ត៌មានអំពីប្រព័ន្ធ BlackArch Linux",
+        logoAlt: "ឡូហ្គោ BlackArch Linux",
+        description: "BlackArch Linux គឺជាប្រព័ន្ធផ្អែកលើ Arch សម្រាប់ការធ្វើតេស្តសុវត្ថិភាព។ ឃ្លាំងផ្លូវការរបស់វាបច្ចុប្បន្នមានឧបករណ៍សុវត្ថិភាព ២៨៦៨។",
+        site: "គេហទំព័រផ្លូវការ BlackArch",
+        tools: "មើលឧបករណ៍ផ្លូវការ",
+    },
+    es: {
+        label: "Información de la distribución BlackArch Linux",
+        logoAlt: "Logotipo de BlackArch Linux",
+        description: "BlackArch Linux es una distribución basada en Arch para pruebas de penetración. Su repositorio oficial enumera actualmente 2.868 herramientas de seguridad.",
+        site: "Sitio oficial de BlackArch",
+        tools: "Ver las herramientas oficiales",
+    },
+    fr: {
+        label: "Informations sur la distribution BlackArch Linux",
+        logoAlt: "Logo de BlackArch Linux",
+        description: "BlackArch Linux est une distribution basée sur Arch dédiée aux tests d’intrusion. Son dépôt officiel répertorie actuellement 2 868 outils de sécurité.",
+        site: "Site officiel de BlackArch",
+        tools: "Voir les outils officiels",
+    },
+    zh: {
+        label: "BlackArch Linux 发行版信息",
+        logoAlt: "BlackArch Linux 标志",
+        description: "BlackArch Linux 是基于 Arch 的渗透测试发行版。其官方软件仓库目前列出 2,868 个安全工具。",
+        site: "BlackArch 官方网站",
+        tools: "浏览官方工具",
+    },
+    ar: {
+        label: "معلومات عن توزيعة BlackArch Linux",
+        logoAlt: "شعار BlackArch Linux",
+        description: "BlackArch Linux توزيعة مبنية على Arch لاختبار الاختراق. يضم مستودعها الرسمي حاليًا ٢٬٨٦٨ أداة أمنية.",
+        site: "موقع BlackArch الرسمي",
+        tools: "تصفح الأدوات الرسمية",
+    },
+    hi: {
+        label: "BlackArch Linux वितरण की जानकारी",
+        logoAlt: "BlackArch Linux लोगो",
+        description: "BlackArch Linux, Arch पर आधारित पेनिट्रेशन-टेस्टिंग वितरण है। इसके आधिकारिक रिपॉज़िटरी में वर्तमान में 2,868 सुरक्षा टूल सूचीबद्ध हैं।",
+        site: "BlackArch की आधिकारिक साइट",
+        tools: "आधिकारिक टूल देखें",
+    },
+    th: {
+        label: "ข้อมูลดิสทริบิวชัน BlackArch Linux",
+        logoAlt: "โลโก้ BlackArch Linux",
+        description: "BlackArch Linux เป็นดิสทริบิวชันที่พัฒนาบน Arch สำหรับการทดสอบเจาะระบบ คลังทางการแสดงเครื่องมือด้านความปลอดภัย 2,868 รายการในปัจจุบัน",
+        site: "เว็บไซต์ทางการของ BlackArch",
+        tools: "ดูเครื่องมือทางการ",
+    },
+    vi: {
+        label: "Thông tin về bản phân phối BlackArch Linux",
+        logoAlt: "Biểu trưng BlackArch Linux",
+        description: "BlackArch Linux là bản phân phối dựa trên Arch dành cho kiểm thử xâm nhập. Kho chính thức hiện liệt kê 2.868 công cụ bảo mật.",
+        site: "Trang web chính thức BlackArch",
+        tools: "Xem các công cụ chính thức",
+    },
+    ja: {
+        label: "BlackArch Linux ディストリビューション情報",
+        logoAlt: "BlackArch Linux のロゴ",
+        description: "BlackArch Linux は Arch ベースの侵入テスト用ディストリビューションです。公式リポジトリには現在 2,868 個のセキュリティツールが掲載されています。",
+        site: "BlackArch 公式サイト",
+        tools: "公式ツール一覧を見る",
+    },
+    ko: {
+        label: "BlackArch Linux 배포판 정보",
+        logoAlt: "BlackArch Linux 로고",
+        description: "BlackArch Linux는 Arch 기반 침투 테스트 배포판입니다. 공식 저장소에는 현재 2,868개의 보안 도구가 등록되어 있습니다.",
+        site: "BlackArch 공식 사이트",
+        tools: "공식 도구 둘러보기",
+    },
+};
+
 const categories = [
     "Reconnaissance", "Resource Development", "Initial Access", "Execution",
     "Persistence", "Privilege Escalation", "Defense Evasion", "Credential Access",
