@@ -1,4 +1,4 @@
-export const securityFieldGuide = [
+const securityFieldGuideData = [
     {
         category: "Reconnaissance & OSINT",
         safePractice: "Use public information only for assets and people in an approved scope. Validate sources, minimize personal data, and document uncertainty.",
@@ -265,3 +265,56 @@ export const securityFieldGuide = [
         ],
     },
 ];
+
+const safeQuickStarts = {
+    Maltego: { type: "launch", text: "maltego", label: "Launch the desktop app", note: "Opens the application only; do not run transforms against people or organizations without a documented, authorized purpose." },
+    Shodan: { type: "command", text: "shodan --help", label: "Show CLI help", note: "Displays local command help. It does not query Shodan or search for devices." },
+    theHarvester: { type: "command", text: "theHarvester -h", label: "Show CLI help", note: "Displays usage information only; it does not collect data." },
+    Amass: { type: "command", text: "amass -h", label: "Show CLI help", note: "Displays local usage information only; it does not enumerate domains." },
+    SpiderFoot: { type: "command", text: "python3 sf.py --help", label: "Show CLI help", note: "Run from the SpiderFoot source directory. This displays help only and does not start a scan." },
+    Nmap: { type: "command", text: "nmap --help", label: "Show CLI help", note: "Displays local help only; it does not scan a host." },
+    Masscan: { type: "command", text: "masscan --help", label: "Show CLI help", note: "Displays local help only; it does not send probes." },
+    Wireshark: { type: "command", text: "wireshark --help", label: "Show CLI help", note: "Displays local help only; it does not capture network traffic." },
+    Nessus: { type: "command", text: "nessuscli help", label: "Show CLI help", note: "Displays local CLI help. Nessus setup and scan management vary by installation." },
+    "OpenVAS / Greenbone": { type: "command", text: "gvm-cli --help", label: "Show CLI help", note: "Displays local client help only; it does not connect to a manager or start an assessment." },
+    RustScan: { type: "command", text: "rustscan --help", label: "Show CLI help", note: "Displays local help only; it does not scan a port or host." },
+    "Burp Suite (Community / Professional)": { type: "launch", text: "burpsuite", label: "Launch the desktop app", note: "Opens Burp Suite. Do not configure a target or run checks except in an authorized test environment." },
+    "OWASP ZAP": { type: "command", text: "zaproxy -h", label: "Show CLI help", note: "Displays local help only; it does not launch a scan." },
+    sqlmap: { type: "command", text: "sqlmap --help", label: "Show CLI help", note: "Displays local help only; it does not send requests or test an application." },
+    ffuf: { type: "command", text: "ffuf -h", label: "Show CLI help", note: "Displays local help only; it does not send web requests." },
+    Gobuster: { type: "command", text: "gobuster help", label: "Show CLI help", note: "Displays local help only; it does not enumerate a site or domain." },
+    Nuclei: { type: "command", text: "nuclei -h", label: "Show CLI help", note: "Displays local help only; it does not run templates against a target." },
+    Postman: { type: "launch", text: "postman", label: "Launch the desktop app", note: "Opens Postman. Use a local practice API and synthetic data when you begin testing requests." },
+    Kiterunner: { type: "command", text: "kr help", label: "Show CLI help", note: "Displays local help only; it does not send requests to an API." },
+    BloodHound: { type: "launch", text: "bloodhound", label: "Launch the desktop app", note: "Opens the interface only. Use synthetic identities in an isolated directory lab." },
+    Impacket: { type: "command", text: "impacket-smbclient -h", label: "Show CLI help", note: "Displays the SMB client usage only; without connection options, it does not contact a server." },
+    "NetExec (formerly CrackMapExec)": { type: "command", text: "nxc --help", label: "Show CLI help", note: "Displays local help only; it does not connect to a network or authenticate." },
+    Responder: { type: "command", text: "responder -h", label: "Show CLI help", note: "Displays local help only; it does not listen on a network interface." },
+    "Metasploit Framework": { type: "command", text: "msfconsole --help", label: "Show CLI help", note: "Displays local help only; it does not start a session or run a module." },
+    BeEF: { type: "command", text: "beef-xss -h", label: "Show CLI help", note: "Displays local help only; it does not start the framework or hook a browser." },
+    Sliver: { type: "command", text: "sliver-server version", label: "Show version", note: "Displays the installed server version only; it does not start a listener or session." },
+    "Cobalt Strike": { type: "reference", text: "Open the licensed Cobalt Strike client and read its built-in help.", label: "Licensed application", note: "There is no universal safe CLI command; use only the licensed client and vendor documentation." },
+    "PEASS-ng (LinPEAS / WinPEAS)": { type: "reference", text: "Read the official PEASS-ng documentation before running any script.", label: "Review documentation first", note: "There is no generally safe scan command: these scripts inspect the system where they run. Start with a disposable lab VM and review the script and scope first." },
+    "GTFOBins / LOLBAS": { type: "reference", text: "Open the GTFOBins and LOLBAS project documentation.", label: "Reference projects", note: "These are online references, not a single command-line program. Use them to understand and mitigate configuration risks." },
+    Mimikatz: { type: "command", text: "mimikatz.exe /?", label: "Show program help", note: "Requests local usage help only. Do not collect, display, or share real credentials or authentication material." },
+    Hashcat: { type: "command", text: "hashcat --help", label: "Show CLI help", note: "Displays local help only; it does not load hashes or attempt password recovery." },
+    "John the Ripper": { type: "command", text: "john --list=formats", label: "List supported formats", note: "Prints local format information only; it does not read a hash file or attempt password recovery." },
+    Hydra: { type: "command", text: "hydra -h", label: "Show CLI help", note: "Displays local help only; it does not make login attempts. Avoid live password guessing." },
+    "Aircrack-ng": { type: "command", text: "aircrack-ng --help", label: "Show CLI help", note: "Displays local help only; it does not inspect a capture or interact with a wireless network." },
+    Kismet: { type: "command", text: "kismet --help", label: "Show CLI help", note: "Displays local help only; it does not start wireless monitoring." },
+    Wifite: { type: "command", text: "wifite --help", label: "Show CLI help", note: "Displays local help only; it does not scan or interact with nearby networks." },
+    Prowler: { type: "command", text: "prowler --help", label: "Show CLI help", note: "Displays local help only; it does not access a cloud account or run checks." },
+    Pacu: { type: "command", text: "python3 pacu.py --help", label: "Show CLI help", note: "Run from the Pacu source directory. This displays help only; it does not access an AWS account." },
+    ScoutSuite: { type: "command", text: "scout --help", label: "Show CLI help", note: "Displays local help only; it does not authenticate to a cloud provider or collect account data." },
+    PentestGPT: { type: "command", text: "pentestgpt --help", label: "Show CLI help", note: "If supported by your installed version, displays local help only. Do not provide it with secrets or real target details." },
+    "Burp Suite BChecks": { type: "reference", text: "In Burp Suite, open Scanner and review the BChecks documentation.", label: "In-app learning path", note: "BChecks are custom scanner checks, not a standalone command. Test your own check only against an authorized practice application." },
+};
+
+export const securityFieldGuide = securityFieldGuideData.map((category) => ({
+    ...category,
+    tools: category.tools.map((tool) => {
+        const quickStart = safeQuickStarts[tool.name];
+        if (!quickStart) throw new Error(`Missing safe quick start for ${tool.name}`);
+        return { ...tool, quickStart };
+    }),
+}));

@@ -205,6 +205,7 @@
         .security-guide-item h3 { margin: 0 0 5px; font-size: 1rem; }
         .security-guide-item p { margin: 0 0 6px; font-size: .9rem; }
         .security-guide-focus { color: var(--muted); }
+        .security-guide-steps { display: grid; gap: 6px; margin: 10px 0 14px; padding-left: 22px; color: var(--muted); font-size: .92rem; }
         .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
         .tool-language label { color: var(--muted); font-size: .9rem; }
         .tool-language select { padding: 9px 12px; }
@@ -331,6 +332,13 @@
                         <section id="security-field-guide" class="security-field-guide" lang="en" aria-labelledby="security-field-guide-title">
                             <h2 id="security-field-guide-title">Security tools field guide</h2>
                             <p>Plain-language descriptions and defensive learning goals for commonly used security tools. This English-language guide is educational; it does not provide attack procedures or authorize testing.</p>
+                            <p>Commands below are limited to local help/version information or opening an application. They do not scan a target or perform an assessment. Command names and installation paths can vary by operating system and version.</p>
+                            <ol class="security-guide-steps">
+                                <li>Install from the official publisher and check its documentation for your operating system.</li>
+                                <li>Begin with the safe help example below. Practice with a disposable local lab and synthetic data.</li>
+                                <li>Before any assessment, get written permission, confirm the exact scope, and follow the tool's official safety guidance.</li>
+                                <li>Review results carefully, protect sensitive information, and remove temporary lab data when finished.</li>
+                            </ol>
                             <div class="field security-guide-search">
                                 <label for="security-guide-search">Search the field guide</label>
                                 <input id="security-guide-search" type="search" placeholder="Search a tool, category, or learning focus">

@@ -932,7 +932,7 @@ function renderSecurityFieldGuide() {
         for (const tool of category.tools) {
             const item = document.createElement("li");
             item.className = "security-guide-item";
-            item.dataset.searchText = `${category.category} ${tool.name} ${tool.summary} ${tool.focus}`.toLowerCase();
+            item.dataset.searchText = `${category.category} ${tool.name} ${tool.summary} ${tool.focus} ${tool.quickStart.text}`.toLowerCase();
             const name = document.createElement("h3");
             name.textContent = tool.name;
             const summary = document.createElement("p");
@@ -941,6 +941,20 @@ function renderSecurityFieldGuide() {
             focus.className = "security-guide-focus";
             focus.textContent = `Safe learning focus: ${tool.focus}`;
             item.append(name, summary, focus);
+            if (tool.quickStart.type === "command" || tool.quickStart.type === "launch") {
+                addCopyableCommand(
+                    item,
+                    tool,
+                    tool.quickStart.text,
+                    tool.quickStart.label,
+                    tool.quickStart.note,
+                );
+            } else {
+                const reference = document.createElement("p");
+                reference.className = "security-guide-focus";
+                reference.textContent = `${tool.quickStart.label}: ${tool.quickStart.text} ${tool.quickStart.note}`;
+                item.append(reference);
+            }
             list.append(item);
         }
         section.append(heading, safety, list);
