@@ -351,7 +351,7 @@ document.querySelector("#username-form").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     withButton(event.currentTarget.querySelector("button"), async () => {
-        const username = String(form.get("username")).trim().toLowerCase();
+        const username = String(form.get("username")).trim();
         if (!username || username.length > 80) {
             throw new Error("Username must be between 1 and 80 characters.");
         }
