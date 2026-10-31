@@ -27,9 +27,8 @@ function clearStatus() {
 }
 
 function updateAccountNavigation() {
-    accountNavigation.textContent = publicTools.hidden
-        ? "Kali tools"
-        : currentUser ? "My notes" : "Sign in for notes";
+    accountNavigation.hidden = !currentUser;
+    accountNavigation.textContent = publicTools.hidden ? "Kali tools" : "My notes";
 }
 
 function showPublicTools() {

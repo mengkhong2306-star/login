@@ -41,10 +41,9 @@ every entry has a concise, original high-level purpose summary and a details
 view. The library is public and opens without signing in. Search by name or
 filter by category, choose **View details** to read a purpose summary, and
 follow the official Kali documentation link for authoritative requirements
-and instructions. Choose **Sign in for notes** only when you want to use
-private notes or account features. A small selected defensive set has safe
-local or offline examples; other entries have summaries and documentation
-links only.
+and instructions. Private notes and account management remain available only
+to authenticated users. A small selected defensive set has safe local or
+offline examples; other entries have summaries and documentation links only.
 
 Examples are text for learning and are not run by this website. The site does
 not install software, run scans, or confirm authorization. Only test systems
