@@ -15,7 +15,7 @@ is no Flask server to run.
 - BlackArch Linux overview with its official logo and links to the official site and tool repository
 - Sign-in required only for private notes and account management
 - Dashboard tabs for Notes and Account
-- English, Khmer, Spanish, French, Simplified Chinese, Arabic, Hindi, Thai,
+- English, Khmer, Spanish, French, Simplified Chinese, Arabic, Hindi,
   Vietnamese, Japanese, and Korean translations for the public tool library
 - Responsive interface with light and dark themes
 - Row Level Security keeps each user's profile and notes private
