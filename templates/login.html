@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Insecure Vault</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+        .login-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { display: block; margin: 10px 0; padding: 8px; width: 200px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Vault Login</h2>
+        <form method="post">
+            Username: <input type="text" name="username" required>
+            Password: <input type="password" name="password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>

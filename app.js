@@ -2,6 +2,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { toolIndex } from "./tool-index.js";
 import { blackArchIndex } from "./blackarch-index.js";
 import { safeToolProfiles } from "./tool-profiles.js";
+import { securityFieldGuide } from "./security-field-guide.js";
 import { toolImageFiles } from "./tool-image-map.js";
 import {
     additionalToolTranslations,
@@ -406,6 +407,9 @@ const toolDistribution = document.querySelector("#tool-distribution");
 const toolLanguage = document.querySelector("#tool-language");
 const toolLibraryHome = document.querySelector("#tool-library-home");
 const toolDetail = document.querySelector("#tool-detail");
+const securityGuideSearch = document.querySelector("#security-guide-search");
+const securityGuideCount = document.querySelector("#security-guide-count");
+const securityGuideCategories = document.querySelector("#security-guide-categories");
 const toolImageDirectory = "./image/tool-logos-2k/";
 const toolPurposeSummaries = {
     en: {
@@ -913,6 +917,57 @@ function renderToolCatalog() {
     }
 }
 
+function renderSecurityFieldGuide() {
+    securityGuideCategories.replaceChildren();
+    for (const category of securityFieldGuide) {
+        const section = document.createElement("details");
+        section.className = "security-guide-category";
+        const heading = document.createElement("summary");
+        heading.textContent = `${category.category} (${category.tools.length})`;
+        const safety = document.createElement("p");
+        safety.className = "security-guide-safety";
+        safety.textContent = category.safePractice;
+        const list = document.createElement("ul");
+        list.className = "security-guide-list";
+        for (const tool of category.tools) {
+            const item = document.createElement("li");
+            item.className = "security-guide-item";
+            item.dataset.searchText = `${category.category} ${tool.name} ${tool.summary} ${tool.focus}`.toLowerCase();
+            const name = document.createElement("h3");
+            name.textContent = tool.name;
+            const summary = document.createElement("p");
+            summary.textContent = tool.summary;
+            const focus = document.createElement("p");
+            focus.className = "security-guide-focus";
+            focus.textContent = `Safe learning focus: ${tool.focus}`;
+            item.append(name, summary, focus);
+            list.append(item);
+        }
+        section.append(heading, safety, list);
+        securityGuideCategories.append(section);
+    }
+    filterSecurityFieldGuide();
+}
+
+function filterSecurityFieldGuide() {
+    const query = securityGuideSearch.value.trim().toLowerCase();
+    let visibleCount = 0;
+    for (const category of securityGuideCategories.children) {
+        let categoryCount = 0;
+        for (const item of category.querySelectorAll(".security-guide-item")) {
+            const matches = item.dataset.searchText.includes(query);
+            item.hidden = !matches;
+            if (matches) categoryCount += 1;
+        }
+        category.hidden = categoryCount === 0;
+        category.open = Boolean(query) && categoryCount > 0;
+        visibleCount += categoryCount;
+    }
+    securityGuideCount.textContent = query
+        ? `${visibleCount} matching ${visibleCount === 1 ? "tool" : "tools"}`
+        : `${visibleCount} tools across ${securityFieldGuide.length} categories`;
+}
+
 function appendDetailBlock(parent, title, content) {
     const block = document.createElement("section");
     block.className = "tool-detail-block";
@@ -1187,6 +1242,7 @@ function openToolProfile(tool) {
 
 toolSearch.addEventListener("input", renderToolCatalog);
 toolCategory.addEventListener("change", renderToolCatalog);
+securityGuideSearch.addEventListener("input", filterSecurityFieldGuide);
 toolDistribution.addEventListener("change", () => {
     activeDistribution = toolDistribution.value;
     localStorage.setItem("mengkhong-tool-distribution", activeDistribution);
@@ -1202,6 +1258,7 @@ toolLanguage.addEventListener("change", () => {
     localizeToolLibrary();
 });
 localizeToolLibrary();
+renderSecurityFieldGuide();
 
 const themeToggle = document.querySelector("#theme-toggle");
 function setTheme(theme) {

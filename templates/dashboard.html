@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Insecure Vault</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .secret-card { background: #eef; padding: 10px; margin: 10px 0; border-left: 5px solid blue; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <p>You are logged in as User ID: <strong>{{ user_id }}</strong></p>
+    
+    <h3>Your Secrets:</h3>
+    <div class="secret-card">
+        <a href="/secret/{{ user_id }}">View My Secret Message</a>
+    </div>
+    
+    <br>
+    <a href="/">Back to Home</a> | <a href="/login">Logout</a>
+</body>
+</html>

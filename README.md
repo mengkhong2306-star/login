@@ -69,6 +69,12 @@ publisher descriptions and tool-specific usage commands are not copied.
 Package installation guidance is for Arch Linux with the BlackArch
 repository configured. The displayed logo is the official asset from
 <https://blackarch.org/images/logo/ba-logo.png>.
+An English-language security field guide supplements the distribution catalogs
+with high-level descriptions and defensive learning focuses for 41 tools across
+10 categories, including reconnaissance, network and web assessment, enterprise
+security, threat emulation, password and wireless auditing, cloud security, and
+AI. It includes category-specific safety boundaries, provides no attack
+procedures, and does not change either distribution's package list.
 `tool-image-map.js` maps 501 catalog entries to 321 distinct, transparent
 2048×2048 WebP exports of the supplied SVG artwork. Tools that share a source
 logo share its export, and tools without a specific image use the generic

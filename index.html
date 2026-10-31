@@ -191,6 +191,20 @@
         .tool-usage-guide-content { display: grid; gap: 12px; padding-top: 14px; }
         .tool-usage-guide-content h3, .tool-usage-guide-content p { margin: 0; }
         .tool-usage-guide-content ol, .tool-usage-guide-content ul { display: grid; gap: 8px; margin: 0; padding-left: 22px; }
+        .security-field-guide { margin: 20px 0; }
+        .security-field-guide > h2 { margin: 0 0 6px; font-size: 1.25rem; }
+        .security-field-guide > p { margin: 0 0 12px; }
+        .security-guide-search { max-width: 520px; margin: 12px 0; }
+        .security-guide-count { color: var(--muted); font-size: .9rem; }
+        .security-guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+        .security-guide-category { min-width: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--input); }
+        .security-guide-category > summary { padding: 12px 14px; color: var(--primary); cursor: pointer; font-weight: 650; }
+        .security-guide-safety { margin: 0; padding: 0 14px 12px; color: var(--muted); font-size: .9rem; }
+        .security-guide-list { display: grid; gap: 10px; margin: 0; padding: 0 14px 14px; list-style: none; }
+        .security-guide-item { padding-top: 10px; border-top: 1px solid var(--border); }
+        .security-guide-item h3 { margin: 0 0 5px; font-size: 1rem; }
+        .security-guide-item p { margin: 0 0 6px; font-size: .9rem; }
+        .security-guide-focus { color: var(--muted); }
         .tool-language { display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 8px; }
         .tool-language label { color: var(--muted); font-size: .9rem; }
         .tool-language select { padding: 9px 12px; }
@@ -314,6 +328,16 @@
                                 <p id="tool-safety-confirmation" class="status">Use a tool only when you have authorization and can protect the systems and data involved.</p>
                             </div>
                         </details>
+                        <section id="security-field-guide" class="security-field-guide" lang="en" aria-labelledby="security-field-guide-title">
+                            <h2 id="security-field-guide-title">Security tools field guide</h2>
+                            <p>Plain-language descriptions and defensive learning goals for commonly used security tools. This English-language guide is educational; it does not provide attack procedures or authorize testing.</p>
+                            <div class="field security-guide-search">
+                                <label for="security-guide-search">Search the field guide</label>
+                                <input id="security-guide-search" type="search" placeholder="Search a tool, category, or learning focus">
+                            </div>
+                            <p id="security-guide-count" class="security-guide-count" aria-live="polite"></p>
+                            <div id="security-guide-categories" class="security-guide-grid"></div>
+                        </section>
                         <div class="tool-filters">
                             <div class="field">
                                 <label id="tool-search-label" for="tool-search">Search tools</label>
